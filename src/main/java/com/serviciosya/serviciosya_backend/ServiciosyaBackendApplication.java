@@ -12,7 +12,7 @@ public class ServiciosyaBackendApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ServiciosyaBackendApplication.class, args);
-	
+
 	}
 
 
