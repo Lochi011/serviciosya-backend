@@ -21,7 +21,7 @@ public class Reseña {
     private String comentario;
     private float puntuacion;
     @Temporal(TemporalType.DATE)
-    private Date fecha_publicacion;
+    private Date fechaPublicacion;
 
 }
 
