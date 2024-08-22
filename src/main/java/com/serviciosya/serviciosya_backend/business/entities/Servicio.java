@@ -12,16 +12,21 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "reseñas")
+@Table(name = "servicios")
 public class Servicio {
     @Id
     @GeneratedValue
     @GenericGenerator(name = "servicio_id", strategy = "increment")
     private Long id;
+
     private String nombre;
+
     private String descripcion;
+
     private int precio;
+
     private float puntuacion;
+
     private List <String> etiquetas;
 
 

@@ -11,6 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
+@Table(name = "usuarios_ofertantes")
+
 public class UsuarioOfertante extends Usuario {
 
     @ManyToMany (mappedBy = "usuarioOfertante")
