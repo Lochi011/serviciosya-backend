@@ -11,5 +11,14 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-public class UsuarioOfertante {
+public class UsuarioOfertante extends Usuario {
+
+    @ManyToMany (mappedBy = "usuarioOfertante")
+    @JoinTable(
+            name = "usuario_ofertante_rubro",
+            joinColumns = @JoinColumn(name = "usuario_ofertante_id"),
+            inverseJoinColumns = @JoinColumn(name = "rubro_id")
+    )
+    private List <Rubro> rubros;
+
 }
