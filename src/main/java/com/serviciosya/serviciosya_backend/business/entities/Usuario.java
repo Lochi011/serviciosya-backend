@@ -31,7 +31,7 @@ public class Usuario {
     private String fechaCreacion;
 
     @OneToMany(mappedBy = "usuario")
-    private List<Reseña> reseñas;
+    private List <Reseña> reseñas;
 
 
 
