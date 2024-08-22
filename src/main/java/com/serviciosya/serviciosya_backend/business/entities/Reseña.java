@@ -3,6 +3,8 @@ package com.serviciosya.serviciosya_backend.business.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,4 +20,8 @@ public class Reseña {
     private String comentario;
 
     private int puntuacion;
+
+    @Temporal(TemporalType.DATE)
+    private Date fecha_publicacion;
+
 }
