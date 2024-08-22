@@ -2,7 +2,6 @@ package com.serviciosya.serviciosya_backend.business.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Any;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
