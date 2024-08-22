@@ -2,9 +2,10 @@ package com.serviciosya.serviciosya_backend.business.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Any;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,16 +14,16 @@ import java.util.Date;
 @Builder
 @Entity
 @Table(name = "reseñas")
-public class Reseña {
+public class Servicio {
     @Id
     @GeneratedValue
-    @GenericGenerator(name = "reseña_id", strategy = "increment")
+    @GenericGenerator(name = "servicio_id", strategy = "increment")
     private Long id;
-    private String comentario;
+    private String nombre;
+    private String descripcion;
+    private int precio;
     private float puntuacion;
-    @Temporal(TemporalType.DATE)
-    private Date fecha_publicacion;
+    private List <String> etiquetas;
+
 
 }
-
-
