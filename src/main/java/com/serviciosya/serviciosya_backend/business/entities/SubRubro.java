@@ -1,12 +1,10 @@
 package com.serviciosya.serviciosya_backend.business.entities;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
-
 
 @Getter
 @Setter
@@ -14,20 +12,19 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "rubros")
-public class Rubro {
+@Table(name = "sub_rubros")
+public class SubRubro {
     @Id
     @GeneratedValue
-    @GenericGenerator(name="rubro_id", strategy = "increment")
+    @GenericGenerator(name = "sub_rubro_id", strategy = "increment")
     private Long id;
 
     private String nombre;
 
-    @OneToMany(mappedBy = "rubro")
-    private List<SubRubro> subRubros;
+    @ManyToOne
+    @JoinColumn(name = "rubro_id")
+    private Rubro rubro;
 
-
-
-
-
+    @OneToMany(mappedBy = "subRubro")
+    private List<Servicio> servicios;
 }

@@ -14,14 +14,22 @@ import java.util.Date;
 @Entity
 @Table(name = "reseñas")
 public class Reseña {
+
     @Id
     @GeneratedValue
     @GenericGenerator(name = "reseña_id", strategy = "increment")
     private Long id;
+
     private String comentario;
+
     private float puntuacion;
+
     @Temporal(TemporalType.DATE)
     private Date fechaPublicacion;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 
 }
 

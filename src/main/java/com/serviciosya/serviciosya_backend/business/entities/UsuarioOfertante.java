@@ -12,7 +12,6 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "usuarios_ofertantes")
-
 public class UsuarioOfertante extends Usuario {
 
     @ManyToMany (mappedBy = "usuarioOfertante")
@@ -22,5 +21,8 @@ public class UsuarioOfertante extends Usuario {
             inverseJoinColumns = @JoinColumn(name = "rubro_id")
     )
     private List <Rubro> rubros;
+
+    @OneToMany(mappedBy = "usuarioOfertante")
+    private List<Servicio> servicios;
 
 }

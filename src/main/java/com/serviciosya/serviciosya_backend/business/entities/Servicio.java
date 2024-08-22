@@ -3,7 +3,6 @@ package com.serviciosya.serviciosya_backend.business.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-
 import java.util.List;
 
 @Getter
@@ -27,7 +26,15 @@ public class Servicio {
 
     private float puntuacion;
 
-    private List <String> etiquetas;
+    private List<String> etiquetas;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_ofertante_id")
+    private UsuarioOfertante usuarioOfertante;
+
+    @ManyToOne
+    @JoinColumn(name = "sub_rubro_id")
+    private SubRubro subRubro;
 
 
 }
