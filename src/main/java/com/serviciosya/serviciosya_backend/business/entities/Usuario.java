@@ -3,6 +3,7 @@ package com.serviciosya.serviciosya_backend.business.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -32,7 +33,7 @@ public class Usuario {
     private String contrasena;
 
     @Temporal(TemporalType.DATE)
-    private String fechaCreacion;
+    private Date fechaCreacion;
 
     @OneToMany(mappedBy = "usuario")
     private List<Reseña> reseñas;
