@@ -22,7 +22,7 @@ public class UsuarioMgr {
         throw new InvalidInformation("Alguno de los datos ingresados no es correcto");
     }
 
-    // Verifico si el cliente ya existe
+    // Verifico si el usuario ya existe
         if (usuarioRepository.findOneByCedula(usuario.getCedula()) != null) {
         throw new UsuarioYaExiste("Ya existe usuario con esa cedula");
     }
