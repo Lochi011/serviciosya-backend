@@ -10,14 +10,13 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
 @SuperBuilder
 @Entity
 @DiscriminatorValue("ADMINISTRADOR")
 //@Table(name = "usuarios_demandantes")
 public class Administrador extends Usuario {
 
-    private String numeroAdmin;
 
 
 }

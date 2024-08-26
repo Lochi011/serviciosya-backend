@@ -23,9 +23,11 @@ public class Usuario {
     private Long id;
 
     @Column(unique = true)
-    private String cedula;
+    private Long cedula;
 
     private String nombre;
+
+    private  String apellido;
 
     private String direccion;
 
