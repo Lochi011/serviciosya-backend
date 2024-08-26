@@ -33,4 +33,10 @@ public class UsuarioMgr {
         usuarioRepository.save(usuario);
 
     }
+    public Iterable<Usuario> obtenerTodos() {return usuarioRepository.findAll();}
+
+    public Usuario obtenerUnoPorCorreo(String email) {return usuarioRepository.findOneByEmail(email);}
+
+    public Usuario obtenerUnoPorCedula(Long cedula) {return usuarioRepository.findOneByCedula(cedula);}
+
 }
