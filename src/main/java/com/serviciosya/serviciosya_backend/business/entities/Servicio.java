@@ -36,5 +36,8 @@ public class Servicio {
     @JoinColumn(name = "sub_rubro_id")
     private SubRubro subRubro;
 
+    @OneToMany(mappedBy = "servicio")
+    private List<Pago> pagos;
+
 
 }

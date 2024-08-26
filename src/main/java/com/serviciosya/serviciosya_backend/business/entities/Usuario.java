@@ -2,6 +2,7 @@ package com.serviciosya.serviciosya_backend.business.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import java.util.Date;
 import java.util.List;
@@ -10,8 +11,10 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "usuarios")
 public class Usuario {
     @Id
@@ -38,6 +41,9 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario")
     private List<Reseña> reseñas;
+
+
+
 
 
 

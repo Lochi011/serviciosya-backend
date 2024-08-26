@@ -3,23 +3,21 @@ package com.serviciosya.serviciosya_backend.business.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+
 import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
-@Table(name = "usuarios_ofertantes")
+//@Table(name = "usuarios_ofertantes")
+@DiscriminatorValue("OFERTANTE")
 public class UsuarioOfertante extends Usuario {
 
     @ManyToMany (mappedBy = "usuarioOfertante")
-    @JoinTable(
-            name = "usuario_ofertante_rubro",
-            joinColumns = @JoinColumn(name = "usuario_ofertante_id"),
-            inverseJoinColumns = @JoinColumn(name = "rubro_id")
-    )
     private List <Rubro> rubros;
 
     @OneToMany(mappedBy = "usuarioOfertante")

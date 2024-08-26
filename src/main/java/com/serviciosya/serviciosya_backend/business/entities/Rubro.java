@@ -26,6 +26,15 @@ public class Rubro {
     @OneToMany(mappedBy = "rubro")
     private List<SubRubro> subRubros;
 
+    @ManyToMany
+    @JoinTable(
+            name = "usuario_ofertante_rubro",
+            joinColumns = @JoinColumn(name = "rubro_id"),
+            inverseJoinColumns = @JoinColumn(name = "usuario_ofertante_id")
+    )
+    private List<UsuarioOfertante> usuarioOfertante;
+
+
 
 
 
