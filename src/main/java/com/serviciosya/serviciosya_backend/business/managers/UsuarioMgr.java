@@ -67,12 +67,12 @@ public class UsuarioMgr {
         if (tipo == "DEMANDANTE") {
             Date fechaCreacion = new Date();
             UsuarioDemandante usuario = new UsuarioDemandante(cedula, nombre, apellido, direccion, email, telefono, contrasena, fechaCreacion, genero, fechaNacimiento);
-            usuarioRepository.save(usuario);
+            agregarUsuario(usuario);
             return usuario;
         } else if (tipo == "OFERTANTE"){
             Date fechaCreacion = new Date();
             UsuarioOfertante usuario = new UsuarioOfertante(cedula, nombre, apellido, direccion, email, telefono, contrasena, fechaCreacion, genero, fechaNacimiento);
-            usuarioRepository.save(usuario);
+            agregarUsuario(usuario);
             return usuario;
         } else {
             throw new InvalidInformation("Tipo de usuario incorrecto");
