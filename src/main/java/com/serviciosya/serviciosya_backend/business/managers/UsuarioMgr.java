@@ -18,8 +18,6 @@ public class UsuarioMgr {
     private UsuarioRepository usuarioRepository;
 
 
-
-
     public void agregarUsuario(Usuario usuario) throws InvalidInformation, UsuarioYaExiste {
 
         // Verifico si el usuario ya existe
@@ -33,6 +31,7 @@ public class UsuarioMgr {
         usuarioRepository.save(usuario);
 
     }
+
     public boolean validarEmail(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
         return email.matches(emailRegex);
@@ -40,9 +39,7 @@ public class UsuarioMgr {
 
 
     public boolean validarDatosLogin(String email, String contrasena) {
-        if (email == null || contrasena == null || email.equals("") || contrasena.equals("")) {
-            return false;
-        }
+
         if (!validarEmail(email)) {
             return false;
         }
@@ -50,6 +47,27 @@ public class UsuarioMgr {
 
     }
 
+    public boolean validarDatosRegistro(Long cedula, String nombre, String apellido, String direccion, String email, String telefono, String contrasena, String genero, Date fechaNacimiento) {
+        // Validar cédula (solo números y longitud adecuada)
+        if (String.valueOf(cedula).length() != 8) {
+            return false;
+        }
+        // Validar email con la función previamente creada
+        if (!validarEmail(email)) {
+            return false;
+        }
+        // Validar teléfono (solo números y longitud adecuada)
+        if (!telefono.matches("\\d{8,15}")) {
+            return false;
+        }
+        // Validar fecha de nacimiento (debe ser una fecha pasada)
+        Date fechaActual = new Date();
+        if (fechaNacimiento.after(fechaActual)) {
+            return false;
+        }
+        // Si todas las validaciones pasan
+        return true;
+    }
 
 
     public Usuario validarLogin(String email, String contrasena) throws InvalidInformation, EntidadNoExiste {
@@ -60,8 +78,7 @@ public class UsuarioMgr {
             Usuario usuario = usuarioRepository.findOneByEmail(email);
             if (usuario.getContrasena().equals(contrasena)) {
                 return usuario;
-            }
-            else {
+            } else {
                 throw new InvalidInformation("Contraseña incorrecta");
             }
         } else {
@@ -71,15 +88,17 @@ public class UsuarioMgr {
     }
 
 
+    public Usuario registrarUsuario(Long cedula, String nombre, String apellido, String direccion, String email, String telefono, String contrasena, String genero, Date fechaNacimiento, String tipo) throws InvalidInformation, UsuarioYaExiste {
 
-    public Usuario registrarUsuario (Long cedula, String nombre, String apellido, String direccion, String email, String telefono, String contrasena, String genero, Date fechaNacimiento, String tipo) throws InvalidInformation, UsuarioYaExiste {
-
+        if (!validarDatosRegistro(cedula, nombre, apellido, direccion, email, telefono, contrasena, genero, fechaNacimiento)) {
+            throw new InvalidInformation("Datos de registro incorrectos");
+        }
         if (tipo == "DEMANDANTE") {
             Date fechaCreacion = new Date();
             UsuarioDemandante usuario = new UsuarioDemandante(cedula, nombre, apellido, direccion, email, telefono, contrasena, fechaCreacion, genero, fechaNacimiento);
             agregarUsuario(usuario);
             return usuario;
-        } else if (tipo == "OFERTANTE"){
+        } else if (tipo == "OFERTANTE") {
             Date fechaCreacion = new Date();
             UsuarioOfertante usuario = new UsuarioOfertante(cedula, nombre, apellido, direccion, email, telefono, contrasena, fechaCreacion, genero, fechaNacimiento);
             agregarUsuario(usuario);
@@ -88,10 +107,17 @@ public class UsuarioMgr {
             throw new InvalidInformation("Tipo de usuario incorrecto");
         }
     }
-    public Iterable<Usuario> obtenerTodos() {return usuarioRepository.findAll();}
 
-    public Usuario obtenerUnoPorCorreo(String email) {return usuarioRepository.findOneByEmail(email);}
+    public Iterable<Usuario> obtenerTodos() {
+        return usuarioRepository.findAll();
+    }
 
-    public Usuario obtenerUnoPorCedula(Long cedula) {return usuarioRepository.findOneByCedula(cedula);}
+    public Usuario obtenerUnoPorCorreo(String email) {
+        return usuarioRepository.findOneByEmail(email);
+    }
+
+    public Usuario obtenerUnoPorCedula(Long cedula) {
+        return usuarioRepository.findOneByCedula(cedula);
+    }
 
 }
