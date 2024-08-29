@@ -17,15 +17,10 @@ public class UsuarioMgr {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+
+
+
     public void agregarUsuario(Usuario usuario) throws InvalidInformation, UsuarioYaExiste {
-        if (usuario.getNombre() == null || "".equals(usuario.getNombre())
-                || usuario.getApellido() == null || "".equals(usuario.getApellido())
-                || usuario.getEmail() == null || "".equals(usuario.getEmail())
-                //Validar longitud y formato
-                || usuario.getContrasena() == null || "".equals(usuario.getContrasena())
-        ) {
-            throw new InvalidInformation("Alguno de los datos ingresados no es correcto");
-        }
 
         // Verifico si el usuario ya existe
         if (usuarioRepository.findOneByCedula(usuario.getCedula()) != null) {
@@ -38,8 +33,29 @@ public class UsuarioMgr {
         usuarioRepository.save(usuario);
 
     }
+    public boolean validarEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
+        return email.matches(emailRegex);
+    }
+
+
+    public boolean validarDatosLogin(String email, String contrasena) {
+        if (email == null || contrasena == null || email.equals("") || contrasena.equals("")) {
+            return false;
+        }
+        if (!validarEmail(email)) {
+            return false;
+        }
+        return true;
+
+    }
+
+
 
     public Usuario validarLogin(String email, String contrasena) throws InvalidInformation, EntidadNoExiste {
+        if (!validarDatosLogin(email, contrasena)) {
+            throw new InvalidInformation("Datos de login incorrectos");
+        }
         if (usuarioRepository.findOneByEmail(email) != null) {
             Usuario usuario = usuarioRepository.findOneByEmail(email);
             if (usuario.getContrasena().equals(contrasena)) {
@@ -58,12 +74,6 @@ public class UsuarioMgr {
 
     public Usuario registrarUsuario (Long cedula, String nombre, String apellido, String direccion, String email, String telefono, String contrasena, String genero, Date fechaNacimiento, String tipo) throws InvalidInformation, UsuarioYaExiste {
 
-        if (usuarioRepository.findOneByCedula(cedula) != null) {
-            throw new UsuarioYaExiste("Ya existe usuario con esa cedula");
-        }
-        if (usuarioRepository.findOneByEmail(email) != null) {
-            throw new UsuarioYaExiste("Ya existe usuario con ese correo");
-        }
         if (tipo == "DEMANDANTE") {
             Date fechaCreacion = new Date();
             UsuarioDemandante usuario = new UsuarioDemandante(cedula, nombre, apellido, direccion, email, telefono, contrasena, fechaCreacion, genero, fechaNacimiento);
