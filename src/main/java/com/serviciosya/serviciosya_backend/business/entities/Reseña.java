@@ -29,7 +29,7 @@ public class Reseña {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+    private UsuarioDemandante usuarioDemandante;
 
 }
 

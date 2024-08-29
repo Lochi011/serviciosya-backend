@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
+
 import java.util.Date;
 import java.util.List;
 
@@ -27,26 +28,37 @@ public class Usuario {
 
     private String nombre;
 
-    private  String apellido;
+    private String apellido;
 
     private String direccion;
 
-    @Column(unique = true,nullable = false)
+    @Column(unique = true, nullable = false)
     private String email;
 
     private String telefono;
 
     private String contrasena;
 
+    private String genero;
+
+    @Temporal(TemporalType.DATE)
+    private Date fechaNacimiento;
+
     @Temporal(TemporalType.DATE)
     private Date fechaCreacion;
 
-    @OneToMany(mappedBy = "usuario")
-    private List<Reseña> reseñas;
 
-
-
-
-
+    public Usuario(Long cedula, String nombre, String apellido, String direccion, String email, String telefono, String contrasena, Date fechaCreacion, String genero, Date fechaNacimiento) {
+        this.cedula = cedula;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.direccion = direccion;
+        this.email = email;
+        this.telefono = telefono;
+        this.contrasena = contrasena;
+        this.fechaCreacion = fechaCreacion;
+        this.genero = genero;
+        this.fechaNacimiento = fechaNacimiento;
+    }
 
 }
