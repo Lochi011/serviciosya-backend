@@ -89,16 +89,20 @@ public class UsuarioMgr {
 
 
     public Usuario registrarUsuario(Long cedula, String nombre, String apellido, String direccion, String email, String telefono, String contrasena, String genero, Date fechaNacimiento, String tipo) throws InvalidInformation, UsuarioYaExiste {
-
+        System.out.println("ENTRO FUNCION MGR REGISTRAR");
         if (!validarDatosRegistro(cedula, nombre, apellido, direccion, email, telefono, contrasena, genero, fechaNacimiento)) {
             throw new InvalidInformation("Datos de registro incorrectos");
         }
-        if (tipo == "DEMANDANTE") {
+
+        System.out.println("PASO VALIDACION DATOS");
+        if (tipo.equals("DEMANDANTE")) {
+            System.out.println("SOY DEMANDANTE");
             Date fechaCreacion = new Date();
             UsuarioDemandante usuario = new UsuarioDemandante(cedula, nombre, apellido, direccion, email, telefono, contrasena, fechaCreacion, genero, fechaNacimiento);
             agregarUsuario(usuario);
+            System.out.println("PASO CREACION");
             return usuario;
-        } else if (tipo == "OFERTANTE") {
+        } else if (tipo.equals("OFERTANTE")) {
             Date fechaCreacion = new Date();
             UsuarioOfertante usuario = new UsuarioOfertante(cedula, nombre, apellido, direccion, email, telefono, contrasena, fechaCreacion, genero, fechaNacimiento);
             agregarUsuario(usuario);
