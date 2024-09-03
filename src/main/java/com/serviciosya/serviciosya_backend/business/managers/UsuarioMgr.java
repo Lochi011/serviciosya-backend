@@ -75,7 +75,7 @@ public class UsuarioMgr {
             throw new InvalidInformation("Datos de login incorrectos");
         }
         if (usuarioRepository.findOneByEmail(email) != null) {
-            Usuario usuario = usuarioRepository.findOneByEmail(email);
+            Usuario usuario = usuarioRepository.findOneByEmail(email).orElseThrow(() -> new EntidadNoExiste("Usuario no existe"));
             if (usuario.getContrasena().equals(contrasena)) {
                 return usuario;
             } else {
@@ -117,11 +117,19 @@ public class UsuarioMgr {
     }
 
     public Usuario obtenerUnoPorCorreo(String email) {
-        return usuarioRepository.findOneByEmail(email);
+        try {
+            return usuarioRepository.findOneByEmail(email).orElseThrow(() -> new EntidadNoExiste("Usuario no existe"));
+        } catch (EntidadNoExiste e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Usuario obtenerUnoPorCedula(Long cedula) {
-        return usuarioRepository.findOneByCedula(cedula);
+        try {
+            return usuarioRepository.findOneByCedula(cedula).orElseThrow(() -> new EntidadNoExiste("Usuario no existe"));
+        } catch (EntidadNoExiste e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

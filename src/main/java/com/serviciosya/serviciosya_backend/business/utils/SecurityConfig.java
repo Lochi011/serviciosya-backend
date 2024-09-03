@@ -1,6 +1,7 @@
 package com.serviciosya.serviciosya_backend.business.utils;
 
 import com.serviciosya.serviciosya_backend.business.utils.JwtUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +19,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtRequestFilter jwtRequestFilter;
+
+
     private final UserDetailsService userDetailsService;
 
     public SecurityConfig(JwtRequestFilter jwtRequestFilter, UserDetailsService userDetailsService) {
