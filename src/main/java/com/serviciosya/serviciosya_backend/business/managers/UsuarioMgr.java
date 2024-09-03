@@ -72,17 +72,13 @@ public class UsuarioMgr {
 
     public Usuario validarLogin(String email, String contrasena) throws InvalidInformation, EntidadNoExiste {
         if (!validarDatosLogin(email, contrasena)) {
-            throw new InvalidInformation("Datos de login incorrectos");
-        }
-        if (usuarioRepository.findOneByEmail(email) != null) {
-            Usuario usuario = usuarioRepository.findOneByEmail(email).orElseThrow(() -> new EntidadNoExiste("Usuario no existe"));
-            if (usuario.getContrasena().equals(contrasena)) {
+            throw new InvalidInformation("Datos de login incorrectos");}
+
+        Usuario usuario = usuarioRepository.findOneByEmail(email).orElseThrow(() -> new EntidadNoExiste("Usuario no existe"));
+        if (usuario.getContrasena().equals(contrasena)) {
                 return usuario;
-            } else {
-                throw new InvalidInformation("Contraseña incorrecta");
-            }
         } else {
-            throw new EntidadNoExiste("Usuario no existe");
+                throw new InvalidInformation("Contraseña incorrecta");
         }
 
     }
