@@ -7,11 +7,15 @@ import com.serviciosya.serviciosya_backend.business.entities.UsuarioOfertante;
 import com.serviciosya.serviciosya_backend.business.exceptions.EntidadNoExiste;
 import com.serviciosya.serviciosya_backend.business.exceptions.InvalidInformation;
 import com.serviciosya.serviciosya_backend.business.managers.UsuarioMgr;
+import com.serviciosya.serviciosya_backend.business.utils.JwtUtils;
 import com.serviciosya.serviciosya_backend.persistance.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -24,6 +28,13 @@ public class LoginController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private JwtUtils jwtUtils;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+
     @PostMapping("/login")
     public ResponseEntity<?> login (@RequestBody Map<String, String> loginData){
         try {
@@ -31,15 +42,28 @@ public class LoginController {
             String contrasena = loginData.get("contraseña");
 
             Usuario usuario = usuarioMgr.validarLogin(email, contrasena);
+
+            // cargar  detalles del usuario
+            UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getEmail());
+
+            // generar token
+            String jwtToken = jwtUtils.generateToken(userDetails);
+
+            // Preparar la response con el token y el tipo de usuario
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", jwtToken);
+
             if (usuario instanceof Administrador) {
-                return ResponseEntity.ok("administrador");
+                response.put("tipo", "administrador");
             } else if (usuario instanceof UsuarioOfertante) {
-                return ResponseEntity.ok("ofertante");
+                response.put("tipo", "ofertante");
             } else if (usuario instanceof UsuarioDemandante) {
-                return ResponseEntity.ok("demandante");
+                response.put("tipo", "demandante");
             } else {
                 return ResponseEntity.status(403).body("Usuario o contraseña incorrectos");
             }
+
+            return ResponseEntity.ok(response);
         } catch (EntidadNoExiste e) {
             return ResponseEntity.status(403).body("Usuario o contraseña incorrectos");
         } catch (InvalidInformation e) {
