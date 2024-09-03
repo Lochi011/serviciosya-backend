@@ -35,6 +35,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String username = null;
         String jwt = null;
 
+
+        // Skip filtering for public endpoints
+        String requestURI = request.getRequestURI();
+        if (requestURI.equals("/api/login") || requestURI.equals("/api/register")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+
         // Check if the Authorization header is present and starts with "Bearer "
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             // Extract the JWT from the Authorization header

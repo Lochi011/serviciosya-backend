@@ -47,7 +47,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (usuario instanceof Administrador) {
             return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
         } else if (usuario instanceof UsuarioOfertante) {
-            return List.of(new SimpleGrantedAuthority("ROLE_OFERANTE"));
+            return List.of(new SimpleGrantedAuthority("ROLE_OFERTANTE"));
         } else if (usuario instanceof UsuarioDemandante) {
             return List.of(new SimpleGrantedAuthority("ROLE_DEMANDANTE"));
         } else {
