@@ -1,12 +1,10 @@
 package com.serviciosya.serviciosya_backend.business.entities;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
-
 
 @Getter
 @Setter
@@ -17,13 +15,13 @@ import java.util.List;
 @Table(name = "rubros")
 public class Rubro {
     @Id
-    @GeneratedValue
-    @GenericGenerator(name="rubro_id", strategy = "increment")
+    @GeneratedValue(generator = "rubro_id")
+    @GenericGenerator(name = "rubro_id", strategy = "increment")
     private Long id;
 
     private String nombre;
 
-    @OneToMany(mappedBy = "rubro")
+    @OneToMany(mappedBy = "rubro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SubRubro> subRubros;
 
     @ManyToMany
@@ -32,11 +30,5 @@ public class Rubro {
             joinColumns = @JoinColumn(name = "rubro_id"),
             inverseJoinColumns = @JoinColumn(name = "usuario_ofertante_id")
     )
-    private List<UsuarioOfertante> usuarioOfertante;
-
-
-
-
-
-
+    private List<UsuarioOfertante> usuariosOfertantes; // Relación Many-to-Many configurada aquí
 }

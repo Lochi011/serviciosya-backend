@@ -14,7 +14,7 @@ import java.util.List;
 @Table(name = "servicios")
 public class Servicio {
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "servicio_id")
     @GenericGenerator(name = "servicio_id", strategy = "increment")
     private Long id;
 
@@ -26,18 +26,20 @@ public class Servicio {
 
     private float puntuacion;
 
+    // Persistencia de una lista de etiquetas
+    @ElementCollection
+    @CollectionTable(name = "servicio_etiquetas", joinColumns = @JoinColumn(name = "servicio_id"))
+    @Column(name = "etiqueta")
     private List<String> etiquetas;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) // Usar LAZY para mejorar el rendimiento si es necesario
     @JoinColumn(name = "usuario_ofertante_id")
     private UsuarioOfertante usuarioOfertante;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sub_rubro_id")
     private SubRubro subRubro;
 
-    @OneToMany(mappedBy = "servicio")
+    @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pago> pagos;
-
-
 }
