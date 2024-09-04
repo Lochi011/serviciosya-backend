@@ -42,9 +42,15 @@ public class ServicioMgr {
         SubRubro subRubro = subRubroRepository.findByIdWithRubro(subRubroId)
                 .orElseThrow(() -> new EntidadNoExiste("SubRubro no encontrado."));
 
+        if (subRubro.getRubro() == null) {
+            throw new InvalidInformation("SubRubro sin rubro asociado.");
+        }
         Rubro rubro = subRubro.getRubro();
 
-        boolean autorizado = ofertante.getRubros().stream().anyMatch(r -> r.getId().equals(rubro.getId()));
+
+
+        boolean autorizado = ofertante.getRubros() != null && ofertante.getRubros().stream().anyMatch(r -> r.getId().equals(rubro.getId()));
+
 
         if (!autorizado) {
             throw new InvalidInformation("No autorizado para publicar en este rubro.");
