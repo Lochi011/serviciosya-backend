@@ -63,6 +63,8 @@ public class  LoginController {
                 return ResponseEntity.status(403).body("Usuario o contraseña incorrectos");
             }
 
+            response.put("user", buildUserResponse(usuario));
+
             return ResponseEntity.ok(response);
         } catch (EntidadNoExiste e) {
             return ResponseEntity.status(403).body("Usuario o contraseña incorrectos");
@@ -70,4 +72,19 @@ public class  LoginController {
             throw new RuntimeException(e);
         }
     }
+
+    // Helper method to build user data for the response
+    private Map<String, Object> buildUserResponse(Usuario usuario) {
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("id", usuario.getId());
+        userData.put("email", usuario.getEmail());
+        userData.put("nombre", usuario.getNombre());
+        userData.put("apellido", usuario.getApellido());
+        userData.put("telefono", usuario.getTelefono());
+        // Add any other fields you want to include
+        return userData;
+    }
+
+
+
 }

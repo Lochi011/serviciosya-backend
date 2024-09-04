@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -54,5 +56,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             return List.of(new SimpleGrantedAuthority("ROLE_USER")); // Default role
         }
     }
+
+
 }
 
