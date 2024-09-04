@@ -39,12 +39,12 @@ public class ServicioMgr {
         // Extraer datos del servicio
         Map<String, Object> servicioData = (Map<String, Object>) payload.get("servicio");
         Long subRubroId = Long.valueOf(servicioData.get("subRubroId").toString());
-        SubRubro subRubro = subRubroRepository.findOneById(subRubroId)
+        SubRubro subRubro = subRubroRepository.findByIdWithRubro(subRubroId)
                 .orElseThrow(() -> new EntidadNoExiste("SubRubro no encontrado."));
 
-        // Verificar que el ofertante esté habilitado para el rubro del subrubro
-        boolean autorizado = ofertante.getRubros().stream()
-                .anyMatch(rubro -> rubro.getId().equals(subRubro.getRubro().getId()));
+        Rubro rubro = subRubro.getRubro();
+
+        boolean autorizado = ofertante.getRubros().stream().anyMatch(r -> r.getId().equals(rubro.getId()));
 
         if (!autorizado) {
             throw new InvalidInformation("No autorizado para publicar en este rubro.");
