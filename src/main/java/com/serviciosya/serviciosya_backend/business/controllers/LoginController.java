@@ -81,6 +81,12 @@ public class  LoginController {
         userData.put("nombre", usuario.getNombre());
         userData.put("apellido", usuario.getApellido());
         userData.put("telefono", usuario.getTelefono());
+        userData.put("direccion", usuario.getDireccion());
+        userData.put("genero", usuario.getGenero());
+        userData.put("fechaNacimiento", usuario.getFechaNacimiento());
+        userData.put("cedula", usuario.getCedula());
+
+
         // Add any other fields you want to include
         return userData;
     }
