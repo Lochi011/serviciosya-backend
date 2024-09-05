@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SolicitudRubroMgr {
@@ -35,7 +36,7 @@ public class SolicitudRubroMgr {
      * @return La solicitud creada.
      * @throws EntidadNoExiste Si el usuario o rubro no existen.
      */
-    public void crearSolicitud(Long cedula, Long rubroId) throws EntidadNoExiste, InvalidInformation {
+    public void crearSolicitudRubro(Long cedula, Long rubroId) throws EntidadNoExiste, InvalidInformation {
         UsuarioOfertante ofertante = usuarioOfertanteRepository.findByCedulaWithRubros(cedula)
                 .orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado."));
 
@@ -123,4 +124,6 @@ public class SolicitudRubroMgr {
         return solicitudRubroRepository.findAllByUsuarioOfertanteCedula(cedula)
                 .orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado."));
     }
+
+
 }
