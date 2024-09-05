@@ -29,28 +29,33 @@ public class SolicitudRubroMgr {
     /**
      * Crea una nueva solicitud de habilitación de rubro.
      *
-     * @param cedula    Cédula del usuario ofertante.
-     * @param rubroId   ID del rubro al que se solicita la habilitación.
-     * @param motivo    Motivo de la solicitud.
+     * @param cedula  Cédula del usuario ofertante.
+     * @param rubroId ID del rubro al que se solicita la habilitación.
+     * @param motivo  Motivo de la solicitud.
      * @return La solicitud creada.
      * @throws EntidadNoExiste Si el usuario o rubro no existen.
      */
-    public SolicitudRubro crearSolicitud(Long cedula, Long rubroId, String motivo) throws EntidadNoExiste {
-        UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneByCedula(cedula)
+    public void crearSolicitud(Long cedula, Long rubroId) throws EntidadNoExiste, InvalidInformation {
+        UsuarioOfertante ofertante = usuarioOfertanteRepository.findByCedulaWithRubros(cedula)
                 .orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado."));
+
 
         Rubro rubro = rubroRepository.findById(rubroId)
                 .orElseThrow(() -> new EntidadNoExiste("Rubro no encontrado."));
+
+        if (ofertante.getRubros().contains(rubro)) {
+            throw new InvalidInformation("El ofertante ya tiene habilitado este rubro.");
+        }
 
         SolicitudRubro solicitud = SolicitudRubro.builder()
                 .usuarioOfertante(ofertante)
                 .rubro(rubro)
                 .estado(SolicitudRubro.EstadoSolicitud.PENDIENTE)
                 .fechaCreacion(new Date())
-                .motivo(motivo)
                 .build();
 
-        return solicitudRubroRepository.save(solicitud);
+        solicitudRubroRepository.save(solicitud);
+        System.out.println("Solicitud creada con ID: " + solicitud.getId() +"del ofertante: " + ofertante.getCedula() + " al rubro: " + rubro.getId());
     }
 
     /**
@@ -60,20 +65,30 @@ public class SolicitudRubroMgr {
      * @throws EntidadNoExiste Si la solicitud no existe.
      */
     public void aprobarSolicitud(Long solicitudId) throws EntidadNoExiste {
-        SolicitudRubro solicitud = solicitudRubroRepository.findById(solicitudId)
+        SolicitudRubro solicitud = solicitudRubroRepository.findByIdWithUsuarioOfertanteAndRubro(solicitudId)
                 .orElseThrow(() -> new EntidadNoExiste("Solicitud no encontrada."));
+
+        UsuarioOfertante usuarioOfertante = solicitud.getUsuarioOfertante();
+
+        UsuarioOfertante usuarioOfertanteConRubros = usuarioOfertanteRepository.findByCedulaWithRubros(usuarioOfertante.getCedula())
+                .orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado."));
+
+        usuarioOfertanteConRubros.getRubros().add(solicitud.getRubro());
 
         solicitud.setEstado(SolicitudRubro.EstadoSolicitud.APROBADA);
         solicitud.setFechaResolucion(new Date());
 
+
+
         solicitudRubroRepository.save(solicitud);
+        System.out.println("Solicitud aprobada con ID: " + solicitud.getId() +"del ofertante: " + usuarioOfertante.getCedula() + " al rubro: " + solicitud.getRubro().getId());
     }
 
     /**
      * Rechaza una solicitud de habilitación de rubro.
      *
-     * @param solicitudId      ID de la solicitud a rechazar.
-     * @param comentarioAdmin  Comentario del administrador explicando el rechazo.
+     * @param solicitudId     ID de la solicitud a rechazar.
+     * @param comentarioAdmin Comentario del administrador explicando el rechazo.
      * @throws EntidadNoExiste Si la solicitud no existe.
      */
     public void rechazarSolicitud(Long solicitudId, String comentarioAdmin) throws EntidadNoExiste {
@@ -93,7 +108,7 @@ public class SolicitudRubroMgr {
      * @return Lista de solicitudes pendientes.
      */
     public List<SolicitudRubro> obtenerSolicitudesPendientes() {
-        return solicitudRubroRepository.findByEstado(SolicitudRubro.EstadoSolicitud.PENDIENTE);
+        return solicitudRubroRepository.findAllByEstado(SolicitudRubro.EstadoSolicitud.PENDIENTE);
     }
 
     /**
@@ -104,9 +119,7 @@ public class SolicitudRubroMgr {
      * @throws EntidadNoExiste Si el ofertante no existe.
      */
     public List<SolicitudRubro> obtenerSolicitudesPorOfertante(Long cedula) throws EntidadNoExiste {
-        UsuarioOfertante ofertante = usuarioOfertanteRepository.findByCedula(cedula)
+        return solicitudRubroRepository.findAllByUsuarioOfertanteCedula(cedula)
                 .orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado."));
-
-        return solicitudRubroRepository.findByUsuarioOfertante(ofertante);
     }
 }

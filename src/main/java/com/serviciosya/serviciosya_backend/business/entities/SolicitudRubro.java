@@ -20,7 +20,7 @@ public class SolicitudRubro {
     @GenericGenerator(name = "solicitud_rubro_id", strategy = "increment")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_ofertante_id", nullable = false)
     private UsuarioOfertante usuarioOfertante;
 

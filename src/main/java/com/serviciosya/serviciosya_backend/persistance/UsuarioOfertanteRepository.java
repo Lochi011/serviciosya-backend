@@ -1,6 +1,7 @@
 package com.serviciosya.serviciosya_backend.persistance;
 
 // UsuarioOfertanteRepository.java
+
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioOfertante;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -16,4 +17,7 @@ public interface UsuarioOfertanteRepository extends CrudRepository<UsuarioOferta
     Optional<UsuarioOfertante> findByCedulaWithRubros(Long cedula);
 
     Optional<UsuarioOfertante> findOneByCedula(Long cedula);
+
+
+
 }
