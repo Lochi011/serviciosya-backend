@@ -23,7 +23,8 @@ public class UsuarioOfertante extends Usuario {
     @OneToMany(mappedBy = "usuarioOfertante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Servicio> servicios;
 
-
+    @OneToMany(mappedBy = "usuarioOfertante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<SolicitudRubro> solicitudesRubro;
 
     public UsuarioOfertante(Long cedula, String nombre, String apellido, String direccion, String email, String telefono, String contrasena, Date fechaCreacion, String genero, Date fechaNacimiento) {
         super(cedula, nombre, apellido, direccion, email, telefono, contrasena, fechaCreacion, genero, fechaNacimiento);

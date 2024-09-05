@@ -24,6 +24,9 @@ public class Rubro {
     @OneToMany(mappedBy = "rubro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SubRubro> subRubros;
 
+    @OneToMany(mappedBy = "rubro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<SolicitudRubro> solicitudesRubro;
+
     @ManyToMany
     @JoinTable(
             name = "usuario_ofertante_rubro",

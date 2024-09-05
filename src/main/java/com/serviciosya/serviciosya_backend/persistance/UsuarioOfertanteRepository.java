@@ -14,4 +14,6 @@ public interface UsuarioOfertanteRepository extends CrudRepository<UsuarioOferta
     // Query para obtener el UsuarioOfertante junto con sus rubros a partir de la cédula
     @Query("SELECT u FROM UsuarioOfertante u JOIN FETCH u.rubros r WHERE u.cedula = :cedula")
     Optional<UsuarioOfertante> findByCedulaWithRubros(Long cedula);
+
+    Optional<UsuarioOfertante> findOneByCedula(Long cedula);
 }
