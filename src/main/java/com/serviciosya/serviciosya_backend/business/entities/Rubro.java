@@ -19,6 +19,8 @@ public class Rubro {
     @GenericGenerator(name = "rubro_id", strategy = "increment")
     private Long id;
 
+
+    @Column(unique = true)
     private String nombre;
 
     @OneToMany(mappedBy = "rubro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
