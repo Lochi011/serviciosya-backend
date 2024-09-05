@@ -28,9 +28,10 @@ public class UsuarioMgr {
             throw new UsuarioYaExiste("Ya existe usuario con ese correo");
         }
 
-        System.out.println("Usuario guardado exitosamente: " + usuario.getEmail());
-        usuarioRepository.save(usuario);
 
+        usuarioRepository.save(usuario);
+        
+        System.out.println("Usuario guardado exitosamente: " + usuario.getEmail());
     }
 
     public boolean validarEmail(String email) {
