@@ -91,15 +91,16 @@ public class SolicitudRubroMgr {
      * @param comentarioAdmin Comentario del administrador explicando el rechazo.
      * @throws EntidadNoExiste Si la solicitud no existe.
      */
-    public void rechazarSolicitud(Long solicitudId, String comentarioAdmin) throws EntidadNoExiste {
+    public void rechazarSolicitud(Long solicitudId) throws EntidadNoExiste {
         SolicitudRubro solicitud = solicitudRubroRepository.findById(solicitudId)
                 .orElseThrow(() -> new EntidadNoExiste("Solicitud no encontrada."));
 
         solicitud.setEstado(SolicitudRubro.EstadoSolicitud.RECHAZADA);
-        solicitud.setComentarioAdmin(comentarioAdmin);
+
         solicitud.setFechaResolucion(new Date());
 
         solicitudRubroRepository.save(solicitud);
+        System.out.println("Solicitud rechazada con ID: " + solicitud.getId() );
     }
 
     /**
