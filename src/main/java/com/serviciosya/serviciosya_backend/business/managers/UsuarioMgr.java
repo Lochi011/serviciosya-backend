@@ -30,7 +30,7 @@ public class UsuarioMgr {
 
 
         usuarioRepository.save(usuario);
-        
+
         System.out.println("Usuario guardado exitosamente: " + usuario.getEmail());
     }
 

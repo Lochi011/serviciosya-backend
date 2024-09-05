@@ -24,6 +24,7 @@ public class PublicarServicioController {
     @PostMapping("/publicar")
     public ResponseEntity<?> publicarServicio(@RequestBody Map<String, Object> payload) {
         try {
+
             servicioMgr.publicarServicio(payload);
             return ResponseEntity.ok("Servicio publicado exitosamente.");
         } catch (EntidadNoExiste | InvalidInformation e) {
