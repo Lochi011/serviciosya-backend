@@ -54,7 +54,6 @@ public class InformacionPersonalController {
         userData.put("genero", usuario.getGenero());
         userData.put("fechaNacimiento", usuario.getFechaNacimiento());
         userData.put("cedula", usuario.getCedula());
-        // Agrega cualquier otro campo que quieras incluir
         return userData;
     }
 }

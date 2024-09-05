@@ -24,7 +24,7 @@ public class RegistrarseController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody Map<String, String> userData) {
         try {
-            // Extraer datos del cuerpo de la solicitud
+            // Extraer datos
             Long cedula = Long.parseLong(userData.get("identity"));
             String nombre = userData.get("firstName");
             String apellido = userData.get("lastName");
