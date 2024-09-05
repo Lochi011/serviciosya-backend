@@ -21,13 +21,14 @@ public class UsuarioMgr {
     public void agregarUsuario(Usuario usuario) throws InvalidInformation, UsuarioYaExiste {
 
         // Verifico si el usuario ya existe
-        if (usuarioRepository.findOneByCedula(usuario.getCedula()) != null) {
+        if (usuarioRepository.findOneByCedula(usuario.getCedula()).isPresent()) {
             throw new UsuarioYaExiste("Ya existe usuario con esa cedula");
         }
-        if (usuarioRepository.findOneByEmail(usuario.getEmail()) != null) {
+        if (usuarioRepository.findOneByEmail(usuario.getEmail()).isPresent()) {
             throw new UsuarioYaExiste("Ya existe usuario con ese correo");
         }
 
+        System.out.println("Usuario guardado exitosamente: " + usuario.getEmail());
         usuarioRepository.save(usuario);
 
     }
