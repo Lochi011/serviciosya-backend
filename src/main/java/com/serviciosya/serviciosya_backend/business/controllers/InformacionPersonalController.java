@@ -43,6 +43,39 @@ public class InformacionPersonalController {
         }
     }
 
+    // PUT para actualizar la información personal
+    @PutMapping("/personal-info")
+    public ResponseEntity<?> updatePersonalInfo(
+            @RequestHeader("Authorization") String token,
+            @RequestBody Usuario updatedInfo) {
+        try {
+            String jwtToken = token.substring(7);
+            String email = jwtUtils.extractUsername(jwtToken);
+
+            // Buscar al usuario por email
+            Usuario usuario = usuarioRepository.findOneByEmail(email)
+                    .orElseThrow(() -> new EntidadNoExiste("Usuario no encontrado"));
+
+            // Actualizar los campos con la nueva información
+            usuario.setNombre(updatedInfo.getNombre());
+            usuario.setApellido(updatedInfo.getApellido());
+            usuario.setEmail(updatedInfo.getEmail());
+            usuario.setTelefono(updatedInfo.getTelefono());
+            usuario.setDireccion(updatedInfo.getDireccion());
+
+            // Guardar los cambios en la base de datos
+            usuarioRepository.save(usuario);
+
+            // Responder con la información actualizada
+            Map<String, Object> response = buildUserResponse(usuario);
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(403).body("Error al actualizar la información personal: " + e.getMessage());
+        }
+    }
+
     private Map<String, Object> buildUserResponse(Usuario usuario) {
         Map<String, Object> userData = new HashMap<>();
         userData.put("id", usuario.getId());
@@ -50,10 +83,11 @@ public class InformacionPersonalController {
         userData.put("nombre", usuario.getNombre());
         userData.put("apellido", usuario.getApellido());
         userData.put("telefono", usuario.getTelefono());
-        userData.put("direccion", usuario.getDireccion());
         userData.put("genero", usuario.getGenero());
         userData.put("fechaNacimiento", usuario.getFechaNacimiento());
         userData.put("cedula", usuario.getCedula());
+        userData.put("direccion", usuario.getDireccion());
+
         return userData;
     }
 }
