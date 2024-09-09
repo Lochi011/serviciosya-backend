@@ -20,4 +20,5 @@ public interface SolicitudRubroRepository extends CrudRepository<SolicitudRubro,
     @Query("SELECT sr FROM SolicitudRubro sr JOIN FETCH sr.usuarioOfertante u JOIN FETCH sr.rubro r WHERE sr.id = :id")
     Optional<SolicitudRubro> findByIdWithUsuarioOfertanteAndRubro(@Param("id") Long id);
 
+
 }
