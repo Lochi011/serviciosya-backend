@@ -21,15 +21,18 @@ public class UsuarioMgr {
     public void agregarUsuario(Usuario usuario) throws InvalidInformation, UsuarioYaExiste {
 
         // Verifico si el usuario ya existe
-        if (usuarioRepository.findOneByCedula(usuario.getCedula()) != null) {
+        if (usuarioRepository.findOneByCedula(usuario.getCedula()).isPresent()) {
             throw new UsuarioYaExiste("Ya existe usuario con esa cedula");
         }
-        if (usuarioRepository.findOneByEmail(usuario.getEmail()) != null) {
+        if (usuarioRepository.findOneByEmail(usuario.getEmail()).isPresent()) {
             throw new UsuarioYaExiste("Ya existe usuario con ese correo");
         }
 
-        usuarioRepository.save(usuario);
 
+        usuarioRepository.save(usuario);
+        System.out.println("Usuario agregado exitosamente");
+
+        System.out.println("Usuario guardado exitosamente: " + usuario.getEmail());
     }
 
     public boolean validarEmail(String email) {
@@ -71,18 +74,14 @@ public class UsuarioMgr {
 
 
     public Usuario validarLogin(String email, String contrasena) throws InvalidInformation, EntidadNoExiste {
-        if (!validarDatosLogin(email, contrasena)) {
-            throw new InvalidInformation("Datos de login incorrectos");
-        }
-        if (usuarioRepository.findOneByEmail(email) != null) {
-            Usuario usuario = usuarioRepository.findOneByEmail(email);
-            if (usuario.getContrasena().equals(contrasena)) {
+//        if (!validarDatosLogin(email, contrasena)) {
+//            throw new InvalidInformation("Datos de login incorrectos");}
+
+        Usuario usuario = usuarioRepository.findOneByEmail(email).orElseThrow(() -> new EntidadNoExiste("Usuario no existe"));
+        if (usuario.getContrasena().equals(contrasena)) {
                 return usuario;
-            } else {
-                throw new InvalidInformation("Contraseña incorrecta");
-            }
         } else {
-            throw new EntidadNoExiste("Usuario no existe");
+                throw new InvalidInformation("Contraseña incorrecta");
         }
 
     }
@@ -117,11 +116,19 @@ public class UsuarioMgr {
     }
 
     public Usuario obtenerUnoPorCorreo(String email) {
-        return usuarioRepository.findOneByEmail(email);
+        try {
+            return usuarioRepository.findOneByEmail(email).orElseThrow(() -> new EntidadNoExiste("Usuario no existe"));
+        } catch (EntidadNoExiste e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Usuario obtenerUnoPorCedula(Long cedula) {
-        return usuarioRepository.findOneByCedula(cedula);
+        try {
+            return usuarioRepository.findOneByCedula(cedula).orElseThrow(() -> new EntidadNoExiste("Usuario no existe"));
+        } catch (EntidadNoExiste e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
