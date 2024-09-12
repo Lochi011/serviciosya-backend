@@ -24,10 +24,10 @@ public class SolicitudRubroController {
         try {
             // Desglosar el payload para obtener los IDs
             Long idOfertante = Long.parseLong(payload.get("idOfertante").toString());
-            Long idRubro = Long.parseLong(payload.get("idRubro").toString());
+            String nombreRubro = payload.get("nombreRubro").toString();
 
             // Llamar al manager para crear la solicitud
-            solicitudRubroMgr.crearSolicitudRubro(idOfertante, idRubro);
+            solicitudRubroMgr.crearSolicitudRubro(idOfertante, nombreRubro);
 
 
             // Retornar la respuesta

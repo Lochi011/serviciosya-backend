@@ -32,16 +32,15 @@ public class SolicitudRubroMgr {
      *
      * @param cedula  Cédula del usuario ofertante.
      * @param rubroId ID del rubro al que se solicita la habilitación.
-     * @param motivo  Motivo de la solicitud.
      * @return La solicitud creada.
      * @throws EntidadNoExiste Si el usuario o rubro no existen.
      */
-    public void crearSolicitudRubro(Long cedula, Long rubroId) throws EntidadNoExiste, InvalidInformation {
-        UsuarioOfertante ofertante = usuarioOfertanteRepository.findByCedulaWithRubros(cedula)
+    public void crearSolicitudRubro(Long cedulaOfertante, String nombreRubro) throws EntidadNoExiste, InvalidInformation {
+        UsuarioOfertante ofertante = usuarioOfertanteRepository.findByCedulaWithRubros(cedulaOfertante)
                 .orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado."));
 
 
-        Rubro rubro = rubroRepository.findById(rubroId)
+        Rubro rubro = rubroRepository.findOneByNombre(nombreRubro)
                 .orElseThrow(() -> new EntidadNoExiste("Rubro no encontrado."));
 
         if (ofertante.getRubros().contains(rubro)) {
