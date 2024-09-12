@@ -131,4 +131,8 @@ public class UsuarioMgr {
         }
     }
 
+    public String obtenerTipoUsuario(Long id) {
+        return usuarioRepository.findTipoById(id);
+    }
+
 }

@@ -53,14 +53,16 @@ public class  LoginController {
             Map<String, Object> response = new HashMap<>();
             response.put("token", jwtToken);
 
-            if (usuario instanceof Administrador) {
-                response.put("tipo", "administrador");
-            } else if (usuario instanceof UsuarioOfertante) {
-                response.put("tipo", "ofertante");
-            } else if (usuario instanceof UsuarioDemandante) {
-                response.put("tipo", "demandante");
+            String tipo = usuarioRepository.findTipoById(usuario.getId());
+
+            if (tipo.equals("ADMINISTRADOR")) {
+                response.put("tipo", "ADMIN");
+            } else if (tipo.equals("DEMANDANTE")) {
+                response.put("tipo", "DEMANDANTE");
+            } else if (tipo.equals("OFERTANTE")) {
+                response.put("tipo", "OFERTANTE");
             } else {
-                return ResponseEntity.status(403).body("Usuario o contraseña incorrectos");
+                return ResponseEntity.status(403).body("No se pudo identificar el tipo de usuario");
             }
 
             response.put("user", buildUserResponse(usuario));
