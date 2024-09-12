@@ -37,22 +37,31 @@ public class SolicitudRubroMgr {
      * @throws EntidadNoExiste Si el usuario o rubro no existen.
      */
     public void crearSolicitudRubro(Long cedulaOfertante, String nombreRubro) throws EntidadNoExiste, InvalidInformation {
-        UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneByCedula(cedulaOfertante)
-                .orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado."));
-
-
-        Rubro rubro = rubroRepository.findOneByNombre(nombreRubro)
-                .orElseThrow(() -> new EntidadNoExiste("Rubro no encontrado."));
-
-        if (ofertante.getRubros().contains(rubro)) {
-            throw new InvalidInformation("El ofertante ya tiene habilitado este rubro.");
+        // Validar parámetros de entrada
+        if (cedulaOfertante == null || nombreRubro == null || nombreRubro.trim().isEmpty()) {
+            throw new InvalidInformation("Cédula del ofertante y nombre del rubro no pueden ser nulos o vacíos.");
         }
 
+        // Buscar el ofertante por su cédula
+        UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneByCedula(cedulaOfertante)
+                .orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado con la cédula: " + cedulaOfertante));
+
+        // Buscar el rubro por su nombre
+        Rubro rubro = rubroRepository.findOneByNombre(nombreRubro)
+                .orElseThrow(() -> new EntidadNoExiste("Rubro no encontrado con el nombre: " + nombreRubro));
+
+        // Verificar si el ofertante ya tiene el rubro habilitado
+        if (ofertante.getRubros().contains(rubro)) {
+            throw new InvalidInformation("El ofertante ya tiene habilitado el rubro: " + nombreRubro);
+        }
+
+        // Verificar si ya existe una solicitud pendiente para este rubro
         Optional<SolicitudRubro> solicitudExistente = solicitudRubroRepository.findByUsuarioOfertanteAndRubro(ofertante, rubro);
         if (solicitudExistente.isPresent()) {
-            throw new InvalidInformation("Ya existe una solicitud pendiente para este rubro.");
+            throw new InvalidInformation("Ya existe una solicitud pendiente para el rubro: " + nombreRubro);
         }
 
+        // Crear la nueva solicitud de rubro
         SolicitudRubro solicitud = SolicitudRubro.builder()
                 .usuarioOfertante(ofertante)
                 .rubro(rubro)
@@ -60,9 +69,16 @@ public class SolicitudRubroMgr {
                 .fechaCreacion(new Date())
                 .build();
 
-        solicitudRubroRepository.save(solicitud);
-        System.out.println("Solicitud creada con ID: " + solicitud.getId() +"del ofertante: " + ofertante.getCedula() + " al rubro: " + rubro.getId());
+        try {
+            solicitudRubroRepository.save(solicitud);
+            System.out.println("Solicitud creada con ID: " + solicitud.getId() + ", ofertante: " + ofertante.getCedula() + ", rubro: " + rubro.getNombre());
+        } catch (Exception e) {
+            // Manejar errores de persistencia o inesperados
+            System.err.println("Error al guardar la solicitud: " + e.getMessage());
+            throw new RuntimeException("Error interno al crear la solicitud de rubro.");
+        }
     }
+
 
     /**
      * Aprueba una solicitud de habilitación de rubro.
