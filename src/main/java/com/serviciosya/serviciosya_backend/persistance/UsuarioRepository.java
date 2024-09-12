@@ -17,6 +17,7 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
     String findTipoById(@Param("id") Long id);
 
 
+    boolean existsByCedula(Long cedula);
 }
 
 

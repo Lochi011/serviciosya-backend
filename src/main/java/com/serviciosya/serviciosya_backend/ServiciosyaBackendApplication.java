@@ -27,7 +27,7 @@ public class ServiciosyaBackendApplication {
 	public CommandLineRunner demo() {
 		return (args) -> {
 			// Crear usuarios de prueba
-			createTestUsers();
+			//createTestUsers();
 		};
 	}
 //Long cedula, String nombre, String apellido, String direccion, String email, String telefono, String contrasena, Date fechaCreacion, String genero, Date fechaNacimiento) {

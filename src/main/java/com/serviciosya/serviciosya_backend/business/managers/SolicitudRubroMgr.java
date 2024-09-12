@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class SolicitudRubroMgr {
@@ -30,13 +31,13 @@ public class SolicitudRubroMgr {
     /**
      * Crea una nueva solicitud de habilitación de rubro.
      *
-     * @param cedula  Cédula del usuario ofertante.
-     * @param rubroId ID del rubro al que se solicita la habilitación.
+     * @param cedulaOfertante  Cédula del usuario ofertante.
+     * @param nombreRubro ID del rubro al que se solicita la habilitación.
      * @return La solicitud creada.
      * @throws EntidadNoExiste Si el usuario o rubro no existen.
      */
     public void crearSolicitudRubro(Long cedulaOfertante, String nombreRubro) throws EntidadNoExiste, InvalidInformation {
-        UsuarioOfertante ofertante = usuarioOfertanteRepository.findByCedulaWithRubros(cedulaOfertante)
+        UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneByCedula(cedulaOfertante)
                 .orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado."));
 
 
@@ -45,6 +46,11 @@ public class SolicitudRubroMgr {
 
         if (ofertante.getRubros().contains(rubro)) {
             throw new InvalidInformation("El ofertante ya tiene habilitado este rubro.");
+        }
+
+        Optional<SolicitudRubro> solicitudExistente = solicitudRubroRepository.findByUsuarioOfertanteAndRubro(ofertante, rubro);
+        if (solicitudExistente.isPresent()) {
+            throw new InvalidInformation("Ya existe una solicitud pendiente para este rubro.");
         }
 
         SolicitudRubro solicitud = SolicitudRubro.builder()

@@ -1,6 +1,8 @@
 package com.serviciosya.serviciosya_backend.persistance;
 
+import com.serviciosya.serviciosya_backend.business.entities.Rubro;
 import com.serviciosya.serviciosya_backend.business.entities.SolicitudRubro;
+import com.serviciosya.serviciosya_backend.business.entities.UsuarioOfertante;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +18,8 @@ public interface SolicitudRubroRepository extends CrudRepository<SolicitudRubro,
     List<SolicitudRubro> findAllByRubroId(Long id);
 
     List<SolicitudRubro> findAllByEstado(SolicitudRubro.EstadoSolicitud estado);
+
+    Optional<SolicitudRubro> findByUsuarioOfertanteAndRubro(UsuarioOfertante usuarioOfertante, Rubro rubro);
 
     @Query("SELECT sr FROM SolicitudRubro sr JOIN FETCH sr.usuarioOfertante u JOIN FETCH sr.rubro r WHERE sr.id = :id")
     Optional<SolicitudRubro> findByIdWithUsuarioOfertanteAndRubro(@Param("id") Long id);

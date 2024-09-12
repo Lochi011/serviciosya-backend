@@ -10,4 +10,6 @@ public interface RubroRepository extends CrudRepository<Rubro, Long> {
     Optional<Rubro> findOneById(Long id);
 
     Optional<Rubro> findOneByNombre(String nombre);
+
+    boolean existsByNombre(String nombre);
 }
