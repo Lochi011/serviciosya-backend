@@ -42,7 +42,7 @@ public class  LoginController {
             String contrasena = loginData.get("contraseña");
 
             Usuario usuario = usuarioMgr.validarLogin(email, contrasena);
-
+            System.out.println(usuario.getEmail());
             // cargar  detalles del usuario
             UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getEmail());
 
@@ -54,6 +54,7 @@ public class  LoginController {
             response.put("token", jwtToken);
 
             String tipo = usuarioRepository.findTipoById(usuario.getId());
+            System.out.println(tipo);
 
             if (tipo.equals("ADMINISTRADOR")) {
                 response.put("tipo", "administrador");

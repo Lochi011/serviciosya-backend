@@ -16,6 +16,7 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
     @Query(value = "SELECT u.tipo FROM usuarios u WHERE u.id = :id", nativeQuery = true)
     String findTipoById(@Param("id") Long id);
 
+
 }
 
 
