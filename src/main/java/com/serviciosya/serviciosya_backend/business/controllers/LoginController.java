@@ -56,11 +56,11 @@ public class  LoginController {
             String tipo = usuarioRepository.findTipoById(usuario.getId());
 
             if (tipo.equals("ADMINISTRADOR")) {
-                response.put("tipo", "ADMIN");
+                response.put("tipo", "administrador");
             } else if (tipo.equals("DEMANDANTE")) {
-                response.put("tipo", "DEMANDANTE");
+                response.put("tipo", "demandante");
             } else if (tipo.equals("OFERTANTE")) {
-                response.put("tipo", "OFERTANTE");
+                response.put("tipo", "ofertante");
             } else {
                 return ResponseEntity.status(403).body("No se pudo identificar el tipo de usuario");
             }
