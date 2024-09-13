@@ -9,8 +9,8 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
-//@NoArgsConstructor
+//@AllArgsConstructor
+@NoArgsConstructor
 @SuperBuilder
 @Entity
 @DiscriminatorValue("ADMINISTRADOR")
