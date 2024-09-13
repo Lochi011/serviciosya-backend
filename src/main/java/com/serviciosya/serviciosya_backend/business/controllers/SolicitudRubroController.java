@@ -23,11 +23,11 @@ public class SolicitudRubroController {
     public ResponseEntity<?> crearSolicitudRubro(@RequestBody Map<String, Object> payload) {
         try {
             // Desglosar el payload para obtener los IDs
-            Long idOfertante = Long.parseLong(payload.get("cedulaOfertante").toString());
+            Long cedulaOfertante = Long.parseLong(payload.get("cedulaOfertante").toString());
             String nombreRubro = payload.get("nombreRubro").toString();
 
             // Llamar al manager para crear la solicitud
-            solicitudRubroMgr.crearSolicitudRubro(idOfertante, nombreRubro);
+            solicitudRubroMgr.crearSolicitudRubro(cedulaOfertante, nombreRubro);
 
 
             // Retornar la respuesta
