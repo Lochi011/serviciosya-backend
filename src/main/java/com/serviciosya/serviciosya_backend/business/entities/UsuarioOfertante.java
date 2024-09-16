@@ -26,6 +26,22 @@ public class UsuarioOfertante extends Usuario {
     @OneToMany(mappedBy = "usuarioOfertante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SolicitudRubro> solicitudesRubro;
 
+    public void agregarRubro(Rubro rubro) {
+        if (!this.rubros.contains(rubro)) {
+            this.rubros.add(rubro);
+            rubro.getUsuariosOfertantes().add(this); // Agregar en el otro lado de la relación
+        }
+    }
+
+    // Método para eliminar un rubro (si es necesario)
+    public void eliminarRubro(Rubro rubro) {
+        if (this.rubros.contains(rubro)) {
+            this.rubros.remove(rubro);
+            rubro.getUsuariosOfertantes().remove(this); // Quitar en el otro lado de la relación
+        }
+    }
+
+
     public UsuarioOfertante(Long cedula, String nombre, String apellido, String direccion, String email, String telefono, String contrasena, Date fechaCreacion, String genero, Date fechaNacimiento) {
         super(cedula, nombre, apellido, direccion, email, telefono, contrasena, fechaCreacion, genero, fechaNacimiento);
         this.servicios = new ArrayList<>();

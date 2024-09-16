@@ -51,4 +51,6 @@ public class SolicitudRubro {
         APROBADA,
         RECHAZADA
     }
+
+
 }

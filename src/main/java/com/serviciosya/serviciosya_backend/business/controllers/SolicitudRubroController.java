@@ -44,6 +44,8 @@ public class SolicitudRubroController {
         try {
             // Llamamos a la función en el manager para obtener las solicitudes pendientes
             List<SolicitudRubro> solicitudesPendientes = solicitudRubroMgr.obtenerSolicitudesPendientes();
+            System.out.println(solicitudesPendientes);
+            System.out.println("aaaaa");
             return new ResponseEntity<>(solicitudesPendientes, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

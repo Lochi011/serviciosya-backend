@@ -1,5 +1,6 @@
 package com.serviciosya.serviciosya_backend;
 
+import com.serviciosya.serviciosya_backend.business.entities.SolicitudRubro;
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioDemandante;
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioOfertante;
 import com.serviciosya.serviciosya_backend.business.managers.UsuarioMgr;
@@ -30,7 +31,8 @@ public class ServiciosyaBackendApplication {
 			createTestUsers();
 		};
 	}
-//Long cedula, String nombre, String apellido, String direccion, String email, String telefono, String contrasena, Date fechaCreacion, String genero, Date fechaNacimiento) {
+
+	//Long cedula, String nombre, String apellido, String direccion, String email, String telefono, String contrasena, Date fechaCreacion, String genero, Date fechaNacimiento) {
 //
 	private void createTestUsers() {
 		try {
@@ -73,5 +75,7 @@ public class ServiciosyaBackendApplication {
 		}
 
 	}
+
+
 
 }

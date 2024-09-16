@@ -66,22 +66,20 @@ public class SolicitudRubroMgr {
      * @throws EntidadNoExiste Si la solicitud no existe.
      */
     public void aprobarSolicitud(Long solicitudId) throws EntidadNoExiste {
-        SolicitudRubro solicitud = solicitudRubroRepository.findByIdWithUsuarioOfertanteAndRubro(solicitudId)
-                .orElseThrow(() -> new EntidadNoExiste("Solicitud no encontrada."));
+        SolicitudRubro solicitud = solicitudRubroRepository.findByIdWithUsuarioOfertanteAndRubro(solicitudId).orElseThrow(() -> new EntidadNoExiste("Solicitud no encontrada."));
 
         UsuarioOfertante usuarioOfertante = solicitud.getUsuarioOfertante();
-
-        UsuarioOfertante usuarioOfertanteConRubros = usuarioOfertanteRepository.findByCedulaWithRubros(usuarioOfertante.getCedula())
-                .orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado."));
-
-        usuarioOfertanteConRubros.getRubros().add(solicitud.getRubro());
-
+        System.out.println(usuarioOfertante.getRubros());
+        Rubro rubro  = solicitud.getRubro();
+        usuarioOfertante.agregarRubro(rubro);
         solicitud.setEstado(SolicitudRubro.EstadoSolicitud.APROBADA);
         solicitud.setFechaResolucion(new Date());
 
 
 
         solicitudRubroRepository.save(solicitud);
+        usuarioOfertanteRepository.save(usuarioOfertante);
+
         System.out.println("Solicitud aprobada con ID: " + solicitud.getId() +"del ofertante: " + usuarioOfertante.getCedula() + " al rubro: " + solicitud.getRubro().getId());
     }
 
