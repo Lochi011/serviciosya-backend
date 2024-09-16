@@ -1,5 +1,6 @@
 package com.serviciosya.serviciosya_backend.business.managers;
 
+import com.serviciosya.serviciosya_backend.business.controllers.SolicitudRubroController;
 import com.serviciosya.serviciosya_backend.business.entities.Rubro;
 import com.serviciosya.serviciosya_backend.business.entities.SolicitudRubro;
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioOfertante;
@@ -10,6 +11,8 @@ import com.serviciosya.serviciosya_backend.persistance.SolicitudRubroRepository;
 import com.serviciosya.serviciosya_backend.persistance.UsuarioOfertanteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.List;
@@ -18,6 +21,8 @@ import java.util.Optional;
 
 @Service
 public class SolicitudRubroMgr {
+
+    private static final Logger logger = LoggerFactory.getLogger(SolicitudRubroController.class);
 
     @Autowired
     private SolicitudRubroRepository solicitudRubroRepository;
@@ -37,6 +42,9 @@ public class SolicitudRubroMgr {
      * @throws EntidadNoExiste Si el usuario o rubro no existen.
      */
     public void crearSolicitudRubro(Long cedulaOfertante, String nombreRubro) throws EntidadNoExiste, InvalidInformation {
+
+        logger.info("Nombre del rubro recibido: '{}'", nombreRubro);
+
         // Validar parámetros de entrada
         if (cedulaOfertante == null || nombreRubro == null || nombreRubro.trim().isEmpty()) {
             throw new InvalidInformation("Cédula del ofertante y nombre del rubro no pueden ser nulos o vacíos.");
@@ -45,9 +53,9 @@ public class SolicitudRubroMgr {
         // Buscar el ofertante por su cédula
         UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneByCedula(cedulaOfertante)
                 .orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado con la cédula: " + cedulaOfertante));
-
+        System.out.println(nombreRubro);
         // Buscar el rubro por su nombre
-        Rubro rubro = rubroRepository.findOneByNombre(nombreRubro)
+        Rubro rubro = rubroRepository.findOneByNombre(nombreRubro.trim())
                 .orElseThrow(() -> new EntidadNoExiste("Rubro no encontrado con el nombre: " + nombreRubro));
 
         // Verificar si el ofertante ya tiene el rubro habilitado

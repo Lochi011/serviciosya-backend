@@ -3,7 +3,9 @@ package com.serviciosya.serviciosya_backend.business.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+
 import java.util.List;
+
 
 @Getter
 @Setter
@@ -19,12 +21,12 @@ public class Servicio {
     private Long id;
 
     private String nombre;
-
     private String descripcion;
-
     private int precio;
-
     private float puntuacion;
+    private String horaDesde; // Almacena la hora desde la que comienza el servicio
+    private String horaHasta; // Almacena la hora hasta la que termina el servicio
+    private int duracionServicio; // Almacena la duración del servicio en minutos o en la unidad que decidas
 
     // Persistencia de una lista de etiquetas
     @ElementCollection
@@ -37,9 +39,18 @@ public class Servicio {
     private UsuarioOfertante usuarioOfertante;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sub_rubro_id")
-    private SubRubro subRubro;
+    @JoinColumn(name = "rubro_id") // Cambiado de sub_rubro_id a rubro_id
+    private Rubro rubro; // Cambiado de SubRubro a Rubro
 
     @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pago> pagos;
+
+    // Nuevos campos para almacenar los días seleccionados, hora desde, hora hasta, y duración del servicio
+    @ElementCollection
+    @CollectionTable(name = "servicio_dias", joinColumns = @JoinColumn(name = "servicio_id"))
+    @Column(name = "dia")
+    private List<String> diasSeleccionados; // Almacena los días seleccionados
+
+
 }
+

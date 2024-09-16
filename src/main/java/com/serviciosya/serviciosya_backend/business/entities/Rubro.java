@@ -23,8 +23,8 @@ public class Rubro {
     @Column(unique = true)
     private String nombre;
 
-    @OneToMany(mappedBy = "rubro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<SubRubro> subRubros;
+    @OneToMany(mappedBy = "rubro", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Servicio> servicios; // Lista de servicios relacionados con este rubro
 
     @OneToMany(mappedBy = "rubro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SolicitudRubro> solicitudesRubro;

@@ -70,10 +70,11 @@ public class DataLoader implements CommandLineRunner {
 
         // Lista de nombres de rubros
         List<String> nombresRubros = Arrays.asList(
-                "Vidriero", "Herrero", "Sanitario", "Vehicular", "Limpieza",
-                "Carpintero", "Cerrajero", "Electricista", "Albanileria",
-                "Jardinero", "Piscinero", "Tecnico (Arreglos)"
+                "Limpieza", "Automóvil", "Sanitario", "Electricidad", "Arreglos",
+                "Vidriería", "Carpintería", "Cerrajería", "Herrería", "Albañilería",
+                "Jardinería", "Piscina"
         );
+
 
         // Cargar rubros si no existen
         nombresRubros.forEach(nombre -> {
