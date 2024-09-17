@@ -28,7 +28,7 @@ public class ServiciosyaBackendApplication {
 	public CommandLineRunner demo() {
 		return (args) -> {
 			// Crear usuarios de prueba
-			createTestUsers();
+			//createTestUsers();
 		};
 	}
 

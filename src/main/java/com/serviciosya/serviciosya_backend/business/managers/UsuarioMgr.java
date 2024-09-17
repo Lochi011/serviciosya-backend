@@ -78,10 +78,12 @@ public class UsuarioMgr {
 //            throw new InvalidInformation("Datos de login incorrectos");}
 
         Usuario usuario = usuarioRepository.findOneByEmail(email).orElseThrow(() -> new EntidadNoExiste("Usuario no existe"));
+
         if (usuario.getContrasena().equals(contrasena)) {
-                return usuario;
+;
+            return usuario ;
         } else {
-                throw new InvalidInformation("Contraseña incorrecta");
+            throw new InvalidInformation("Contraseña incorrecta");
         }
 
     }
@@ -129,6 +131,10 @@ public class UsuarioMgr {
         } catch (EntidadNoExiste e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String obtenerTipoUsuario(Long id) {
+        return usuarioRepository.findTipoById(id);
     }
 
 }

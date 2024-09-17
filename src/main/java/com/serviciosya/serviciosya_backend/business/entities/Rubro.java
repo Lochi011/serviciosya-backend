@@ -27,9 +27,10 @@ public class Rubro {
     @Column(unique = true)
     private String nombre;
 
-    @OneToMany(mappedBy = "rubro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore // Evitar ciclos al serializar subRubros si no es necesario
-    private List<SubRubro> subRubros;
+
+    @OneToMany(mappedBy = "rubro", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Servicio> servicios; // Lista de servicios relacionados con este rubro
+
 
     @OneToMany(mappedBy = "rubro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonBackReference // Indica que es la parte inversa de la relación para evitar recursión

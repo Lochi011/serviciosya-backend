@@ -42,7 +42,7 @@ public class  LoginController {
             String contrasena = loginData.get("contraseña");
 
             Usuario usuario = usuarioMgr.validarLogin(email, contrasena);
-
+            System.out.println(usuario.getEmail());
             // cargar  detalles del usuario
             UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getEmail());
 
@@ -53,14 +53,17 @@ public class  LoginController {
             Map<String, Object> response = new HashMap<>();
             response.put("token", jwtToken);
 
-            if (usuario instanceof Administrador) {
+            String tipo = usuarioRepository.findTipoById(usuario.getId());
+            System.out.println(tipo);
+
+            if (tipo.equals("ADMINISTRADOR")) {
                 response.put("tipo", "administrador");
-            } else if (usuario instanceof UsuarioOfertante) {
-                response.put("tipo", "ofertante");
-            } else if (usuario instanceof UsuarioDemandante) {
+            } else if (tipo.equals("DEMANDANTE")) {
                 response.put("tipo", "demandante");
+            } else if (tipo.equals("OFERTANTE")) {
+                response.put("tipo", "ofertante");
             } else {
-                return ResponseEntity.status(403).body("Usuario o contraseña incorrectos");
+                return ResponseEntity.status(403).body("No se pudo identificar el tipo de usuario");
             }
 
             response.put("user", buildUserResponse(usuario));
