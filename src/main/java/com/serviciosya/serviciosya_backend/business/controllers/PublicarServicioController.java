@@ -6,10 +6,7 @@ import com.serviciosya.serviciosya_backend.business.managers.ServicioMgr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +17,7 @@ import java.util.Map;
 // Ejemplo de un Controller en Spring Boot
 @RestController
 @RequestMapping("/api/servicios")
+@CrossOrigin(origins = "http://localhost:3000")
 public class PublicarServicioController {
 
     private static final Logger logger = LoggerFactory.getLogger(PublicarServicioController.class);
