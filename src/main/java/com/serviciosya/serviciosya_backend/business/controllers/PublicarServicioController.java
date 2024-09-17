@@ -16,7 +16,7 @@ import java.util.Map;
 
 // Ejemplo de un Controller en Spring Boot
 @RestController
-@RequestMapping("/api/servicios")
+@RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:3000")
 public class PublicarServicioController {
 
