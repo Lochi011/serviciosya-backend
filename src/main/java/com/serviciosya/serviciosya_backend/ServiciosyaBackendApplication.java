@@ -36,6 +36,20 @@ public class ServiciosyaBackendApplication {
 //
 	private void createTestUsers() {
 		try {
+			UsuarioOfertante ofertante2 = new UsuarioOfertante(
+					53821485L,
+					"Facundo",
+					"Pellistri",
+					"Avenida Facundo 742",
+					"facu.pellistri@example.com",
+					"099598360",
+					"contrasena",
+					new Date(), // Fecha de creación
+					"Masculino",
+					new SimpleDateFormat("yyyy-MM-dd").parse("1985-05-05") // Fecha de nacimiento
+			);
+			usuarioMgr.agregarUsuario(ofertante2);
+			System.out.println("Usuario agregado con exito");
 			// Crear un Usuario Demandante de prueba
 			UsuarioDemandante demandante = new UsuarioDemandante(
 					12345678L,
@@ -66,7 +80,9 @@ public class ServiciosyaBackendApplication {
 					new SimpleDateFormat("yyyy-MM-dd").parse("1985-05-05") // Fecha de nacimiento
 			);
 
+
 			usuarioMgr.agregarUsuario(ofertante);
+
 
 			System.out.println("Usuarios de prueba creados exitosamente");
 
@@ -75,6 +91,7 @@ public class ServiciosyaBackendApplication {
 		}
 
 	}
+
 
 
 

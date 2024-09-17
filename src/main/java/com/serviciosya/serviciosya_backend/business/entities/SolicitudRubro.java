@@ -1,5 +1,6 @@
 package com.serviciosya.serviciosya_backend.business.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -20,12 +21,14 @@ public class SolicitudRubro {
     @GenericGenerator(name = "solicitud_rubro_id", strategy = "increment")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_ofertante_id", nullable = false)
+    @JsonManagedReference // Relación hacia UsuarioOfertante, permitiendo su serialización
     private UsuarioOfertante usuarioOfertante;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rubro_id", nullable = false)
+    @JsonManagedReference // Relación hacia Rubro, permitiendo su serialización
     private Rubro rubro;
 
     @Column(nullable = false)
@@ -41,16 +44,14 @@ public class SolicitudRubro {
     private Date fechaResolucion;
 
     @Column(length = 500)
-    private String motivo; // Motivo de la solicitud o comentarios adicionales.
+    private String motivo;
 
     @Column(length = 500)
-    private String comentarioAdmin; // Comentario del admin en caso de rechazo.
+    private String comentarioAdmin;
 
     public enum EstadoSolicitud {
         PENDIENTE,
         APROBADA,
         RECHAZADA
     }
-
-
 }
