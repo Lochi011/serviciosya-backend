@@ -18,27 +18,25 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
-    private final JwtRequestFilter jwtRequestFilter;
-
-
-    private final UserDetailsService userDetailsService;
-
-    public SecurityConfig(JwtRequestFilter jwtRequestFilter, UserDetailsService userDetailsService) {
-        this.jwtRequestFilter = jwtRequestFilter;
-        this.userDetailsService = userDetailsService;
-    }
+//    private final JwtRequestFilter jwtRequestFilter;
+//
+//
+//    private final UserDetailsService userDetailsService;
+//
+//    public SecurityConfig(JwtRequestFilter jwtRequestFilter, UserDetailsService userDetailsService) {
+//        this.jwtRequestFilter = jwtRequestFilter;
+//        this.userDetailsService = userDetailsService;
+//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/login", "/api/register", "/api/solicitud-rubro/pendientes").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll() // Permitir todas las solicitudes sin autenticación
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
