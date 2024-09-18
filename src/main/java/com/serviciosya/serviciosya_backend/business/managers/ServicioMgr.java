@@ -41,7 +41,7 @@ public class ServicioMgr {
         try {
             // Validar campos obligatorios antes de procesar
             if (cedula == null || tituloServicio == null || precio <= 0 || horaDesde == null || horaHasta == null ||
-                    selectedDays == null || selectedDays.isEmpty() || duracionServicio <= 0 || descripcion == null ||
+                    selectedDays == null || selectedDays.isEmpty() || duracionServicio < -1 || descripcion == null ||
                     nombreRubro == null || nombreRubro.trim().isEmpty()) {
                 logger.error("Faltan datos obligatorios para la publicación del servicio.");
                 throw new InvalidInformation("Faltan datos obligatorios para la publicación del servicio.");
