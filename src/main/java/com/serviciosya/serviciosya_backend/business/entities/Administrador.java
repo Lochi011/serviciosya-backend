@@ -17,6 +17,9 @@ import java.util.List;
 //@Table(name = "usuarios_demandantes")
 public class Administrador extends Usuario {
 
+    public Administrador(Long cedula, String nombre, String apellido, String direccion, String email, String telefono, String contrasena, Date fechaCreacion, String genero, Date fechaNacimiento) {
+        super(cedula, nombre, apellido, direccion, email, telefono, contrasena, fechaCreacion, genero, fechaNacimiento);
+    }
 
 
 }
