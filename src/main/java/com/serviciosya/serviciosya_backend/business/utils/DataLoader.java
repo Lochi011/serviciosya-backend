@@ -1,5 +1,6 @@
 package com.serviciosya.serviciosya_backend.business.utils;
 
+import com.serviciosya.serviciosya_backend.business.entities.Administrador;
 import com.serviciosya.serviciosya_backend.business.entities.Rubro;
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioDemandante;
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioOfertante;
@@ -65,6 +66,24 @@ public class DataLoader implements CommandLineRunner {
         if (!usuarioRepository.existsByCedula(ofertante.getCedula())) {
             usuarioRepository.save(ofertante);
             System.out.println("Usuario guardado exitosamente: " + ofertante.getEmail());
+        }
+
+        Administrador admin = new Administrador(
+                11111111L,
+                "Juan María",
+                "Pomez",
+                "Avenida Italia 1234",
+                "juanma.pomez@example.com",
+                "099111111",
+                "admin",
+                new Date(), // Fecha de creación
+                "Masculino",
+                new SimpleDateFormat("yyyy-MM-dd").parse("1990-01-02") // Fecha de nacimiento
+        );
+
+        if (!usuarioRepository.existsByCedula(admin.getCedula())) {
+            usuarioRepository.save(admin);
+            System.out.println("Usuario guardado exitosamente: " + admin.getEmail());
         }
 
 
