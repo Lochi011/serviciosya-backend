@@ -45,8 +45,10 @@ public class PublicarServicioController {
                     duracionServicio, tags, descripcion, nombreRubro); // Pasamos el nombre del rubro
 
             return ResponseEntity.ok("Servicio publicado exitosamente en el rubro: " + nombreRubro + ".");
-        } catch (EntidadNoExiste | InvalidInformation e) {
+        } catch (EntidadNoExiste e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (InvalidInformation e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("errorCode", e.getCode(), "message", e.getMessage()));
         } catch (Exception e) {
             // Manejo de errores inesperados
             logger.error("Error inesperado al publicar el servicio", e);

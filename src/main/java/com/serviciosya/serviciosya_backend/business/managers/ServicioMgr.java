@@ -66,7 +66,7 @@ public class ServicioMgr {
             // Lanzar error si el ofertante no está autorizado
             if (!autorizado) {
                 logger.error("El ofertante no está autorizado para publicar en el rubro: {}", rubro.getNombre());
-                throw new InvalidInformation("No autorizado para publicar en este rubro.");
+                throw new InvalidInformation("NOT_AUTHORIZED_FOR_CATEGORY", "No autorizado para publicar en este rubro.");
             }
 
             // Construir el objeto Servicio
