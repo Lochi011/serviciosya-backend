@@ -69,6 +69,14 @@ public class ServicioMgr {
                 throw new InvalidInformation("NOT_AUTHORIZED_FOR_CATEGORY", "No autorizado para publicar en este rubro.");
             }
 
+            boolean servicioExistente = servicioRepository.existsByNombreAndDescripcionAndPrecioAndHoraDesdeAndHoraHastaAndUsuarioOfertanteAndRubro(
+                    tituloServicio, descripcion, precio, horaDesde, horaHasta, ofertante, rubro);
+
+            if (servicioExistente) {
+                logger.error("Ya existe un servicio idéntico para este ofertante.");
+                throw new InvalidInformation("DUPLICATE_SERVICE", "Ya existe un servicio igual publicado.");
+            }
+
             // Construir el objeto Servicio
             Servicio servicio = Servicio.builder()
                     .nombre(tituloServicio)
