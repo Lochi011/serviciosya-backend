@@ -66,7 +66,16 @@ public class SolicitudRubroMgr {
         // Verificar si ya existe una solicitud pendiente para este rubro
         Optional<SolicitudRubro> solicitudExistente = solicitudRubroRepository.findByUsuarioOfertanteAndRubro(ofertante, rubro);
         if (solicitudExistente.isPresent()) {
-            throw new InvalidInformation("Ya existe una solicitud pendiente para el rubro: " + nombreRubro);
+            if (solicitudExistente.get().getEstado() == SolicitudRubro.EstadoSolicitud.PENDIENTE) {
+                throw new InvalidInformation("Ya existe una solicitud pendiente para el rubro: " + nombreRubro);
+            }
+            else if (solicitudExistente.get().getEstado() == SolicitudRubro.EstadoSolicitud.APROBADA) {
+                throw new InvalidInformation("El ofertante ya tiene habilitado el rubro: " + nombreRubro);
+            }
+            else if (solicitudExistente.get().getEstado() == SolicitudRubro.EstadoSolicitud.RECHAZADA) {
+                throw new InvalidInformation("Usted ya ha sido rechazado para publicar servicios en el rubro: " + nombreRubro);
+            }
+
         }
 
         // Crear la nueva solicitud de rubro

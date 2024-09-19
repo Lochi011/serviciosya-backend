@@ -36,7 +36,7 @@ public class DataLoader implements CommandLineRunner {
                 "Juan",
                 "Pérez",
                 "Calle Falsa 123",
-                "juanperez@example.com",
+                "juan.perez@example.com",
                 "099123456",
                 "password123",
                 new Date(), // Fecha de creación
@@ -55,7 +55,7 @@ public class DataLoader implements CommandLineRunner {
                 "María",
                 "Gómez",
                 "Avenida Siempreviva 742",
-                "mariagomez@example.com",
+                "maria.gomez@example.com",
                 "099654321",
                 "password456",
                 new Date(), // Fecha de creación
@@ -73,7 +73,7 @@ public class DataLoader implements CommandLineRunner {
                 "Juan María",
                 "Pomez",
                 "Avenida Italia 1234",
-                "juanmapomez@example.com",
+                "juanma.pomez@example.com",
                 "099111111",
                 "admin",
                 new Date(), // Fecha de creación
