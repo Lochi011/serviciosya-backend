@@ -21,12 +21,19 @@ public class Servicio {
     private Long id;
 
     private String nombre;
+
     private String descripcion;
+
     private int precio;
+
     private float puntuacion;
+
     private String horaDesde; // Almacena la hora desde la que comienza el servicio
+
     private String horaHasta; // Almacena la hora hasta la que termina el servicio
+
     private int duracionServicio; // Almacena la duración del servicio en minutos o en la unidad que decidas
+
 
     // Persistencia de una lista de etiquetas
     @ElementCollection
@@ -42,8 +49,10 @@ public class Servicio {
     @JoinColumn(name = "rubro_id") // Cambiado de sub_rubro_id a rubro_id
     private Rubro rubro; // Cambiado de SubRubro a Rubro
 
-    @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Pago> pagos;
+    @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Contratacion> contrataciones;
+
+
 
     // Nuevos campos para almacenar los días seleccionados, hora desde, hora hasta, y duración del servicio
     @ElementCollection

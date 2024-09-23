@@ -31,12 +31,14 @@ public class Pago {
     @JoinColumn(name = "usuario_demandante_id")
     private UsuarioDemandante usuarioDemandante;
 
-    @ManyToOne
-    @JoinColumn(name = "servicio_id")
-    private Servicio servicio;
+
 
     @ManyToOne
     @JoinColumn(name ="tarjeta_id")
     private Tarjeta tarjeta;
+
+    @ManyToOne
+    @JoinColumn(name = "contratacion_id")
+    private Contratacion contratacion;
 
 }
