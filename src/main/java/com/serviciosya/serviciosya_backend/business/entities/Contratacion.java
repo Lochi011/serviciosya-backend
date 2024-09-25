@@ -35,8 +35,18 @@ public class Contratacion {
     @Column(nullable = false)
     private LocalDate fecha;
 
+
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String estado;
+    private EstadoContratacion estado;
+
+    public enum EstadoContratacion {
+        PENDIENTE,
+        ACEPTADA,
+        RECHAZADA,
+        PAGADA,
+        TERMINADA;
+    }
 
     @Column(name = "fecha_servicio", nullable = false)
     private LocalDate fechaServicio;
