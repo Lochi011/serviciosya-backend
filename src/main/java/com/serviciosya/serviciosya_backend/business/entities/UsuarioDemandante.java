@@ -19,27 +19,24 @@ import java.util.List;
 //@Table(name = "usuarios_demandantes")
 public class UsuarioDemandante extends Usuario {
 
-    @ManyToMany
-    @JoinTable(
-            name = "contrataciones",
-            joinColumns = @JoinColumn(name = "usuario_id"),
-            inverseJoinColumns = @JoinColumn(name = "servicio_id")
-    )
-    private List <Servicio> servicios;
 
-    @OneToMany(mappedBy = "usuarioDemandante")
+
+    @OneToMany(mappedBy = "usuarioDemandante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Pago> pagos;
 
-    @OneToMany(mappedBy = "usuarioDemandante")
+    @OneToMany(mappedBy = "usuarioDemandante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Tarjeta> tarjetas;
 
-    @OneToMany(mappedBy = "usuarioDemandante")
+    @OneToMany(mappedBy = "usuarioDemandante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Reseña> reseñas;
+
+    @OneToMany(mappedBy = "demandante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Contratacion> contrataciones;
 
 
     public UsuarioDemandante(Long cedula, String nombre, String apellido, String direccion, String email, String telefono, String contrasena, Date fechaCreacion, String genero, Date fechaNacimiento) {
         super(cedula, nombre, apellido, direccion, email, telefono, contrasena, fechaCreacion, genero, fechaNacimiento);
-        this.servicios = new ArrayList<>();
+        this.contrataciones = new ArrayList<>();
         this.pagos = new ArrayList<>();
         this.tarjetas = new ArrayList<>();
         this.reseñas = new ArrayList<>() {

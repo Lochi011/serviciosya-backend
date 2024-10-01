@@ -1,4 +1,4 @@
-package com.serviciosya.serviciosya_backend.business.controllers;
+package com.serviciosya.serviciosya_backend.business.controllers.auth;
 
 import com.serviciosya.serviciosya_backend.business.entities.Administrador;
 import com.serviciosya.serviciosya_backend.business.entities.Usuario;
@@ -33,6 +33,8 @@ public class  LoginController {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    private final AuthService authService;
 
 
     @PostMapping("/login")
@@ -74,6 +76,18 @@ public class  LoginController {
         } catch (InvalidInformation e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @PostMapping("/login2")
+    public ResponseEntity<AuthResponse> login2(@RequestBody LoginRequest request)
+    {
+        return ResponseEntity.ok(authService.login(request));
+    }
+
+    @PostMapping("/register2")
+    public ResponseEntity<AuthResponse> register2(@RequestBody LoginRequest request)
+    {
+        return ResponseEntity.ok(authService.register(request));
     }
 
     // Helper method to build user data for the response

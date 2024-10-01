@@ -3,6 +3,8 @@ package com.serviciosya.serviciosya_backend.business.managers;
 import com.serviciosya.serviciosya_backend.business.entities.Rubro;
 import com.serviciosya.serviciosya_backend.business.entities.Servicio;
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioOfertante;
+import com.serviciosya.serviciosya_backend.business.entities.dto.ServicioDto;
+import com.serviciosya.serviciosya_backend.business.entities.mapper.ServicioMapper;
 import com.serviciosya.serviciosya_backend.business.exceptions.EntidadNoExiste;
 import com.serviciosya.serviciosya_backend.business.exceptions.InvalidInformation;
 import com.serviciosya.serviciosya_backend.persistance.RubroRepository;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,6 +115,28 @@ public class ServicioMgr {
             throw new RuntimeException("Error interno al publicar el servicio.", e);
         }
     }
+
+    public List<Servicio> obtenerServiciosPorRubro (String nombreRubro) throws EntidadNoExiste {
+
+        Rubro rubro = rubroRepository.findOneByNombre(nombreRubro)
+                .orElseThrow(() -> new EntidadNoExiste("Rubro no encontrado con el nombre: " + nombreRubro));
+
+        return servicioRepository.findAllByRubro(rubro)
+                .orElseThrow(() -> new EntidadNoExiste("NO_SERVICES","No se encontraron servicios para el rubro: " + nombreRubro));
+    }
+
+    public List<ServicioDto> obtenerServiciosDtoPorRubro(String nombreRubro) throws EntidadNoExiste {
+        Rubro rubro = rubroRepository.findOneByNombre(nombreRubro)
+                .orElseThrow(() -> new EntidadNoExiste("Rubro no encontrado con el nombre: " + nombreRubro));
+
+        List<Servicio> servicios = servicioRepository.findAllByRubro(rubro)
+                .orElseThrow(() -> new EntidadNoExiste("NO_SERVICES", "No se encontraron servicios para el rubro: " + nombreRubro));
+
+        return servicios.stream()
+                .map(ServicioMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
 
 
 
