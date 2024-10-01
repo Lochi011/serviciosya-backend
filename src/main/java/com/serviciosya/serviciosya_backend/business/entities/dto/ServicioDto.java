@@ -25,6 +25,8 @@ public class ServicioDto {
 
     private float puntuacion;
 
+    private String descripcion;
+
     private String horaDesde;
 
     private String horaHasta;

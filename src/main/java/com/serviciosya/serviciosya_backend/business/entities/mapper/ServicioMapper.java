@@ -16,6 +16,7 @@ public class ServicioMapper {
                 servicio.getNombre(),
                 servicio.getPrecio(),
                 servicio.getPuntuacion(),
+                servicio.getDescripcion(),
                 servicio.getHoraDesde(),
                 servicio.getHoraHasta(),
                 servicio.getDuracionServicio(),
