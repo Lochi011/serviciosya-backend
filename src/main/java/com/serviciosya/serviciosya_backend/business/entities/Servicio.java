@@ -61,5 +61,7 @@ public class Servicio {
     private List<String> diasSeleccionados; // Almacena los días seleccionados
 
 
+
+
 }
 
