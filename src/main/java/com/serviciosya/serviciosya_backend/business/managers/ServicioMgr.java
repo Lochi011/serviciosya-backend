@@ -4,6 +4,7 @@ import com.serviciosya.serviciosya_backend.business.entities.Rubro;
 import com.serviciosya.serviciosya_backend.business.entities.Servicio;
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioOfertante;
 import com.serviciosya.serviciosya_backend.business.entities.dto.ServicioDto;
+import com.serviciosya.serviciosya_backend.business.entities.mapper.ServicioMapper;
 import com.serviciosya.serviciosya_backend.business.exceptions.EntidadNoExiste;
 import com.serviciosya.serviciosya_backend.business.exceptions.InvalidInformation;
 import com.serviciosya.serviciosya_backend.persistance.RubroRepository;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

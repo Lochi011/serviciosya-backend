@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.sql.Time;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -33,7 +34,10 @@ public class Contratacion {
     private List<Pago> pagos;
 
     @Column(nullable = false)
-    private LocalDate fecha;
+    private LocalDate fechaContratacion;
+
+    @Column(nullable = false)
+    private String direccion;
 
 
     @Enumerated(EnumType.STRING)
@@ -50,6 +54,7 @@ public class Contratacion {
 
     @Column(name = "fecha_servicio", nullable = false)
     private LocalDate fechaServicio;
+
 
 
 }
