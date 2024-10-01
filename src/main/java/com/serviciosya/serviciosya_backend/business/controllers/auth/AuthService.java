@@ -26,6 +26,7 @@ public class AuthService {
                 .apellido(request.getApellido())
                 .direccion(request.getDireccion())
                 .email(request.getEmail())
+                .telefono(request.getTelefono())
                 .contrasena(request.getContrasena())
                 .genero(request.getGenero())
                 .fechaNacimiento(request.getFechaNacimiento())
@@ -36,6 +37,6 @@ public class AuthService {
 
         return AuthResponse.builder()
                 .token(jwtService.getToken(usuario))
-                .build()
+                .build();
     }
 }

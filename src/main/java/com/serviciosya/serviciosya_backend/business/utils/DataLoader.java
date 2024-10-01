@@ -107,7 +107,7 @@ public class DataLoader implements CommandLineRunner {
 
                 System.out.println("Rubro creado: " + rubro.getNombre());
             } else {
-                System.out.println("Rubro ya existe: " + nombre);
+//                System.out.println("Rubro ya existe: " + nombre);
             }
         });
     }
