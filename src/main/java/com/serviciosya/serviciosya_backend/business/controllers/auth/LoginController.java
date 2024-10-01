@@ -1,4 +1,4 @@
-package com.serviciosya.serviciosya_backend.business.controllers;
+package com.serviciosya.serviciosya_backend.business.controllers.auth;
 
 import com.serviciosya.serviciosya_backend.business.entities.Administrador;
 import com.serviciosya.serviciosya_backend.business.entities.Usuario;
