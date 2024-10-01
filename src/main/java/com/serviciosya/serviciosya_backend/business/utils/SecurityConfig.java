@@ -37,7 +37,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/login").permitAll()
                                 .requestMatchers("/api/register").permitAll()
 
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
                 .formLogin(withDefaults())
                 .build();

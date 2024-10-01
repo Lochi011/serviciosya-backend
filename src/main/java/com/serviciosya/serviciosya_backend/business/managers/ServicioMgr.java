@@ -113,6 +113,16 @@ public class ServicioMgr {
         }
     }
 
+    public List<Servicio> obtenerServiciosPorRubro (String nombreRubro) throws EntidadNoExiste {
+
+        Rubro rubro = rubroRepository.findOneByNombre(nombreRubro)
+                .orElseThrow(() -> new EntidadNoExiste("Rubro no encontrado con el nombre: " + nombreRubro));
+
+        return servicioRepository.findAllByRubro(rubro)
+                .orElseThrow(() -> new EntidadNoExiste("NO ","No se encontraron servicios para el rubro: " + nombreRubro));
+    }
+
+
 
 
 }
