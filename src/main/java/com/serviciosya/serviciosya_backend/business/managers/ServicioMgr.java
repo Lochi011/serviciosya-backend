@@ -119,7 +119,7 @@ public class ServicioMgr {
                 .orElseThrow(() -> new EntidadNoExiste("Rubro no encontrado con el nombre: " + nombreRubro));
 
         return servicioRepository.findAllByRubro(rubro)
-                .orElseThrow(() -> new EntidadNoExiste("NO ","No se encontraron servicios para el rubro: " + nombreRubro));
+                .orElseThrow(() -> new EntidadNoExiste("NO_SERVICES","No se encontraron servicios para el rubro: " + nombreRubro));
     }
 
 
