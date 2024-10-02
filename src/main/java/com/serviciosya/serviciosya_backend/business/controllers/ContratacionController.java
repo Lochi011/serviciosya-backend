@@ -1,4 +1,4 @@
-package com.serviciosya.serviciosya_backend.controllers;
+package com.serviciosya.serviciosya_backend.business.controllers;
 
 import com.serviciosya.serviciosya_backend.business.controllers.SolicitudRubroController;
 import com.serviciosya.serviciosya_backend.business.entities.Contratacion;
