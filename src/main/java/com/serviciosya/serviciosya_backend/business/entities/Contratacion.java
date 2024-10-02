@@ -26,6 +26,10 @@ public class Contratacion {
     private UsuarioDemandante demandante;
 
     @ManyToOne
+    @JoinColumn(name = "id_ofertante", nullable = false)
+    private UsuarioOfertante ofertante;
+
+    @ManyToOne
     @JoinColumn(name = "id_servicio", nullable = false)
     private Servicio servicio;
 
@@ -48,8 +52,20 @@ public class Contratacion {
         TERMINADA;
     }
 
-    @Column(name = "fecha_servicio", nullable = false)
-    private LocalDate fechaServicio;
+
+    @Column(name = "direccion_servicio", nullable = false)
+    private String direccion;
+
+    @Column(name = "apartamento")
+    private String apartamento;
+
+    @Column(name = "hora", nullable = false)
+    private String hora;
+
+    @Column(name= "comentario", nullable = false)
+    private String comentario;
+
+
 
 
 }

@@ -31,6 +31,9 @@ public class UsuarioOfertante extends Usuario {
     @JsonBackReference // Evita recursión en la serialización de solicitudes
     private List<SolicitudRubro> solicitudesRubro;
 
+    @OneToMany(mappedBy = "ofertante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Contratacion> contrataciones;
+
     public void agregarRubro(Rubro rubro) {
         if (this.rubros == null) {
             this.rubros = new ArrayList<>();
