@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static com.serviciosya.serviciosya_backend.business.entities.Contratacion.EstadoContratacion.PENDIENTE;
+
 @Service
 public class ContratacionMgr {
     @Autowired
@@ -39,9 +41,9 @@ public class ContratacionMgr {
         Servicio servicio = servicioRepository.findOneById(Long.valueOf(idServicio)).orElseThrow(() -> new EntidadNoExiste("Servicio no enccontrado con id  " + idServicio));
 
         //verificar que no exista contratacion pedniente
-        Optional<Contratacion> contratacionExistente = contratacionRepository.findByDemandanteAndOfertanteAndServicioAndFecha(demandante, ofertante, servicio, fechaServicio);
+        Optional<Contratacion> contratacionExistente = contratacionRepository.findByDemandanteAndOfertanteAndServicioAndFechaAndEstado(demandante, ofertante, servicio, fechaServicio, PENDIENTE);
         if (contratacionExistente.isPresent()) {
-            if (contratacionExistente.get().getEstado() == Contratacion.EstadoContratacion.PENDIENTE) {
+            if (contratacionExistente.get().getEstado() == PENDIENTE) {
                 throw new InvalidInformation("Ya existe una solicitud pendiente para una contratacion ese dia");
             } else if (contratacionExistente.isPresent()) {
                 if (contratacionExistente.get().getEstado() == Contratacion.EstadoContratacion.ACEPTADA) {
@@ -59,7 +61,7 @@ public class ContratacionMgr {
                     .direccion(direccion)
                     .hora(hora)
                     .comentario(comentario)
-                    .estado(Contratacion.EstadoContratacion.PENDIENTE)
+                    .estado(PENDIENTE)
                     .apartamento(apartamento)
                     .build();
             try {
