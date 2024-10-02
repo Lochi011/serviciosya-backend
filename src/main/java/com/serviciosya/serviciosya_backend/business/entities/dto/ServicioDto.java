@@ -35,7 +35,15 @@ public class ServicioDto {
 
     private List<String> etiquetas;
 
+
+
     private Long usuarioOfertanteId; // Cambiado a solo ID para simplificar
+
+    private String usuarioOfertanteNombre; // Cambiado a nombre para simplificar
+
+    private String usuarioOfertanteApellido; // Cambiado a apellido para simplificar
+
+
 
     private String rubroNombre;       // Cambiado a nombre para simplificar
 

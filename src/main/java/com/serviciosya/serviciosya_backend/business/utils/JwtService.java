@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -20,15 +21,20 @@ import java.util.function.Function;
 
 public class JwtService {
 
-    private static final String SECRET_KEY="BOLSODECANOxZIBv6ak4Do5H1I7OvBZLksPbD8ECzZxvLNrnT8XjQw=";
-    public String getToken(UserDetails usuario) {
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
+
+
+    public String getToken(Usuario usuario) {
         return getToken(new HashMap<>(),usuario);
     }
 
-    private  String getToken(Map<String,Object> extraClaims, UserDetails usuario) {
+    private  String getToken(Map<String,Object> extraClaims, Usuario usuario) {
         return Jwts
                 .builder()
                 .claims(extraClaims)
+                .claim("cedula",usuario.getCedula())
+                .claim("role",usuario.getRole())
                 .subject(usuario.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis()+1000*60*24))
