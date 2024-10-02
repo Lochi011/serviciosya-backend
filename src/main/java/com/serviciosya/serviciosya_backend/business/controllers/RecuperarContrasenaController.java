@@ -3,11 +3,12 @@ package com.serviciosya.serviciosya_backend.business.controllers;
 import com.serviciosya.serviciosya_backend.business.entities.Usuario;
 import com.serviciosya.serviciosya_backend.business.exceptions.EntidadNoExiste;
 import com.serviciosya.serviciosya_backend.business.managers.UsuarioMgr;
+import com.serviciosya.serviciosya_backend.business.utils.JwtService;
 import com.serviciosya.serviciosya_backend.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.serviciosya.serviciosya_backend.business.utils.JwtUtils;
+import com.serviciosya.serviciosya_backend.business.utils.JwtService;
 
 @RestController
 @RequestMapping("/api/recuperar-contrasena")
@@ -16,7 +17,7 @@ public class RecuperarContrasenaController {
     @Autowired
     private UsuarioMgr usuarioMgr; // Inyectamos el manager de usuario
     @Autowired
-    private JwtUtils jwtUtils;  // Inyectamos JwtUtils para usar el método de generación de token
+    private JwtService jwtService;  // Inyectamos JwtUtils para usar el método de generación de token
     @Autowired
     private EmailService emailService; // Inyectamos el servicio de correo
 
@@ -28,7 +29,7 @@ public class RecuperarContrasenaController {
             Usuario usuario = usuarioMgr.obtenerUnoPorCorreo(email);
 
             // Generamos el token de recuperación
-            String token = jwtUtils.generatePasswordResetToken(email);
+            String token = jwtService.generatePasswordResetToken(email);
 
             // Lógica para enviar el correo con el token (lo haremos en los próximos pasos)
             emailService.enviarCorreoRecuperacion(email, token);

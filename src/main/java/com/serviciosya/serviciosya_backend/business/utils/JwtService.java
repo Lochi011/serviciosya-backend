@@ -42,6 +42,15 @@ public class JwtService {
                 .compact();
     }
 
+    public String generatePasswordResetToken(String email) {
+        return Jwts.builder()
+                .setSubject(email)  // Usamos el email como subject
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1600000))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)  // Usamos la misma clave secreta
+                .compact();
+    }
+
     private SecretKey getKey(){
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
