@@ -5,6 +5,7 @@ import com.serviciosya.serviciosya_backend.business.entities.Contratacion;
 import com.serviciosya.serviciosya_backend.business.entities.Servicio;
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioDemandante;
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioOfertante;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

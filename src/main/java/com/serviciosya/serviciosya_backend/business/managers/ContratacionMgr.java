@@ -34,9 +34,9 @@ public class ContratacionMgr {
         } catch (InvalidInformation e) {
             throw new RuntimeException(e);
         }
-        UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneById(idOfertante).orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado con id: " + idOfertante));
-        UsuarioDemandante demandante = usuarioDemandanteRepository.findOneById(idDemandante).orElseThrow(() -> new EntidadNoExiste("Demandante no encontrado con id: " + idDemandante));
-        Servicio servicio = servicioRepository.findOneById(idServicio).orElseThrow(() -> new EntidadNoExiste("Servicio no enccontrado con id  " + idServicio));
+        UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneById(Long.valueOf(idOfertante)).orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado con id: " + idOfertante));
+        UsuarioDemandante demandante = usuarioDemandanteRepository.findOneById(Long.valueOf(idDemandante)).orElseThrow(() -> new EntidadNoExiste("Demandante no encontrado con id: " + idDemandante));
+        Servicio servicio = servicioRepository.findOneById(Long.valueOf(idServicio)).orElseThrow(() -> new EntidadNoExiste("Servicio no enccontrado con id  " + idServicio));
 
         //verificar que no exista contratacion pedniente
         Optional<Contratacion> contratacionExistente = contratacionRepository.findByDemandanteAndOfertanteAndServicioAndFecha(demandante, ofertante, servicio, fechaServicio);
@@ -49,9 +49,9 @@ public class ContratacionMgr {
                 }
 
             }
+        }
 
-
-            Contratacion contratacion = Contratacion.builder()
+        Contratacion contratacion = Contratacion.builder()
                     .demandante(demandante)
                     .ofertante(ofertante)
                     .servicio(servicio)
@@ -72,7 +72,7 @@ public class ContratacionMgr {
             }
 
 
-        }
+
 
     }
 
