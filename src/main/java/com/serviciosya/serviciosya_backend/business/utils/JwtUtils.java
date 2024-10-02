@@ -21,6 +21,15 @@ public class JwtUtils {
                 .compact();
     }
 
+    public String generatePasswordResetToken(String email) {
+        return Jwts.builder()
+                .setSubject(email)  // Usamos el email como subject
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1600000))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)  // Usamos la misma clave secreta
+                .compact();
+    }
+
     public String extractUsername(String token) {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
     }

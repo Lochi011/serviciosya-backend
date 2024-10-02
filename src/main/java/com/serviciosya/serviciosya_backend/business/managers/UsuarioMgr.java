@@ -117,12 +117,9 @@ public class UsuarioMgr {
         return usuarioRepository.findAll();
     }
 
-    public Usuario obtenerUnoPorCorreo(String email) {
-        try {
-            return usuarioRepository.findOneByEmail(email).orElseThrow(() -> new EntidadNoExiste("Usuario no existe"));
-        } catch (EntidadNoExiste e) {
-            throw new RuntimeException(e);
-        }
+    public Usuario obtenerUnoPorCorreo(String email) throws EntidadNoExiste {
+        return usuarioRepository.findOneByEmail(email)
+                .orElseThrow(() -> new EntidadNoExiste("Usuario no existe"));
     }
 
     public Usuario obtenerUnoPorCedula(Long cedula) {
