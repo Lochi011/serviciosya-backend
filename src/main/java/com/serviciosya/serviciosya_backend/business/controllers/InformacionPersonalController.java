@@ -2,8 +2,8 @@ package com.serviciosya.serviciosya_backend.business.controllers;
 
 import com.serviciosya.serviciosya_backend.business.entities.Usuario;
 import com.serviciosya.serviciosya_backend.business.exceptions.EntidadNoExiste;
+import com.serviciosya.serviciosya_backend.business.utils.JwtService;
 import com.serviciosya.serviciosya_backend.persistance.UsuarioRepository;
-import com.serviciosya.serviciosya_backend.business.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +20,14 @@ public class InformacionPersonalController {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private JwtUtils jwtUtils;
+    private JwtService jwtService;
 
     @GetMapping("/personal-info")
     public ResponseEntity<?> getPersonalInfo(@RequestHeader("Authorization") String token) {
         try {
             // Extraer el token JWT del encabezado
             String jwtToken = token.substring(7); // "Bearer " tiene 7 caracteres
-            String email = jwtUtils.extractUsername(jwtToken);
+            String email = jwtService.getUsernameFromToken(jwtToken);
 
             // Buscar el usuario en la base de datos
             Usuario usuario = usuarioRepository.findOneByEmail(email)
@@ -50,7 +50,7 @@ public class InformacionPersonalController {
             @RequestBody Usuario updatedInfo) {
         try {
             String jwtToken = token.substring(7);
-            String email = jwtUtils.extractUsername(jwtToken);
+            String email = jwtService.getUsernameFromToken(jwtToken);
 
             // Buscar al usuario por email
             Usuario usuario = usuarioRepository.findOneByEmail(email)

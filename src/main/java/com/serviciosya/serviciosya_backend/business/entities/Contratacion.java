@@ -18,9 +18,10 @@ import java.util.List;
 public class Contratacion {
 
     @Id
-    @GeneratedValue(generator = "contratacion_id")
-    @GenericGenerator(name = "contratacion_id", strategy = "increment")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
 
     @ManyToOne
     @JoinColumn(name = "id_demandante", nullable = false)
@@ -30,8 +31,8 @@ public class Contratacion {
     @JoinColumn(name = "id_servicio", nullable = false)
     private Servicio servicio;
 
-    @OneToMany(mappedBy = "contratacion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Pago> pagos;
+    @OneToOne(mappedBy = "contratacion")
+    private Pago pago;
 
     @Column(nullable = false)
     private LocalDate fechaContratacion;
@@ -41,7 +42,7 @@ public class Contratacion {
 
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+
     private EstadoContratacion estado;
 
     public enum EstadoContratacion {

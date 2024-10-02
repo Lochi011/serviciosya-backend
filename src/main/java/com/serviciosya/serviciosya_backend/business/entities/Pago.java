@@ -37,8 +37,7 @@ public class Pago {
     @JoinColumn(name ="tarjeta_id")
     private Tarjeta tarjeta;
 
-    @ManyToOne
-    @JoinColumn(name = "contratacion_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "contratacion_id", nullable = false)
     private Contratacion contratacion;
-
 }
