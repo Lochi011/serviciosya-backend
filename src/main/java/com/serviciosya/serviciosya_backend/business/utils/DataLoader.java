@@ -1,9 +1,6 @@
 package com.serviciosya.serviciosya_backend.business.utils;
 
-import com.serviciosya.serviciosya_backend.business.entities.Administrador;
-import com.serviciosya.serviciosya_backend.business.entities.Rubro;
-import com.serviciosya.serviciosya_backend.business.entities.UsuarioDemandante;
-import com.serviciosya.serviciosya_backend.business.entities.UsuarioOfertante;
+import com.serviciosya.serviciosya_backend.business.entities.*;
 import com.serviciosya.serviciosya_backend.business.managers.UsuarioMgr;
 import com.serviciosya.serviciosya_backend.persistance.RubroRepository;
 import com.serviciosya.serviciosya_backend.persistance.UsuarioRepository;
@@ -43,6 +40,8 @@ public class DataLoader implements CommandLineRunner {
                 "Masculino",
                 new SimpleDateFormat("yyyy-MM-dd").parse("1990-01-01") // Fecha de nacimiento
         );
+
+        demandante.setRole(Usuario.Role.DEMANDANTE);
         if (!usuarioRepository.existsByCedula(demandante.getCedula())) {
             usuarioRepository.save(demandante);
             System.out.println("Usuario guardado exitosamente: " + demandante.getEmail());
@@ -62,6 +61,7 @@ public class DataLoader implements CommandLineRunner {
                 "Femenino",
                 new SimpleDateFormat("yyyy-MM-dd").parse("1985-05-05") // Fecha de nacimiento
         );
+        ofertante.setRole(Usuario.Role.OFERTANTE);
 
         if (!usuarioRepository.existsByCedula(ofertante.getCedula())) {
             usuarioRepository.save(ofertante);
@@ -80,6 +80,8 @@ public class DataLoader implements CommandLineRunner {
                 "Masculino",
                 new SimpleDateFormat("yyyy-MM-dd").parse("1990-01-02") // Fecha de nacimiento
         );
+
+        admin.setRole(Usuario.Role.ADMINISTRADOR);
 
         if (!usuarioRepository.existsByCedula(admin.getCedula())) {
             usuarioRepository.save(admin);
