@@ -33,12 +33,13 @@ public class ApplicationConfig {
         return authenticationProvider;
 
     }
-
-    private PasswordEncoder passwordEncoder(){
+    @Bean
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
-    private UserDetailsService userDetailService() {
+    @Bean
+    public UserDetailsService userDetailService() {
         return username -> usuarioRepository.findOneByEmail(username)
                 .orElseThrow(()-> new UsernameNotFoundException("User not found"));
     }
