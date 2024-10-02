@@ -1,0 +1,26 @@
+package com.serviciosya.serviciosya_backend.business.controllers.auth;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/auth")
+@CrossOrigin(origins = "http://localhost:3000")
+@RequiredArgsConstructor
+public class AuthController {
+
+    private final AuthService authService;
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login2(@RequestBody LoginRequest request)
+    {
+        return ResponseEntity.ok(authService.login(request));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<AuthResponse> register2(@RequestBody RegisterRequest request)
+    {
+        return ResponseEntity.ok(authService.register(request));
+    }
+}
