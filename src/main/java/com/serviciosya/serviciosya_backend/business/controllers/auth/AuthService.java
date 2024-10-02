@@ -36,6 +36,6 @@ public class AuthService {
 
         return AuthResponse.builder()
                 .token(jwtService.getToken(usuario))
-                .build()
+                .build();
     }
 }

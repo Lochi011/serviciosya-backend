@@ -17,9 +17,9 @@ import java.util.Map;
 
 public class JwtService {
 
-    private static final String SECRET_KEY="BOLSO_DECANO;"
+    private static final String SECRET_KEY="BOLSO_DECANO;";
     public String getToken(UserDetails usuario) {
-        return getToken(new HashMap<>(),usuario)
+        return getToken(new HashMap<>(),usuario);
     }
 
     private  String getToken(Map<String,Object> extraClaims, UserDetails usuario) {
