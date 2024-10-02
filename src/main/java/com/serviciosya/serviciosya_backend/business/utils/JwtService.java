@@ -9,6 +9,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,15 +28,15 @@ public class JwtService {
     private  String getToken(Map<String,Object> extraClaims, UserDetails usuario) {
         return Jwts
                 .builder()
-                .setClaims(extraClaims)
-                .setSubject(usuario.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*24))
-                .signWith(SignatureAlgorithm.HS256, getKey())
+                .claims(extraClaims)
+                .subject(usuario.getUsername())
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis()+1000*60*24))
+                .signWith( getKey())
                 .compact();
     }
 
-    private Key getKey(){
+    private SecretKey getKey(){
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
 
@@ -53,11 +54,11 @@ public class JwtService {
 
     private Claims getAllClaims(String token){
         return Jwts
-                .parserBuilder()
-                .setSigningKey(getKey())
+                .parser()
+                .verifyWith(getKey())
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     public <T> T getClaim(String token, Function<Claims,T> claimsResolver){
