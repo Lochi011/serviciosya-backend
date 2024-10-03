@@ -18,6 +18,7 @@ public interface UsuarioOfertanteRepository extends CrudRepository<UsuarioOferta
 
     Optional<UsuarioOfertante> findOneByCedula(Long cedula);
 
+    Optional<UsuarioOfertante> findOneById(Long id);
 
 
 }
