@@ -57,11 +57,16 @@ public class HistorialController {
 
         for (Contratacion contratacion : contrataciones) {
             Servicio servicio = contratacion.getServicio();
+
             ContratacionDTO dto = new ContratacionDTO(
                     servicio.getNombre(),
                     servicio.getPrecio(),
                     servicio.getUsuarioOfertante().getNombre(),
-                    servicio.getUsuarioOfertante().getApellido()
+                    servicio.getUsuarioOfertante().getApellido(),
+                    contratacion.getFechaContratacion(),
+                    contratacion.getHora(),
+                    contratacion.getEstado().toString()
+
             );
             contratacionDTOs.add(dto);
         }
