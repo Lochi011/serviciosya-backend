@@ -30,13 +30,15 @@ public class AuthService {
 
         Usuario usuario = usuarioRepository.findOneByEmail(request.getUsuario())
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
-        if (usuario.getContrasena().equals(request.getContraseña()))
+        if (usuario.getContrasena().equals(request.getContraseña())) {
             usuario.setContrasena(passwordEncoder.encode(request.getContraseña()));
             usuarioRepository.save(usuario);
-
+        }
         if (request.getContraseña() == null || request.getContraseña().isEmpty()) {
             throw new IllegalArgumentException("Password cannot be empty");
         }
+
+        System.out.println(usuario.getRole());
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsuario(),request.getContraseña()));
         Usuario user = usuarioRepository.findOneByEmail(request.getUsuario()).orElseThrow();
         String token = jwtService.getToken(user);

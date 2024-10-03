@@ -41,7 +41,7 @@ public class ContratacionMgr {
         Servicio servicio = servicioRepository.findOneById(Long.valueOf(idServicio)).orElseThrow(() -> new EntidadNoExiste("Servicio no enccontrado con id  " + idServicio));
 
         //verificar que no exista contratacion pedniente
-        Optional<Contratacion> contratacionExistente = contratacionRepository.findByDemandanteAndOfertanteAndServicioAndFechaAndEstado(demandante, ofertante, servicio, fechaServicio, PENDIENTE);
+        Optional<Contratacion> contratacionExistente = contratacionRepository.findByDemandanteAndOfertanteAndServicioAndFechaContratacionAndEstado(demandante, ofertante, servicio, fechaServicio, PENDIENTE);
         if (contratacionExistente.isPresent()) {
             if (contratacionExistente.get().getEstado() == PENDIENTE) {
                 throw new InvalidInformation("Ya existe una solicitud pendiente para una contratacion ese dia");

@@ -33,7 +33,7 @@ public class ContratacionController {
             // Extraer los parámetros necesarios del payload
             Integer usuarioDemandanteId = (Integer) payload.get("usuarioDemandanteId");
             Long idDemandante = usuarioDemandanteId.longValue();
-            Integer usuarioOfertanteIdId = (Integer) payload.get("usuarioOfertanteId");
+            Integer usuarioOfertanteIdId = (Integer) payload.get("ofertanteId");
             Long idOfertante = usuarioOfertanteIdId.longValue();;
             LocalDate fechaServicio = LocalDate.parse((String) payload.get("dia"));
             String direccion = (String) payload.get("direccion");

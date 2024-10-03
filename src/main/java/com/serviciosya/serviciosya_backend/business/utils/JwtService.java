@@ -33,6 +33,7 @@ public class JwtService {
         return Jwts
                 .builder()
                 .claims(extraClaims)
+                .claim("id",usuario.getId())
                 .claim("cedula",usuario.getCedula())
                 .claim("role",usuario.getRole())
                 .subject(usuario.getUsername())
