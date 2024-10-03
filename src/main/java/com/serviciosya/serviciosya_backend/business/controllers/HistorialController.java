@@ -5,8 +5,9 @@ import com.serviciosya.serviciosya_backend.business.entities.Contratacion;
 import com.serviciosya.serviciosya_backend.business.entities.Servicio;
 import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionDTO;
 import com.serviciosya.serviciosya_backend.business.exceptions.EntidadNoExiste;
+import com.serviciosya.serviciosya_backend.business.utils.JwtService;
+import com.serviciosya.serviciosya_backend.persistance.ContratacionRepository;
 import com.serviciosya.serviciosya_backend.persistance.UsuarioRepository;
-import com.serviciosya.serviciosya_backend.business.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,18 +24,23 @@ public class HistorialController {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private JwtUtils jwtUtils;
+    private ContratacionRepository contratacionRepository;
+
+    @Autowired
+    private JwtService JwtService;
 
     @GetMapping("/contrataciones")
     public ResponseEntity<?> getContratacionesByUserId(@RequestHeader("Authorization") String token) {
         try {
             String jwtToken = token.substring(7); // Remueve el prefijo "Bearer "
-            String email = jwtUtils.extractUsername(jwtToken);
+            String email = JwtService.getUsernameFromToken(jwtToken);
+            System.out.println("\n" +  email + "\n");
 
             UsuarioDemandante usuarioDemandante = (UsuarioDemandante) usuarioRepository.findOneByEmail(email)
                     .orElseThrow(() -> new EntidadNoExiste("Usuario no encontrado"));
 
-            List<ContratacionDTO> contratacionDTOs = buildContratacionesDTO(usuarioDemandante.getContrataciones());
+            List<Contratacion> contrataciones = contratacionRepository.findByDemandante(usuarioDemandante);
+            List<ContratacionDTO> contratacionDTOs = buildContratacionesDTO(contrataciones);
 
             return ResponseEntity.ok(contratacionDTOs);
 

@@ -34,10 +34,10 @@ public class Contratacion {
     @OneToOne(mappedBy = "contratacion")
     private Pago pago;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDate fechaContratacion;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String direccion;
 
 
@@ -53,7 +53,7 @@ public class Contratacion {
         TERMINADA;
     }
 
-    @Column(name = "fecha_servicio", nullable = false)
+    @Column(name = "fecha_servicio", nullable = true)
     private LocalDate fechaServicio;
 
 
