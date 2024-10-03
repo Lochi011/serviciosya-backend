@@ -22,6 +22,8 @@ public class ServicioMapper {
                 servicio.getDuracionServicio(),
                 servicio.getEtiquetas(),
                 servicio.getUsuarioOfertante() != null ? servicio.getUsuarioOfertante().getId() : null,
+                servicio.getUsuarioOfertante() != null ? servicio.getUsuarioOfertante().getNombre() : null,
+                servicio.getUsuarioOfertante() != null ? servicio.getUsuarioOfertante().getApellido() : null,
                 servicio.getRubro() != null ? servicio.getRubro().getNombre() : null,
                 servicio.getDiasSeleccionados()
         );

@@ -16,24 +16,27 @@ import java.util.Date;
 public class RegisterRequest {
 
 
-    private Long cedula;
+    private String firstName;
 
-    private String nombre;
+    private String lastName;
 
-    private String apellido;
+    private String gender;
 
-    private String direccion;
+    private Date birthDate;
+
+    private Long identity;
+
+    private String accountType;
+
+    private String address;
 
     private String email;
 
-    private String telefono;
+    private String password;
 
-    private String contrasena;
+    private String confirmPassword;
 
-    private String genero;
+    private String phone;
 
-    private Date fechaNacimiento;
-
-    private Date fechaCreacion;
 
 }

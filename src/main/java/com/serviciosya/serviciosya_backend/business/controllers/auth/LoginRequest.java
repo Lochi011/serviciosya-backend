@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 public class LoginRequest {
 
-    private String email; //email
+    private String usuario; //email
     private String contraseña;
 
 
