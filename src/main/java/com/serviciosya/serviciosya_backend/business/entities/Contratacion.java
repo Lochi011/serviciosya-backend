@@ -41,9 +41,6 @@ public class Contratacion {
     @Column(nullable = false)
     private LocalDate fechaContratacion;
 
-    @Column(nullable = false)
-    private String direccion;
-
 
     @Enumerated(EnumType.STRING)
 
