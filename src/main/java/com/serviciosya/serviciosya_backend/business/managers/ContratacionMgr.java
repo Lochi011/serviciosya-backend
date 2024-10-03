@@ -57,7 +57,7 @@ public class ContratacionMgr {
                     .demandante(demandante)
                     .ofertante(ofertante)
                     .servicio(servicio)
-                    .fecha(fechaServicio)
+                    .fechaContratacion(fechaServicio)
                     .direccion(direccion)
                     .hora(hora)
                     .comentario(comentario)

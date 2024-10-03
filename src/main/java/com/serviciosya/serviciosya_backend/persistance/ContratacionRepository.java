@@ -16,8 +16,12 @@ import java.util.Optional;
 
 @Repository
 public interface ContratacionRepository extends CrudRepository<Contratacion, Long> {
-    Optional<Contratacion> findByDemandanteAndOfertanteAndServicioAndFechaAndEstado(UsuarioDemandante demandante, UsuarioOfertante ofertante, Servicio servicio, LocalDate fecha, Contratacion.EstadoContratacion estado);
+    Optional<Contratacion> findByDemandanteAndOfertanteAndServicioAndFechaAndEstado(
+            UsuarioDemandante demandante,
+            UsuarioOfertante ofertante,
+            Servicio servicio,
+            LocalDate fechaContratacion,
+            Contratacion.EstadoContratacion estado);
 
-
-
-    List<Contratacion> findByDemandante(UsuarioDemandante usuario);
+    List<Contratacion> findByDemandante(UsuarioDemandante usurious);
+}

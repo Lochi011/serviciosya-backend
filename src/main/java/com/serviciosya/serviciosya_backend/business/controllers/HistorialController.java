@@ -32,6 +32,8 @@ public class HistorialController {
     @GetMapping("/contrataciones")
     public ResponseEntity<?> getContratacionesByUserId(@RequestHeader("Authorization") String token) {
         try {
+            System.out.println("Token recibido: " + token);
+
             String jwtToken = token.substring(7); // Remueve el prefijo "Bearer "
             String email = JwtService.getUsernameFromToken(jwtToken);
             System.out.println("\n" +  email + "\n");
