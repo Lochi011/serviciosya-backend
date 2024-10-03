@@ -1,5 +1,6 @@
 package com.serviciosya.serviciosya_backend;
 
+import com.serviciosya.serviciosya_backend.business.entities.Contratacion;
 import com.serviciosya.serviciosya_backend.business.entities.SolicitudRubro;
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioDemandante;
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioOfertante;
@@ -35,6 +36,17 @@ public class ServiciosyaBackendApplication {
 
 	//Long cedula, String nombre, String apellido, String direccion, String email, String telefono, String contrasena, Date fechaCreacion, String genero, Date fechaNacimiento) {
 //
+	private void createContratacion(){
+		try {
+
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+
+
+
 	private void createTestUsers() {
 		try {
 			UsuarioOfertante ofertante2 = new UsuarioOfertante(
