@@ -23,25 +23,27 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable())  // Deshabilitar CSRF
 
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-
+                                // Permitir acceso público a estos endpoints
                                 .requestMatchers("/api/login").permitAll()
                                 .requestMatchers("/api/register").permitAll()
-                                .requestMatchers("api/home/**").permitAll()
-                                .requestMatchers("api/auth/**").permitAll()
+                                .requestMatchers("/api/home/**").permitAll()
+                                .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/recuperar-contrasena").permitAll()  // Acceso público a recuperar contraseña
+                                .requestMatchers("/api/reset-password").permitAll()  // Acceso público a resetear contraseña
 
+                                // Requerir autenticación para todas las demás solicitudes
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManager ->
-                        sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // No mantener sesiones
+
                 .authenticationProvider(authProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)  // Filtro JWT antes del UsernamePasswordAuthenticationFilter
                 .build();
-
-
     }
 }
 
