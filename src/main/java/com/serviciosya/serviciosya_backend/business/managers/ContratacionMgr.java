@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static com.serviciosya.serviciosya_backend.business.entities.Contratacion.EstadoContratacion.PENDIENTE;
@@ -25,6 +26,9 @@ public class ContratacionMgr {
     private RubroRepository rubroRepository;
     @Autowired
     private ServicioRepository servicioRepository;
+
+    @Autowired
+    private NotificacionRepository notificacionRepository;
 
     public void crearContratacion(Long idDemandante, Long idOfertante, LocalDate fechaServicio, String direccion, String apartamento, String hora, String comentario, Long idServicio) throws EntidadNoExiste, InvalidInformation {
         try {
@@ -71,6 +75,22 @@ public class ContratacionMgr {
                 // Manejar errores de persistencia o inesperados
                 System.err.println("Error al guardar la contratacion: " + e.getMessage());
                 throw new RuntimeException("Error interno al crear la contratacion del servicio.");
+            }
+
+            Notificacion notificacion = Notificacion.builder()
+                    .usuarioOfertante(ofertante)
+                    .contratacion(contratacion)
+                    .mensaje("Tienes una nueva solicitud de contratacion")
+                    .fechaCreacion(LocalDateTime.now())
+                    .leido(false)
+                    .build();
+            try { // Guardar la notificacion
+                notificacionRepository.save(notificacion);
+                System.out.println("Notificacion creada con ID: " + notificacion.getId() + ", ofertante: " + ofertante.getCedula() + ", contratacion: " + contratacion.getId());
+            } catch (Exception e) {
+                // Manejar errores de persistencia o inesperados
+                System.err.println("Error al guardar la notificacion: " + e.getMessage());
+                throw new RuntimeException("Error interno al crear la notificacion de la contratacion.");
             }
 
 

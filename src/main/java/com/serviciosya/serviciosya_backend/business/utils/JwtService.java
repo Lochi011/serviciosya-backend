@@ -92,4 +92,8 @@ public class JwtService {
 
         return getExpiration(token).before(new Date());
     }
+
+    public Long getUserIdFromToken(String token) {
+        return Long.parseLong(getClaim(token, Claims::getId));
+    }
 }

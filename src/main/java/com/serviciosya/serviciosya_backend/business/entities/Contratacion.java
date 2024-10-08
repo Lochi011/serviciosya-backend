@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Time;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -67,6 +68,9 @@ public class Contratacion {
 
     @Column(name= "comentario", nullable = false)
     private String comentario;
+
+    @OneToMany(mappedBy = "contratacion", cascade = CascadeType.ALL)
+    private List<Notificacion> notifications = new ArrayList<>();
 
 
 

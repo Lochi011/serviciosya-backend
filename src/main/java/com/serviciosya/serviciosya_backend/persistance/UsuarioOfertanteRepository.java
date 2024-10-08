@@ -20,5 +20,7 @@ public interface UsuarioOfertanteRepository extends CrudRepository<UsuarioOferta
 
     Optional<UsuarioOfertante> findOneById(Long id);
 
+    Optional<UsuarioOfertante> findOneByEmail(String email);
+
 
 }

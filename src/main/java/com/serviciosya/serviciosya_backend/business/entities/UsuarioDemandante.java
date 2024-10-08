@@ -12,7 +12,6 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @SuperBuilder
 @Entity
 @DiscriminatorValue("DEMANDANTE")
@@ -36,6 +35,15 @@ public class UsuarioDemandante extends Usuario {
 
     public UsuarioDemandante(Long cedula, String nombre, String apellido, String direccion, String email, String telefono, String contrasena, Date fechaCreacion, String genero, Date fechaNacimiento) {
         super(cedula, nombre, apellido, direccion, email, telefono, contrasena, fechaCreacion, genero, fechaNacimiento);
+        this.contrataciones = new ArrayList<>();
+        this.pagos = new ArrayList<>();
+        this.tarjetas = new ArrayList<>();
+        this.reseñas = new ArrayList<>() {
+
+        };
+
+    }
+    public UsuarioDemandante(){
         this.contrataciones = new ArrayList<>();
         this.pagos = new ArrayList<>();
         this.tarjetas = new ArrayList<>();
