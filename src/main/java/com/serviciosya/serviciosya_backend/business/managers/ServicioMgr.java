@@ -137,6 +137,18 @@ public class ServicioMgr {
                 .collect(Collectors.toList());
     }
 
+    public List<ServicioDto> obtenerServiciosDtoPorOfertante(String email) throws EntidadNoExiste {
+        UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneByEmail(email)
+                .orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado con el email: " + email));
+
+        List<Servicio> servicios = servicioRepository.findAllByUsuarioOfertante(ofertante)
+                .orElseThrow(() -> new EntidadNoExiste("NO_SERVICES", "No se encontraron servicios para el ofertante: " + email));
+
+        return servicios.stream()
+                .map(ServicioMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
 
 
 
