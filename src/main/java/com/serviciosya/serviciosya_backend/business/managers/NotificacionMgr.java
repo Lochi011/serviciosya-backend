@@ -46,4 +46,12 @@ public class NotificacionMgr {
                 map(NotificacionMapper::toDto).
                 collect(Collectors.toList());
     }
+
+    public List<NotificacionDTO> obtenerNotificacionesDTOPorUsuarioOferanteEmail(String email) throws EntidadNoExiste {
+        UsuarioOfertante usuarioOfertante = usuarioOfertanteRepository.findOneByEmail(email).orElseThrow(() -> new EntidadNoExiste("Usuario ofertante no encontrado con email: " + email));
+        List<Notificacion> notificaciones = notificacionRepository.findByUsuarioOfertante(usuarioOfertante).orElseThrow(() -> new EntidadNoExiste("NO_NOTIFICATIONS","No se encontraron notificaciones para el usuario ofertante con email: " + email));
+        return notificaciones.stream().
+                map(NotificacionMapper::toDto).
+                collect(Collectors.toList());
+    }
 }

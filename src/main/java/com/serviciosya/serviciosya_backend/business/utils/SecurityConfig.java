@@ -36,7 +36,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/reset-password").permitAll()  // Acceso público a resetear contraseña
 
                                 // Requerir autenticación para todas las demás solicitudes
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
                 .sessionManagement(sessionManager ->
                         sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // No mantener sesiones

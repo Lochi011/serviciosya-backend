@@ -22,5 +22,6 @@ public interface ContratacionRepository extends CrudRepository<Contratacion, Lon
 
     Optional<List<Contratacion>> findAllByOfertante(UsuarioOfertante usuario);
 
-
+    @Override
+    Optional<Contratacion> findById(Long id);
 }

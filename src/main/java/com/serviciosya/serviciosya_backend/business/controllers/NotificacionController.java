@@ -39,6 +39,33 @@ public class NotificacionController {
         }
     }
 
+    @GetMapping("/todas/")
+    public ResponseEntity<?> obtenerNotificacionesPorUsuarioOferanteId( @RequestHeader("Authorization") String token ){
+
+        String jwtToken = token.substring(7);
+        String email = jwtService.getUsernameFromToken(jwtToken);
+        try {
+        List<NotificacionDTO> notificaciones = notificacionMgr.obtenerNotificacionesDTOPorUsuarioOferanteEmail(email);
+            return new ResponseEntity<>(notificaciones, HttpStatus.OK);
+        } catch (EntidadNoExiste e) {
+            return new ResponseEntity<>(e.getCode(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @PatchMapping("/marcar-leida/{id}")
+    public ResponseEntity<?> marcarNotificacionComoLeida(@PathVariable Long id) {
+        try {
+            notificacionMgr.marcarNotificacionComoLeida(id);
+            return ResponseEntity.ok("Notificación marcada como leída.");
+        } catch (EntidadNoExiste e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
 }

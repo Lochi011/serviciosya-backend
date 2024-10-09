@@ -2,6 +2,7 @@ package com.serviciosya.serviciosya_backend.business.managers;
 
 
 import com.serviciosya.serviciosya_backend.business.entities.*;
+import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionDetallesDTO;
 import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionResumenDTO;
 import com.serviciosya.serviciosya_backend.business.entities.mapper.ContratacionMapper;
 import com.serviciosya.serviciosya_backend.business.entities.mapper.NotificacionMapper;
@@ -35,32 +36,108 @@ public class ContratacionMgr {
     @Autowired
     private NotificacionRepository notificacionRepository;
 
+//    public void crearContratacion(Long idDemandante, Long idOfertante, LocalDate fechaServicio, String direccion, String apartamento, String hora, String comentario, Long idServicio) throws EntidadNoExiste, InvalidInformation {
+//        try {
+//            if (fechaServicio == null || direccion == null || hora == null || idDemandante == null || idDemandante == null || idServicio == null) {
+//                throw new InvalidInformation("Faltan datos obligatorios para la realizacion de la contratacion.");
+//
+//            }
+//
+//        } catch (InvalidInformation e) {
+//            throw new RuntimeException(e);
+//        }
+//        UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneById(Long.valueOf(idOfertante)).orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado con id: " + idOfertante));
+//        UsuarioDemandante demandante = usuarioDemandanteRepository.findOneById(Long.valueOf(idDemandante)).orElseThrow(() -> new EntidadNoExiste("Demandante no encontrado con id: " + idDemandante));
+//        Servicio servicio = servicioRepository.findOneById(Long.valueOf(idServicio)).orElseThrow(() -> new EntidadNoExiste("Servicio no enccontrado con id  " + idServicio));
+//
+//        //verificar que no exista contratacion pedniente
+//        Optional<Contratacion> contratacionExistente = contratacionRepository.findByDemandanteAndOfertanteAndServicioAndFechaContratacionAndEstado(demandante, ofertante, servicio, fechaServicio, PENDIENTE);
+//        if (contratacionExistente.isPresent()) {
+//            if (contratacionExistente.get().getEstado() == PENDIENTE) {
+//                throw new InvalidInformation("Ya existe una solicitud pendiente para una contratacion ese dia");
+//            } else if (contratacionExistente.isPresent()) {
+//                if (contratacionExistente.get().getEstado() == Contratacion.EstadoContratacion.ACEPTADA) {
+//                    throw new InvalidInformation("Ya existe una contratacion solicitada para ese dia");
+//                }
+//
+//            }
+//        }
+//
+//        Contratacion contratacion = Contratacion.builder()
+//                .demandante(demandante)
+//                .ofertante(ofertante)
+//                .servicio(servicio)
+//                .fechaContratacion(fechaServicio)
+//                .direccion(direccion)
+//                .hora(hora)
+//                .comentario(comentario)
+//                .estado(PENDIENTE)
+//                .apartamento(apartamento)
+//                .build();
+//        try {
+//            contratacionRepository.save(contratacion);
+//            System.out.println("Contratacion creada con ID: " + contratacion.getId() + ", ofertante: " + ofertante.getCedula() + ", servicio: " + servicio.getNombre());
+//        } catch (Exception e) {
+//            // Manejar errores de persistencia o inesperados
+//            System.err.println("Error al guardar la contratacion: " + e.getMessage());
+//            throw new RuntimeException("Error interno al crear la contratacion del servicio.");
+//        }
+//
+//        Notificacion notificacion = Notificacion.builder()
+//                .usuarioOfertante(ofertante)
+//                .contratacion(contratacion)
+//                .mensaje("Tienes una nueva solicitud de contratacion")
+//                .fechaCreacion(LocalDateTime.now())
+//                .leido(false)
+//                .build();
+//        try { // Guardar la notificacion
+//            notificacionRepository.save(notificacion);
+//            System.out.println("Notificacion creada con ID: " + notificacion.getId() + ", ofertante: " + ofertante.getCedula() + ", contratacion: " + contratacion.getId());
+//        } catch (Exception e) {
+//            // Manejar errores de persistencia o inesperados
+//            System.err.println("Error al guardar la notificacion: " + e.getMessage());
+//            throw new RuntimeException("Error interno al crear la notificacion de la contratacion.");
+//        }
+//
+//
+//    }
+
     public void crearContratacion(Long idDemandante, Long idOfertante, LocalDate fechaServicio, String direccion, String apartamento, String hora, String comentario, Long idServicio) throws EntidadNoExiste, InvalidInformation {
         try {
-            if (fechaServicio == null || direccion == null || hora == null || idDemandante == null || idDemandante == null || idServicio == null) {
+            if (fechaServicio == null || direccion == null || hora == null || idDemandante == null || idOfertante == null || idServicio == null) {
                 throw new InvalidInformation("Faltan datos obligatorios para la realizacion de la contratacion.");
-
             }
-
         } catch (InvalidInformation e) {
             throw new RuntimeException(e);
         }
-        UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneById(Long.valueOf(idOfertante)).orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado con id: " + idOfertante));
-        UsuarioDemandante demandante = usuarioDemandanteRepository.findOneById(Long.valueOf(idDemandante)).orElseThrow(() -> new EntidadNoExiste("Demandante no encontrado con id: " + idDemandante));
-        Servicio servicio = servicioRepository.findOneById(Long.valueOf(idServicio)).orElseThrow(() -> new EntidadNoExiste("Servicio no enccontrado con id  " + idServicio));
 
-        //verificar que no exista contratacion pedniente
+        // Add debug logs here to trace the values
+        System.out.println("Fetching ofertante with id: " + idOfertante);
+        UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneById(idOfertante)
+                .orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado con id: " + idOfertante));
+
+        System.out.println("Fetching demandante with id: " + idDemandante);
+        UsuarioDemandante demandante = usuarioDemandanteRepository.findOneById(idDemandante)
+                .orElseThrow(() -> new EntidadNoExiste("Demandante no encontrado con id: " + idDemandante));
+
+        System.out.println("Fetching servicio with id: " + idServicio);
+        Servicio servicio = servicioRepository.findOneById(idServicio)
+                .orElseThrow(() -> new EntidadNoExiste("Servicio no encontrado con id  " + idServicio));
+
+        // Continue adding logs before any action that might fail
+        System.out.println("Checking for existing contratacion...");
         Optional<Contratacion> contratacionExistente = contratacionRepository.findByDemandanteAndOfertanteAndServicioAndFechaContratacionAndEstado(demandante, ofertante, servicio, fechaServicio, PENDIENTE);
         if (contratacionExistente.isPresent()) {
+            System.out.println("Existing contratacion found.");
             if (contratacionExistente.get().getEstado() == PENDIENTE) {
-                throw new InvalidInformation("Ya existe una solicitud pendiente para una contratacion ese dia");
-            } else if (contratacionExistente.isPresent()) {
-                if (contratacionExistente.get().getEstado() == Contratacion.EstadoContratacion.ACEPTADA) {
-                    throw new InvalidInformation("Ya existe una contratacion solicitada para ese dia");
-                }
-
+                System.out.println("Existing contratacion is pending.");
+                throw new InvalidInformation("PENDING_CONTRACT_ALREADY_EXISTS", "Ya existe una solicitud pendiente para una contratacion ese dia");
+            } else if (contratacionExistente.get().getEstado() == Contratacion.EstadoContratacion.ACEPTADA) {
+                throw new InvalidInformation("ACCEPTED_CONTRACT_ALREADY_EXISTS","Ya existe una contratacion solicitada para ese dia");
             }
         }
+
+        System.out.println("Creating new contratacion...");
 
         Contratacion contratacion = Contratacion.builder()
                 .demandante(demandante)
@@ -73,11 +150,11 @@ public class ContratacionMgr {
                 .estado(PENDIENTE)
                 .apartamento(apartamento)
                 .build();
+
         try {
             contratacionRepository.save(contratacion);
-            System.out.println("Contratacion creada con ID: " + contratacion.getId() + ", ofertante: " + ofertante.getCedula() + ", servicio: " + servicio.getNombre());
+            System.out.println("Contratacion creada con ID: " + contratacion.getId());
         } catch (Exception e) {
-            // Manejar errores de persistencia o inesperados
             System.err.println("Error al guardar la contratacion: " + e.getMessage());
             throw new RuntimeException("Error interno al crear la contratacion del servicio.");
         }
@@ -89,17 +166,16 @@ public class ContratacionMgr {
                 .fechaCreacion(LocalDateTime.now())
                 .leido(false)
                 .build();
-        try { // Guardar la notificacion
+
+        try {
             notificacionRepository.save(notificacion);
-            System.out.println("Notificacion creada con ID: " + notificacion.getId() + ", ofertante: " + ofertante.getCedula() + ", contratacion: " + contratacion.getId());
+            System.out.println("Notificacion creada con ID: " + notificacion.getId());
         } catch (Exception e) {
-            // Manejar errores de persistencia o inesperados
             System.err.println("Error al guardar la notificacion: " + e.getMessage());
             throw new RuntimeException("Error interno al crear la notificacion de la contratacion.");
         }
-
-
     }
+
 
     public List<Contratacion> obtenerContratacionesPorOfertante(String email) throws EntidadNoExiste {
         UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneByEmail(email).orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado con email: " + email));
@@ -139,6 +215,11 @@ public class ContratacionMgr {
         return contrataciones.stream().
                 map(ContratacionMapper::toResumenDto).
                 collect(Collectors.toList());
+    }
+
+    public ContratacionDetallesDTO obtenerDetallesContratacionDTO(Long id) throws EntidadNoExiste {
+        Contratacion contratacion = contratacionRepository.findById(id).orElseThrow(() -> new EntidadNoExiste("Contratacion no encontrada con id: " + id));
+        return ContratacionMapper.convertirADetallesDTO(contratacion);
     }
 }
 

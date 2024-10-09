@@ -80,5 +80,16 @@ public class ContratacionController {
 
     }
 
+    @GetMapping("/detalles-contratacion/{id}")
+    public ResponseEntity<?> obtenerDetallesContratacion(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(contratacionMgr.obtenerDetallesContratacionDTO(id));
+        } catch (EntidadNoExiste e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno al obtener los detalles de la contratación.");
+        }
+    }
+
 
 }
