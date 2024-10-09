@@ -20,5 +20,7 @@ public interface ContratacionRepository extends CrudRepository<Contratacion, Lon
 
     List<Contratacion> findByDemandante(UsuarioDemandante usuario);
 
+    Optional<List<Contratacion>> findAllByOfertante(UsuarioOfertante usuario);
+
 
 }

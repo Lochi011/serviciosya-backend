@@ -1,5 +1,6 @@
 package com.serviciosya.serviciosya_backend.business.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -30,6 +31,7 @@ public class UsuarioDemandante extends Usuario {
     private List<Reseña> reseñas;
 
     @OneToMany(mappedBy = "demandante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Contratacion> contrataciones;
 
 

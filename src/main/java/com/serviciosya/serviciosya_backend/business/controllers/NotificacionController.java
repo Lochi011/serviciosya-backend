@@ -1,6 +1,7 @@
 package com.serviciosya.serviciosya_backend.business.controllers;
 
 import com.serviciosya.serviciosya_backend.business.entities.Notificacion;
+import com.serviciosya.serviciosya_backend.business.entities.dto.NotificacionDTO;
 import com.serviciosya.serviciosya_backend.business.exceptions.EntidadNoExiste;
 import com.serviciosya.serviciosya_backend.business.managers.NotificacionMgr;
 import com.serviciosya.serviciosya_backend.business.utils.JwtService;
@@ -29,7 +30,7 @@ public class NotificacionController {
         String jwtToken = token.substring(7);
         String email = jwtService.getUsernameFromToken(jwtToken);
         try {
-            List<Notificacion> notificaciones = notificacionMgr.obtenerNotificacionesNoLeidasPorUsuarioOferanteId(email);
+        List<NotificacionDTO> notificaciones = notificacionMgr.obtenerNotificacionesDTONoLeidasPorUsuarioOferanteEmail(email);
             return new ResponseEntity<>(notificaciones, HttpStatus.OK);
         } catch (EntidadNoExiste e) {
             return new ResponseEntity<>(e.getCode(), HttpStatus.NOT_FOUND);

@@ -5,6 +5,8 @@ import com.serviciosya.serviciosya_backend.business.exceptions.EntidadNoExiste;
 import com.serviciosya.serviciosya_backend.business.exceptions.InvalidInformation;
 import com.serviciosya.serviciosya_backend.business.managers.ContratacionMgr;
 import com.serviciosya.serviciosya_backend.business.managers.ServicioMgr;
+import com.serviciosya.serviciosya_backend.business.utils.JwtService;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class ContratacionController {
     @Autowired
     private ContratacionMgr contratacionMgr;
 
+    @Autowired
+    private JwtService jwtService;
+
     @PostMapping("/crear")
     public ResponseEntity<?> contratarServicio(@RequestBody Map<String, Object> payload) {
         try {
@@ -34,7 +39,8 @@ public class ContratacionController {
             Integer usuarioDemandanteId = (Integer) payload.get("usuarioDemandanteId");
             Long idDemandante = usuarioDemandanteId.longValue();
             Integer usuarioOfertanteIdId = (Integer) payload.get("ofertanteId");
-            Long idOfertante = usuarioOfertanteIdId.longValue();;
+            Long idOfertante = usuarioOfertanteIdId.longValue();
+            ;
             LocalDate fechaServicio = LocalDate.parse((String) payload.get("dia"));
             String direccion = (String) payload.get("direccion");
             String apartamento = (String) payload.get("apto");
@@ -45,7 +51,7 @@ public class ContratacionController {
 
 
             // Llamar al manager para contratar el servicio
-            contratacionMgr.crearContratacion(idDemandante, idOfertante, fechaServicio, direccion,apartamento, hora, comentario, idServicio);
+            contratacionMgr.crearContratacion(idDemandante, idOfertante, fechaServicio, direccion, apartamento, hora, comentario, idServicio);
 
             return ResponseEntity.ok("Contratación realizada exitosamente.");
         } catch (EntidadNoExiste e) {
@@ -59,6 +65,20 @@ public class ContratacionController {
         }
     }
 
+    @GetMapping("/listar-ofertante")
+    public ResponseEntity<?> listarContratacionesOfertante(@RequestHeader("Authorization") String token) {
+        String jwtToken = token.substring(7);
+        String emailOfertante = jwtService.getUsernameFromToken(jwtToken);
+        try {
+            return ResponseEntity.ok(contratacionMgr.obtenerContratacionesResumenPorOfertante(emailOfertante));
+        } catch (EntidadNoExiste e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno al listar las contrataciones del ofertante.");
+        }
 
 
     }
+
+
+}
