@@ -23,6 +23,7 @@ public class ContratacionDetallesDTO {
     private String nombreServicio;
     private int precioServicio;
     private String estado;
+    private String nombreRubro;
 
 
 

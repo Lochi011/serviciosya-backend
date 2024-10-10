@@ -17,7 +17,9 @@ public class ContratacionMapper {
                 contratacion.getServicio().getNombre(),
                 contratacion.getFechaContratacion(),
                 contratacion.getHora(),
-                contratacion.getEstado().toString()
+                contratacion.getEstado().toString(),
+                contratacion.getServicio().getRubro().getNombre()
+
         );
     }
 
@@ -37,6 +39,7 @@ public class ContratacionMapper {
                 .nombreServicio(contratacion.getServicio().getNombre())
                 .precioServicio(contratacion.getServicio().getPrecio())
                 .estado(contratacion.getEstado().toString())
+                .nombreRubro(contratacion.getServicio().getRubro().getNombre())
                 .build();
     }
 

@@ -26,5 +26,7 @@ public class ContratacionResumenDTO {
 
     private String estado;
 
+    private String nombreRubro;
+
 
 }

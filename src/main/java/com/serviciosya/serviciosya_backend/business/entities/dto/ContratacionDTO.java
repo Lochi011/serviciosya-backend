@@ -9,9 +9,7 @@ public class ContratacionDTO {
     private String nombreOfertante;
     private String apellidoOfertante;
     private LocalDate fechaContratacion;
-
     private String hora;
-
     private String estado;
 
 
