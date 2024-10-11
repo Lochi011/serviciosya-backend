@@ -4,6 +4,7 @@ package com.serviciosya.serviciosya_backend.business.managers;
 import com.serviciosya.serviciosya_backend.business.entities.*;
 import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionDetallesDTO;
 import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionResumenDTO;
+import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionResumenDemandanteDTO;
 import com.serviciosya.serviciosya_backend.business.entities.mapper.ContratacionMapper;
 import com.serviciosya.serviciosya_backend.business.entities.mapper.NotificacionMapper;
 import com.serviciosya.serviciosya_backend.business.exceptions.EntidadNoExiste;
@@ -32,9 +33,10 @@ public class ContratacionMgr {
     private RubroRepository rubroRepository;
     @Autowired
     private ServicioRepository servicioRepository;
-
     @Autowired
     private NotificacionRepository notificacionRepository;
+    @Autowired
+    private NotificacionDemandanteRepository notificacionDemandanteRepository;
 
 //    public void crearContratacion(Long idDemandante, Long idOfertante, LocalDate fechaServicio, String direccion, String apartamento, String hora, String comentario, Long idServicio) throws EntidadNoExiste, InvalidInformation {
 //        try {
@@ -190,10 +192,26 @@ public class ContratacionMgr {
         contratacionRepository.save(contratacion);
     }
 
-    public void rechazarContratacion(Long idContratacion) throws EntidadNoExiste {
+    public void rechazarContratacion(Long idContratacion, String mensaje) throws EntidadNoExiste {
         Contratacion contratacion = contratacionRepository.findById(idContratacion).orElseThrow(() -> new EntidadNoExiste("Contratacion no encontrada con id: " + idContratacion));
         contratacion.setEstado(Contratacion.EstadoContratacion.RECHAZADA);
+        contratacion.setJustificacionRechazo(mensaje);
         contratacionRepository.save(contratacion);
+
+        UsuarioDemandante usuarioDemandante = contratacion.getDemandante();
+        String nombreServicio = contratacion.getServicio().getNombre();
+
+        NotificacionDemandante notificacionDemandante = NotificacionDemandante.builder().
+                usuarioDemandante(usuarioDemandante).
+                contratacion(contratacion).
+                mensaje("Su solicitud para el servicio "+ nombreServicio + " ha sido rechazada").
+                leido(false).
+                esMensaje(false).
+                fechaCreacion(LocalDateTime.now()).
+
+                build();
+
+        notificacionDemandanteRepository.save(notificacionDemandante);
     }
 
     public void marcarPagadaContratacion(Long idContratacion) throws EntidadNoExiste {
@@ -220,6 +238,14 @@ public class ContratacionMgr {
     public ContratacionDetallesDTO obtenerDetallesContratacionDTO(Long id) throws EntidadNoExiste {
         Contratacion contratacion = contratacionRepository.findById(id).orElseThrow(() -> new EntidadNoExiste("Contratacion no encontrada con id: " + id));
         return ContratacionMapper.convertirADetallesDTO(contratacion);
+    }
+
+    public List<ContratacionResumenDemandanteDTO> obtenerContratacionesResumenPorDemandante(String emailDemandante) throws EntidadNoExiste {
+        UsuarioDemandante demandante = usuarioDemandanteRepository.findOneByEmail(emailDemandante).orElseThrow(() -> new EntidadNoExiste("Demandante no encontrado con email: " + emailDemandante));
+        List<Contratacion> contrataciones = contratacionRepository.findAllByDemandante(demandante).orElseThrow(() -> new EntidadNoExiste("No se encontraron contrataciones para el demandante con email: " + emailDemandante));
+        return contrataciones.stream().
+                map(ContratacionMapper::toResumenDemandanteDTO).
+                collect(Collectors.toList());
     }
 }
 

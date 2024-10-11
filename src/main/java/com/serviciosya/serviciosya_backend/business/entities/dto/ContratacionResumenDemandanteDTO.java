@@ -1,23 +1,20 @@
 package com.serviciosya.serviciosya_backend.business.entities.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ContratacionResumenDTO {
+@Builder
+public class ContratacionResumenDemandanteDTO {
 
     private Long id;
 
-    private String nombreDemandante;
+    private String nombreOfertante;
 
-    private String apellidoDemandante;
+    private String apellidoOfertante;
 
     private String nombreServicio;
 
@@ -29,5 +26,6 @@ public class ContratacionResumenDTO {
 
     private String nombreRubro;
 
+    private String justificacionRechazo;
 
 }

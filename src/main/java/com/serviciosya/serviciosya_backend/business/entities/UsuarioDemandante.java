@@ -34,6 +34,10 @@ public class UsuarioDemandante extends Usuario {
     @JsonIgnore
     private List<Contratacion> contrataciones;
 
+    @OneToMany(mappedBy = "usuarioDemandante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<NotificacionDemandante> notificaciones;
+
+
 
     public UsuarioDemandante(Long cedula, String nombre, String apellido, String direccion, String email, String telefono, String contrasena, Date fechaCreacion, String genero, Date fechaNacimiento) {
         super(cedula, nombre, apellido, direccion, email, telefono, contrasena, fechaCreacion, genero, fechaNacimiento);

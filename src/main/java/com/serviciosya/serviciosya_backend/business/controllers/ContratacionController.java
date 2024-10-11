@@ -80,6 +80,19 @@ public class ContratacionController {
 
     }
 
+    @GetMapping("/listar-demandante")
+    public ResponseEntity<?> listarContratacionesDemandante(@RequestHeader("Authorization") String token) {
+        String jwtToken = token.substring(7);
+        String emailDemandante = jwtService.getUsernameFromToken(jwtToken);
+        try {
+            return ResponseEntity.ok(contratacionMgr.obtenerContratacionesResumenPorDemandante(emailDemandante));
+        } catch (EntidadNoExiste e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno al listar las contrataciones del demandante.");
+        }
+    }
+
     @GetMapping("/detalles-contratacion/{id}")
     public ResponseEntity<?> obtenerDetallesContratacion(@PathVariable Long id) {
         try {
@@ -92,9 +105,11 @@ public class ContratacionController {
     }
 
     @PostMapping("/rechazar/{id}")
-    public ResponseEntity<?> rechazarContratacion(@PathVariable Long id) {
+    public ResponseEntity<?> rechazarContratacion(@PathVariable Long id, @RequestBody Map<String, Object> payload) {
+
+        String mensaje = (String) payload.get("mensaje");
         try {
-            contratacionMgr.rechazarContratacion(id);
+            contratacionMgr.rechazarContratacion(id,mensaje);
             return ResponseEntity.ok("Contratación rechazada exitosamente.");
         } catch (EntidadNoExiste e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

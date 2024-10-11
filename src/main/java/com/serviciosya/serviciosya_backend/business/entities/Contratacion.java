@@ -55,6 +55,8 @@ public class Contratacion {
         TERMINADA;
     }
 
+    private String justificacionRechazo;
+
 
 
     @Column(name = "direccion_servicio", nullable = false)
