@@ -59,7 +59,7 @@ public class Contratacion {
 
 
 
-    @Column(name = "direccion_servicio", nullable = false)
+    @Column(name = "direccion", nullable = false)
     private String direccion;
 
     @Column(name = "apartamento")
