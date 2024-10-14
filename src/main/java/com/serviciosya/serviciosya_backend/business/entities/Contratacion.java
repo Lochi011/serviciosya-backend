@@ -57,7 +57,7 @@ public class Contratacion {
 
 
 
-    @Column(name = "direccion_servicio", nullable = false)
+    @Column(name = "direccion", nullable = false)
     private String direccion;
 
     @Column(name = "apartamento")
@@ -71,6 +71,10 @@ public class Contratacion {
 
     @OneToMany(mappedBy = "contratacion", cascade = CascadeType.ALL)
     private List<Notificacion> notifications = new ArrayList<>();
+
+    @Column(name = "puntuacion_demandante", nullable = true)
+    private Float puntuacion;
+
 
 
 

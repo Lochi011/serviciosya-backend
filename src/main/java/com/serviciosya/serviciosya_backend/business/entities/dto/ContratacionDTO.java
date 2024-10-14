@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class ContratacionDTO {
 
+    private Long id_contratacion;
     private String nombreServicio;
     private int precioServicio;
     private String nombreOfertante;
@@ -16,7 +17,8 @@ public class ContratacionDTO {
 
 
     // Constructor
-    public ContratacionDTO(String nombreServicio, int precioServicio, String nombreOfertante, String apellidoOfertante, LocalDate fechaContratacion, String hora, String estado) {
+    public ContratacionDTO(Long id, String nombreServicio, int precioServicio, String nombreOfertante, String apellidoOfertante, LocalDate fechaContratacion, String hora, String estado) {
+        this.id_contratacion = id;
         this.nombreServicio = nombreServicio;
         this.precioServicio = precioServicio;
         this.nombreOfertante = nombreOfertante;
@@ -27,6 +29,16 @@ public class ContratacionDTO {
     }
 
     // Getters y Setters
+
+
+    public Long getId_contratacion() {
+        return id_contratacion;
+    }
+
+    public void setId_contratacion(Long id_contratacion) {
+        this.id_contratacion = id_contratacion;
+    }
+
     public String getNombreServicio() {
         return nombreServicio;
     }
