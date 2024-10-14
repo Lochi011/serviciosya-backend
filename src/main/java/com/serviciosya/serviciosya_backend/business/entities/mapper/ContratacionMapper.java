@@ -47,6 +47,7 @@ public class ContratacionMapper {
     public static ContratacionResumenDemandanteDTO toResumenDemandanteDTO(Contratacion contratacion){
 
         ContratacionResumenDemandanteDTO contratacionResumenDemandanteDTO = ContratacionResumenDemandanteDTO.builder().
+                id(contratacion.getId()).
                 nombreOfertante(contratacion.getOfertante().getNombre()).
                 apellidoOfertante(contratacion.getOfertante().getApellido()).
                 nombreServicio(contratacion.getServicio().getNombre()).
