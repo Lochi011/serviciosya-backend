@@ -1,6 +1,7 @@
 package com.serviciosya.serviciosya_backend.business.controllers;
 
 import com.serviciosya.serviciosya_backend.business.entities.Servicio;
+import com.serviciosya.serviciosya_backend.business.entities.dto.PerfilOfertanteDTO;
 import com.serviciosya.serviciosya_backend.business.entities.dto.ServicioDto;
 import com.serviciosya.serviciosya_backend.business.exceptions.EntidadNoExiste;
 import com.serviciosya.serviciosya_backend.business.managers.ServicioMgr;
@@ -34,10 +35,10 @@ public class HomeController {
         }
     }
 
-    @GetMapping("/ver-perfil/{ofertante-id}")
+    @GetMapping("/ver-perfil/{ofertanteId}")
     public ResponseEntity<?> verPerfilOfertante(@PathVariable Long ofertanteId) {
         try {
-            Map<String, Object> perfil = usuarioMgr.obtenerPerfilOfertante(ofertanteId);
+            PerfilOfertanteDTO perfil = usuarioMgr.obtenerPerfilOfertante(ofertanteId);
             return new ResponseEntity<>(perfil, HttpStatus.OK);
         } catch (EntidadNoExiste e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

@@ -3,6 +3,8 @@ package com.serviciosya.serviciosya_backend.business.managers;
 import com.serviciosya.serviciosya_backend.business.entities.Usuario;
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioDemandante;
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioOfertante;
+import com.serviciosya.serviciosya_backend.business.entities.dto.PerfilOfertanteDTO;
+import com.serviciosya.serviciosya_backend.business.entities.mapper.PerfilOfertanteMapper;
 import com.serviciosya.serviciosya_backend.business.exceptions.EntidadNoExiste;
 import com.serviciosya.serviciosya_backend.business.exceptions.InvalidInformation;
 import com.serviciosya.serviciosya_backend.business.exceptions.UsuarioYaExiste;
@@ -21,6 +23,8 @@ public class UsuarioMgr {
 
     @Autowired
     private UsuarioOfertanteRepository usuarioOfertanteRepository;
+
+
 
 
     public void agregarUsuario(Usuario usuario) throws InvalidInformation, UsuarioYaExiste {
@@ -139,9 +143,11 @@ public class UsuarioMgr {
         return usuarioRepository.findTipoById(id);
     }
 
-    public Map<String, Object> obtenerPerfilOfertante(Long ofertanteId) throws EntidadNoExiste {
+    public PerfilOfertanteDTO obtenerPerfilOfertante(Long ofertanteId) throws EntidadNoExiste {
         UsuarioOfertante ofertante =usuarioOfertanteRepository.findById(ofertanteId)
                 .orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado con el id: " + ofertanteId));
+
+        return PerfilOfertanteMapper.toDto(ofertante);
 
 
     }
