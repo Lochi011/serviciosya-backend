@@ -75,6 +75,9 @@ public class Contratacion {
     @Column(name = "puntuacion_demandante", nullable = true)
     private Float puntuacion;
 
+    @Column(name = "isFavorite_demandante", nullable = true)
+    private Boolean isFavorite;
+
 
 
 
