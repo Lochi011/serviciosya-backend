@@ -43,5 +43,6 @@ public class Rubro {
             inverseJoinColumns = @JoinColumn(name = "usuario_ofertante_id")
     )
     @JsonIgnore // Evitar la serialización en bucle con usuariosOfertantes
+    @JsonBackReference
     private List<UsuarioOfertante> usuariosOfertantes;
 }

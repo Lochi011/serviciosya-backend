@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -140,8 +141,8 @@ public class ServicioMgr {
     public List<Servicio> obtenerServiciosDeUnUsuario (Long id) throws EntidadNoExiste {
 
         UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneById(id).orElseThrow(() -> new EntidadNoExiste("No se encontro usuario con id: " + id)) ;
-
-        return servicioRepository.findAllByUsuarioOfertante(ofertante).orElseThrow(()->
+        Optional<List<Servicio>> servicios = servicioRepository.findAllByUsuarioOfertante(ofertante);
+        return servicios.orElseThrow(()->
                 new EntidadNoExiste("No se encontraron servicios para el usuario : " + ofertante.getUsername()));
 
 
