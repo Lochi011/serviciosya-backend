@@ -66,7 +66,9 @@ public class HistorialController {
                     servicio.getUsuarioOfertante().getApellido(),
                     contratacion.getFechaContratacion(),
                     contratacion.getHora(),
-                    contratacion.getEstado().toString()
+                    contratacion.getEstado().toString(),
+                    contratacion.getIsFavorite(),
+                    contratacion.getPuntuacion()
 
             );
             contratacionDTOs.add(dto);
