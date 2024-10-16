@@ -56,4 +56,25 @@ public class ServiciosController {
         }
     }
 
+    @PostMapping("/editar-servicios/")
+    public ResponseEntity<?> editarServicio(@RequestBody Map<String, Object> payload) {
+        try{
+            Long id = Long.valueOf(payload.get("id").toString());
+            String nombre = (String) payload.get("nombre");
+            String descripcion = (String) payload.get("descripcion");
+            int precio = Integer.parseInt(payload.get("precio").toString());
+            String horaDesde = (String) payload.get("horaDesde");
+            String horaHasta = (String) payload.get("horaHasta");
+            List<String> diasSeleccionados = (List<String>) payload.get("diasSeleccionados");
+            int duracionServicio = Integer.parseInt(payload.get("duracionServicio").toString());
+            List<String> etiquetas = (List<String>) payload.get("etiquetas");
+            servicioMgr.modificarServicio(id,nombre,descripcion,precio,horaDesde,horaHasta,duracionServicio,etiquetas,diasSeleccionados);
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }

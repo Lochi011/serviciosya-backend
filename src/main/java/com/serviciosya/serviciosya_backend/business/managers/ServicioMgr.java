@@ -148,6 +148,22 @@ public class ServicioMgr {
 
 
     }
+    public  Servicio modificarServicio(Long id,String nombre, String descripcion, int precio, String horaDesde, String horaHasta, int duracion, List<String> etiquetas, List<String> diasSeleccionados) throws EntidadNoExiste {
+        Servicio servicio = servicioRepository.findOneById(id).orElseThrow(() -> new EntidadNoExiste("No se encontro servicio con id: " + id));
+        servicio.setNombre(nombre);
+        servicio.setDescripcion(descripcion);
+        servicio.setPrecio(precio);
+        servicio.setHoraDesde(horaDesde);
+        servicio.setHoraHasta(horaHasta);
+        servicio.setDuracionServicio(duracion);
+        servicio.setEtiquetas(etiquetas);
+        servicio.setDiasSeleccionados(diasSeleccionados);
+        servicioRepository.save(servicio);
+
+
+        return servicio;
+
+    }
 
 
 
