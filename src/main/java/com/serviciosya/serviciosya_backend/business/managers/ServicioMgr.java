@@ -137,6 +137,19 @@ public class ServicioMgr {
                 .collect(Collectors.toList());
     }
 
+    public List<Servicio> obtenerServiciosDeUnUsuario (Long id) throws EntidadNoExiste {
+
+        UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneById(id).orElseThrow(() -> new EntidadNoExiste("No se encontro usuario con id: " + id)) ;
+
+        return servicioRepository.findAllByUsuarioOfertante(ofertante).orElseThrow(()->
+                new EntidadNoExiste("No se encontraron servicios para el usuario : " + ofertante.getUsername()));
+
+
+
+    }
+
+
+
 
 
 
