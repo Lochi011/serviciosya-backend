@@ -68,6 +68,7 @@ public class ServiciosController {
             List<String> diasSeleccionados = (List<String>) payload.get("diasSeleccionados");
             int duracionServicio = Integer.parseInt(payload.get("duracionServicio").toString());
             List<String> etiquetas = (List<String>) payload.get("etiquetas");
+            System.out.println(diasSeleccionados);
             System.out.println(nombre + " este es el nombre que me llega");
 
             servicioMgr.modificarServicio(id,nombre,descripcion,precio,horaDesde,horaHasta,duracionServicio,etiquetas,diasSeleccionados);
@@ -79,4 +80,6 @@ public class ServiciosController {
         }
 
     }
+
+
 }

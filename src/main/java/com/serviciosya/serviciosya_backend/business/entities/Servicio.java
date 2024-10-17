@@ -47,9 +47,8 @@ public class Servicio {
     @JsonBackReference
     private UsuarioOfertante usuarioOfertante;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rubro_id") // Cambiado de sub_rubro_id a rubro_id
-    @JsonBackReference
     private Rubro rubro; // Cambiado de SubRubro a Rubro
 
     @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

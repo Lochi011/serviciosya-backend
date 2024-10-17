@@ -148,6 +148,12 @@ public class ServicioMgr {
 
 
     }
+    public Rubro obtenerRubroPorServicio (long id ) throws EntidadNoExiste {
+        Servicio servicio = servicioRepository.findOneById(id).orElseThrow(() -> new EntidadNoExiste("No se encontro servicio con id: " + id));
+        Rubro rubro = servicio.getRubro();
+        return rubro;
+
+    }
     public  Servicio modificarServicio(Long id,String nombre, String descripcion, int precio, String horaDesde, String horaHasta, int duracion, List<String> etiquetas, List<String> diasSeleccionados) throws EntidadNoExiste {
         Servicio servicio = servicioRepository.findOneById(id).orElseThrow(() -> new EntidadNoExiste("No se encontro servicio con id: " + id));
         servicio.setNombre(nombre);

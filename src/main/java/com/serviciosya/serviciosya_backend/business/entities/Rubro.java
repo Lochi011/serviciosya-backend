@@ -29,6 +29,7 @@ public class Rubro {
 
 
     @OneToMany(mappedBy = "rubro", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private List<Servicio> servicios; // Lista de servicios relacionados con este rubro
 
 
