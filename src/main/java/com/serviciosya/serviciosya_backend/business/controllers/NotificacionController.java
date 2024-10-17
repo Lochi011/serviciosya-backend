@@ -66,6 +66,20 @@ public class NotificacionController {
         }
     }
 
+    @GetMapping("/numero-no-leidas")
+    public ResponseEntity <?> contarNotificacionesNoLeidasPorUsuarioOferanteEmail(@RequestHeader("Authorization") String token) {
+        String jwtToken = token.substring(7);
+        String email = jwtService.getUsernameFromToken(jwtToken);
+        try {
+            Long cantidad = notificacionMgr.contarNotificacionesNoLeidasPorUsuarioOferanteEmail(email);
+            return new ResponseEntity < > (cantidad, HttpStatus.OK);
+        } catch (EntidadNoExiste e) {
+            return new ResponseEntity < > (e.getCode(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
 }

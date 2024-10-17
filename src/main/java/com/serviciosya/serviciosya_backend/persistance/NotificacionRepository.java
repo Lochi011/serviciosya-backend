@@ -18,4 +18,6 @@ public interface NotificacionRepository extends CrudRepository<Notificacion, Lon
     Optional<List<Notificacion>> findByUsuarioOfertanteAndLeidoFalse(UsuarioOfertante usuarioOfertante);
 
     Optional<List<Notificacion>> findByUsuarioOfertante(UsuarioOfertante usuarioOfertante);
+
+    Long countByUsuarioOfertanteAndLeidoFalse(UsuarioOfertante usuarioOfertante);
 }

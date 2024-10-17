@@ -54,4 +54,9 @@ public class NotificacionMgr {
                 map(NotificacionMapper::toDto).
                 collect(Collectors.toList());
     }
+
+    public Long contarNotificacionesNoLeidasPorUsuarioOferanteEmail(String email) throws EntidadNoExiste {
+        UsuarioOfertante usuarioOfertante = usuarioOfertanteRepository.findOneByEmail(email).orElseThrow(() -> new EntidadNoExiste("Usuario ofertante no encontrado con email: " + email));
+        return notificacionRepository.countByUsuarioOfertanteAndLeidoFalse(usuarioOfertante);
+    }
 }
