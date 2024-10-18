@@ -4,6 +4,7 @@ import com.serviciosya.serviciosya_backend.business.entities.Servicio;
 import com.serviciosya.serviciosya_backend.business.entities.SolicitudRubro;
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioDemandante;
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioOfertante;
+import com.serviciosya.serviciosya_backend.business.entities.dto.ServicioDto;
 import com.serviciosya.serviciosya_backend.business.exceptions.EntidadNoExiste;
 import com.serviciosya.serviciosya_backend.business.exceptions.InvalidInformation;
 import com.serviciosya.serviciosya_backend.business.managers.ServicioMgr;
@@ -39,7 +40,7 @@ public class ServiciosController {
     private ServicioRepository servicioRepository;
 
     @GetMapping("/mis-servicios/")
-    public ResponseEntity<List<Servicio>> obtenerServiciosDelUsuario(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<List<ServicioDto>> obtenerServiciosDelUsuario(@RequestHeader("Authorization") String token) {
         try {
 
             String jwtToken = token.substring(7);
@@ -47,7 +48,7 @@ public class ServiciosController {
             UsuarioOfertante usuarioOfertante = (UsuarioOfertante) usuarioRepository.findOneByEmail(email)
                     .orElseThrow(() -> new EntidadNoExiste("Usuario no encontrado"));
 
-            List<Servicio> servicios = servicioMgr.obtenerServiciosDeUnUsuario(usuarioOfertante.getId());
+            List<ServicioDto> servicios = servicioMgr.obtenerServiciosDeUnUsuario(usuarioOfertante.getId());
 
             return new ResponseEntity<>(servicios, HttpStatus.OK);
 

@@ -1,5 +1,6 @@
 package com.serviciosya.serviciosya_backend.business.managers;
 
+import com.serviciosya.serviciosya_backend.business.entities.NotificacionDemandante;
 import com.serviciosya.serviciosya_backend.business.entities.Rubro;
 import com.serviciosya.serviciosya_backend.business.entities.Servicio;
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioOfertante;
@@ -152,15 +153,13 @@ public class ServicioMgr {
     }
 
 
-    public List<Servicio> obtenerServiciosDeUnUsuario (Long id) throws EntidadNoExiste {
+    public List<ServicioDto> obtenerServiciosDeUnUsuario (Long id) throws EntidadNoExiste {
 
         UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneById(id).orElseThrow(() -> new EntidadNoExiste("No se encontro usuario con id: " + id)) ;
         Optional<List<Servicio>> servicios = servicioRepository.findAllByUsuarioOfertante(ofertante);
-        return servicios.orElseThrow(()->
-                new EntidadNoExiste("No se encontraron servicios para el usuario : " + ofertante.getUsername()));
+        List<ServicioDto> serviciosDto = servicios.get().stream().map(ServicioMapper::toDto).collect(Collectors.toList());
 
-
-
+        return serviciosDto;
     }
 
     public  Servicio modificarServicio(Long id,String nombre, String descripcion, int precio, String horaDesde, String horaHasta, int duracion, List<String> etiquetas, List<String> diasSeleccionados) throws EntidadNoExiste {
@@ -182,6 +181,7 @@ public class ServicioMgr {
     public Servicio eliminarServicio(Long id ) throws EntidadNoExiste{
         Servicio servicio = servicioRepository.findOneById(id).orElseThrow(() -> new EntidadNoExiste("No se encontro servicio con id:"  + id));
         servicioRepository.delete(servicio);
+
         return servicio;
     }
 
