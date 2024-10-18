@@ -59,13 +59,16 @@ public class HistorialController {
             Servicio servicio = contratacion.getServicio();
 
             ContratacionDTO dto = new ContratacionDTO(
+                    contratacion.getId(),
                     servicio.getNombre(),
                     servicio.getPrecio(),
                     servicio.getUsuarioOfertante().getNombre(),
                     servicio.getUsuarioOfertante().getApellido(),
                     contratacion.getFechaContratacion(),
                     contratacion.getHora(),
-                    contratacion.getEstado().toString()
+                    contratacion.getEstado().toString(),
+                    contratacion.getIsFavorite(),
+                    contratacion.getPuntuacion()
 
             );
             contratacionDTOs.add(dto);
@@ -73,4 +76,59 @@ public class HistorialController {
 
         return contratacionDTOs;
     }
+
+    @PutMapping("/contrataciones/{id}/calificar")
+    public ResponseEntity<?> calificarServicio(@PathVariable Long id, @RequestParam Float puntuacion, @RequestHeader("Authorization") String token) {
+        try {
+            String jwtToken = token.substring(7);
+            String email = JwtService.getUsernameFromToken(jwtToken);
+            UsuarioDemandante usuarioDemandante = (UsuarioDemandante) usuarioRepository.findOneByEmail(email)
+                    .orElseThrow(() -> new EntidadNoExiste("Usuario no encontrado"));
+
+            Contratacion contratacion = contratacionRepository.findById(id)
+                    .orElseThrow(() -> new EntidadNoExiste("Contratación no encontrada"));
+
+            // Verificar si el demandante de la contratación es el mismo que está autenticado
+            if (!contratacion.getDemandante().equals(usuarioDemandante)) {
+                return ResponseEntity.status(403).body("No tienes permiso para calificar este servicio.");
+            }
+
+            // Actualizar la puntuación de la contratación
+            contratacion.setPuntuacion(puntuacion);
+            contratacionRepository.save(contratacion);
+
+            return ResponseEntity.ok("Puntuación actualizada con éxito.");
+        } catch (Exception e) {
+            return ResponseEntity.status(403).body("Error al calificar el servicio: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/contrataciones/{id}/favorito")
+    public ResponseEntity<?> FavServicio(@PathVariable Long id, @RequestParam Boolean isFavorite, @RequestHeader("Authorization") String token) {
+        try {
+            String jwtToken = token.substring(7);
+            String email = JwtService.getUsernameFromToken(jwtToken);
+            UsuarioDemandante usuarioDemandante = (UsuarioDemandante) usuarioRepository.findOneByEmail(email)
+                    .orElseThrow(() -> new EntidadNoExiste("Usuario no encontrado"));
+
+            Contratacion contratacion = contratacionRepository.findById(id)
+                    .orElseThrow(() -> new EntidadNoExiste("Contratación no encontrada"));
+
+            // Verificar si el demandante de la contratación es el mismo que está autenticado
+            if (!contratacion.getDemandante().equals(usuarioDemandante)) {
+                return ResponseEntity.status(403).body("No tienes permiso para calificar este servicio.");
+            }
+
+            // Actualizar la puntuación de la contratación
+            contratacion.setIsFavorite(isFavorite);
+            contratacionRepository.save(contratacion);
+
+            return ResponseEntity.ok("Puntuación actualizada con éxito.");
+        } catch (Exception e) {
+            return ResponseEntity.status(403).body("Error al calificar el servicio: " + e.getMessage());
+        }
+    }
+
+
+
 }

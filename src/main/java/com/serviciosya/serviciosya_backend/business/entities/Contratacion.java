@@ -74,6 +74,13 @@ public class Contratacion {
     @OneToMany(mappedBy = "contratacion", cascade = CascadeType.ALL)
     private List<Notificacion> notifications = new ArrayList<>();
 
+    @Column(name = "puntuacion_demandante", nullable = true)
+    private Float puntuacion;
+
+    @Column(name = "isFavorite_demandante", nullable = true)
+    private Boolean isFavorite;
+
+
 
 
 
