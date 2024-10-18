@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface ServicioRepository extends CrudRepository<Servicio, Long> {
 
     Optional<Servicio> findOneById(Long id);
+    Optional<List<Servicio>> findAllByUsuarioOfertante(UsuarioOfertante usuarioOfertante);
+
 
 
 
