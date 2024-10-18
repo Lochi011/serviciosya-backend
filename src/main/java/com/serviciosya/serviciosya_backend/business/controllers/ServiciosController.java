@@ -80,6 +80,18 @@ public class ServiciosController {
         }
 
     }
+    @PostMapping("/borrar-servicios/")
+    public ResponseEntity<?> borrarServicio(@RequestBody Map<String, Object> payload) throws EntidadNoExiste {
+        try {
+            Long id = Long.valueOf(payload.get("id").toString());
+
+            servicioMgr.eliminarServicio(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
 
 
 }
