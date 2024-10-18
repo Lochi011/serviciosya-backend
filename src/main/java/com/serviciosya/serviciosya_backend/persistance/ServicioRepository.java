@@ -22,5 +22,5 @@ public interface ServicioRepository extends CrudRepository<Servicio, Long> {
 
     Optional<List<Servicio>> findAllByRubro(Rubro rubro);
 
-    Optional<List<Servicio>> findAllByUsuarioOfertante(UsuarioOfertante usuarioOfertante);
+
 }
