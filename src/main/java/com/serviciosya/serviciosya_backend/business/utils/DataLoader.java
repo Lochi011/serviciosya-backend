@@ -1,18 +1,18 @@
 package com.serviciosya.serviciosya_backend.business.utils;
 
 import com.serviciosya.serviciosya_backend.business.entities.*;
-import com.serviciosya.serviciosya_backend.business.managers.UsuarioMgr;
-import com.serviciosya.serviciosya_backend.persistance.RubroRepository;
-import com.serviciosya.serviciosya_backend.persistance.ServicioRepository;
-import com.serviciosya.serviciosya_backend.persistance.SolicitudRubroRepository;
-import com.serviciosya.serviciosya_backend.persistance.UsuarioRepository;
+import com.serviciosya.serviciosya_backend.persistance.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
+
+import static com.serviciosya.serviciosya_backend.business.entities.Contratacion.EstadoContratacion.PENDIENTE;
 
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -28,6 +28,9 @@ public class DataLoader implements CommandLineRunner {
 
     @Autowired
     private ServicioRepository servicioRepository;
+
+    @Autowired
+    private ContratacionRepository contratacionRepository;
 
 
     @Override
@@ -212,6 +215,21 @@ public class DataLoader implements CommandLineRunner {
 
             // Guardar el servicio en la base de datos
             servicioRepository.save(servicio);
+
+            Contratacion contratacion = Contratacion.builder()
+                    .demandante(demandante)
+                    .ofertante(ofertante)
+                    .servicio(servicio)
+                    .fechaContratacion( generarFechaAleatoria())
+                    .direccion(ofertante.getDireccion())
+                    .hora(String.valueOf(generarHoraAleatoria()))
+                    .comentario("Quiero contratar el servicio llamado " + servicio.getNombre())
+                    .estado(PENDIENTE)
+                    .apartamento(ofertante.getDireccion())
+                    .direccion(ofertante.getDireccion())
+                    .build();
+
+            contratacionRepository.save(contratacion);
         }
 
         Rubro rubroAutomovil = rubroRepository.findById(2L).orElseThrow(); // Asumiendo que el id del rubro "Automóvil" es 2
@@ -272,7 +290,7 @@ public class DataLoader implements CommandLineRunner {
                     .precio((int) generarPrecioAleatorio2())
                     .horaDesde("09:00")  // Hora de inicio fija o configurable
                     .horaHasta("18:00")  // Hora de fin fija o configurable
-                    .diasSeleccionados(Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes"))  // Días laborales
+                    .diasSeleccionados(Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sabadoo", "Domingo"))  // Días laborales
                     .duracionServicio(2 + new Random().nextInt(3))  // Duración del servicio entre 2 y 4 horas
                     .etiquetas(etiquetas)  // Asigna las etiquetas correspondientes
                     .usuarioOfertante(ofertante)  // Asigna el ofertante
@@ -282,7 +300,24 @@ public class DataLoader implements CommandLineRunner {
 
             // Guardar el servicio en la base de datos
             servicioRepository.save(servicio);
+
+            Contratacion contratacion = Contratacion.builder()
+                    .demandante(demandante)
+                    .ofertante(ofertante)
+                    .servicio(servicio)
+                    .fechaContratacion( generarFechaAleatoria())
+                    .direccion(ofertante.getDireccion())
+                    .hora(String.valueOf(generarHoraAleatoria()))
+                    .comentario("Quiero contratar el servicio llamado " + servicio.getNombre())
+                    .estado(PENDIENTE)
+                    .apartamento(ofertante.getDireccion())
+                    .direccion(ofertante.getDireccion())
+                    .build();
+
+            contratacionRepository.save(contratacion);
+
         }
+
     }
 
     // Función para generar un precio aleatorio entre $30 y $500
@@ -296,6 +331,34 @@ public class DataLoader implements CommandLineRunner {
     private static double generarPrecioAleatorio() {
         Random random = new Random();
         return 30 + (200 - 30) * random.nextDouble(); // Precio entre $30 y $200
+    }
+
+
+
+    public LocalTime generarHoraAleatoria() {
+        // Definir el rango de horas (entre las 08:00 y las 18:00)
+        int horaInicio = 8;  // 8 AM
+        int horaFin = 18;    // 6 PM
+
+        // Generar una hora aleatoria entre la hora de inicio y fin
+        int randomHour = ThreadLocalRandom.current().nextInt(horaInicio, horaFin);
+        int randomMinute = ThreadLocalRandom.current().nextInt(0, 60);
+
+        return LocalTime.of(randomHour, randomMinute);
+    }
+
+
+    public LocalDate generarFechaAleatoria() {
+        // Definir el rango de fechas (hoy hasta 30 días después)
+        LocalDate fechaInicio = LocalDate.now();
+        LocalDate fechaFin = fechaInicio.plusDays(30);
+
+        long startEpochDay = fechaInicio.toEpochDay();
+        long endEpochDay = fechaFin.toEpochDay();
+
+        long randomDay = ThreadLocalRandom.current().nextLong(startEpochDay, endEpochDay);
+
+        return LocalDate.ofEpochDay(randomDay);
     }
 
 
