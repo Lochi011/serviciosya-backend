@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -35,6 +36,7 @@ public class Servicio {
 
     private int duracionServicio; // Almacena la duración del servicio en minutos o en la unidad que decidas
 
+    private Date fechaCreacion;
 
     // Persistencia de una lista de etiquetas
     @ElementCollection

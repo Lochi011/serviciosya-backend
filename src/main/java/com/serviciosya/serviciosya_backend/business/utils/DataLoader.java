@@ -3,11 +3,13 @@ package com.serviciosya.serviciosya_backend.business.utils;
 import com.serviciosya.serviciosya_backend.business.entities.*;
 import com.serviciosya.serviciosya_backend.business.managers.UsuarioMgr;
 import com.serviciosya.serviciosya_backend.persistance.RubroRepository;
+import com.serviciosya.serviciosya_backend.persistance.ServicioRepository;
 import com.serviciosya.serviciosya_backend.persistance.SolicitudRubroRepository;
 import com.serviciosya.serviciosya_backend.persistance.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -24,10 +26,17 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     private SolicitudRubroRepository SolicitudRubroRepository;
 
+    @Autowired
+    private ServicioRepository servicioRepository;
 
 
     @Override
     public void run(String... args) throws Exception {
+
+        if (usuarioRepository.existsByCedula(12345678L)) {
+            System.out.println("Usuario de prueba ya existe. No se ejecuta el DataLoader, borre este usuario o la base de datos completa para ejecutar el data loader");
+            return;
+        }
 
         UsuarioDemandante demandante = new UsuarioDemandante(
                 12345678L,
@@ -142,11 +151,153 @@ public class DataLoader implements CommandLineRunner {
             contador++;
         }
 
+        Rubro rubroLimpieza = rubroRepository.findById(1L).orElseThrow(); // Asumiendo que el id del rubro "Limpieza" es 1
 
+        // Lista de etiquetas para servicios de limpieza
+        List<String> etiquetasLimpieza = Arrays.asList(
+                "Limpieza profunda",
+                "Limpieza de oficina",
+                "Limpieza de hogar",
+                "Limpieza de vidrios",
+                "Limpieza de alfombras",
+                "Otros"
+        );
 
+        // Lista de nombres de servicios únicos
+        List<String> nombresServicios = Arrays.asList(
+                "Limpieza de vidrios y ventanas",
+                "Limpieza profunda de baños y cocinas",
+                "Limpieza de alfombras y tapicería",
+                "Limpieza de oficinas corporativas",
+                "Limpieza general del hogar",
+                "Limpieza de exteriores y jardines",
+                "Desinfección y control de plagas",
+                "Limpieza por horas en hogares"
+        );
 
+        // Usaremos la cantidad exacta de etiquetas + 2 servicios adicionales
+        int numServicios = etiquetasLimpieza.size() + 2;
 
+        // Iterar sobre el número de servicios
+        for (int i = 0; i < numServicios; i++) {
+            String nombreServicio;
+            List<String> etiquetas;
 
+            // Asignar un nombre de servicio y etiquetas correspondientes
+            if (i < etiquetasLimpieza.size()) {
+                // Un servicio para cada etiqueta
+                nombreServicio = nombresServicios.get(i);
+                etiquetas = Arrays.asList(etiquetasLimpieza.get(i)); // Asigna la etiqueta específica
+            } else {
+                // Servicios adicionales con etiquetas generales
+                nombreServicio = nombresServicios.get(i);
+                etiquetas = Arrays.asList("Otros"); // Etiqueta "Otros" para servicios adicionales
+            }
 
+            // Generar el servicio
+            Servicio servicio = Servicio.builder()
+                    .nombre(nombreServicio)
+                    .descripcion("Descripción del servicio de " + nombreServicio)
+                    .precio((int) generarPrecioAleatorio())
+                    .horaDesde("09:00")  // Hora de inicio fija o configurable
+                    .horaHasta("18:00")  // Hora de fin fija o configurable
+                    .diasSeleccionados(Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes"))  // Días laborales
+                    .duracionServicio(60 + new Random().nextInt(60))  // Duración del servicio entre 2 y 4 horas
+                    .etiquetas(etiquetas)  // Asigna las etiquetas correspondientes
+                    .usuarioOfertante(ofertante)  // Asigna el ofertante
+                    .rubro(rubroLimpieza)  // Rubro de limpieza
+                    .fechaCreacion(new Date())  // Fecha de creación actual
+                    .descripcion("Descripción del servicio de " + nombreServicio)
+                    .build();
+
+            // Guardar el servicio en la base de datos
+            servicioRepository.save(servicio);
+        }
+
+        Rubro rubroAutomovil = rubroRepository.findById(2L).orElseThrow(); // Asumiendo que el id del rubro "Automóvil" es 2
+
+        // Lista de etiquetas para servicios de automóvil
+        List<String> etiquetasAutomovil = Arrays.asList(
+                "Lavado",
+                "Pintura",
+                "Motor",
+                "Cambio de aceite",
+                "Neumáticos",
+                "Frenos",
+                "Suspensión",
+                "Alineación y balanceo",
+                "Batería",
+                "Aire acondicionado",
+                "Otros"
+        );
+
+        // Lista de nombres de servicios únicos para automóvil
+        List<String> nombresServicios2 = Arrays.asList(
+                "Lavado completo de vehículo",
+                "Pintura de carrocería",
+                "Revisión y ajuste del motor",
+                "Cambio de aceite y filtro",
+                "Cambio de neumáticos",
+                "Revisión y ajuste de frenos",
+                "Reparación de suspensión",
+                "Alineación y balanceo",
+                "Revisión de batería y sistema eléctrico",
+                "Revisión y recarga de aire acondicionado",
+                "Otros servicios automotrices generales"
+        );
+
+        // Número de servicios a crear: 1 por etiqueta más 2 adicionales (mínimo 13 servicios)
+        int numServicios2 = etiquetasAutomovil.size() + 2;
+
+        // Iterar sobre el número de servicios
+        for (int i = 0; i < numServicios2; i++) {
+            String nombreServicio;
+            List<String> etiquetas;
+
+            // Asignar un nombre de servicio y etiquetas correspondientes
+            if (i < etiquetasAutomovil.size()) {
+                // Un servicio para cada etiqueta
+                nombreServicio = nombresServicios2.get(i);
+                etiquetas = Arrays.asList(etiquetasAutomovil.get(i)); // Asigna la etiqueta específica
+            } else {
+                // Servicios adicionales con etiquetas generales
+                nombreServicio = "Servicio adicional de automóvil " + (i - etiquetasAutomovil.size() + 1);
+                etiquetas = Arrays.asList("Otros"); // Etiqueta "Otros" para servicios adicionales
+            }
+
+            // Crear el servicio para Automóvil
+            Servicio servicio = Servicio.builder()
+                    .nombre(nombreServicio)
+                    .descripcion("Descripción del servicio de " + nombreServicio)
+                    .precio((int) generarPrecioAleatorio2())
+                    .horaDesde("09:00")  // Hora de inicio fija o configurable
+                    .horaHasta("18:00")  // Hora de fin fija o configurable
+                    .diasSeleccionados(Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes"))  // Días laborales
+                    .duracionServicio(2 + new Random().nextInt(3))  // Duración del servicio entre 2 y 4 horas
+                    .etiquetas(etiquetas)  // Asigna las etiquetas correspondientes
+                    .usuarioOfertante(ofertante)  // Asigna el ofertante
+                    .rubro(rubroAutomovil)  // Rubro de Automóvil
+                    .fechaCreacion(new Date())  // Fecha de creación actual
+                    .build();
+
+            // Guardar el servicio en la base de datos
+            servicioRepository.save(servicio);
+        }
     }
+
+    // Función para generar un precio aleatorio entre $30 y $500
+    private static double generarPrecioAleatorio2() {
+        Random random = new Random();
+        return 30 + (500 - 30) * random.nextDouble(); // Precio entre $30 y $500
+    }
+
+
+    // Función para generar un precio aleatorio entre $30 y $200
+    private static double generarPrecioAleatorio() {
+        Random random = new Random();
+        return 30 + (200 - 30) * random.nextDouble(); // Precio entre $30 y $200
+    }
+
+
 }
+
