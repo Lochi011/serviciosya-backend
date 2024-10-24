@@ -229,7 +229,7 @@ public class ContratacionMgr {
 
     public List<ContratacionResumenDTO> obtenerContratacionesResumenPorOfertante(String email) throws EntidadNoExiste {
         UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneByEmail(email).orElseThrow(() -> new EntidadNoExiste("Demandante no encontrado con email: " + email));
-        List<Contratacion> contrataciones = contratacionRepository.findAllByOfertanteAndEstadoNot(ofertante, Contratacion.EstadoContratacion.RECHAZADA).orElseThrow(() -> new EntidadNoExiste("No se encontraron contrataciones para el demandante con email: " + email));
+        List<Contratacion> contrataciones = contratacionRepository.findAllByOfertante(ofertante).orElseThrow(() -> new EntidadNoExiste("No se encontraron contrataciones para el demandante con email: " + email));
         return contrataciones.stream().
                 map(ContratacionMapper::toResumenDto).
                 collect(Collectors.toList());
