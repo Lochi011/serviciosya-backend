@@ -3,16 +3,14 @@ package com.serviciosya.serviciosya_backend.business.utils;
 import com.serviciosya.serviciosya_backend.business.entities.*;
 import com.serviciosya.serviciosya_backend.business.managers.UsuarioMgr;
 import com.serviciosya.serviciosya_backend.persistance.RubroRepository;
+import com.serviciosya.serviciosya_backend.persistance.SolicitudRubroRepository;
 import com.serviciosya.serviciosya_backend.persistance.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -22,6 +20,9 @@ public class DataLoader implements CommandLineRunner {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private SolicitudRubroRepository SolicitudRubroRepository;
 
 
 
@@ -111,7 +112,40 @@ public class DataLoader implements CommandLineRunner {
             } else {
 //                System.out.println("Rubro ya existe: " + nombre);
             }
+
         });
+
+        Iterable<Rubro> rubros = rubroRepository.findAll();
+        int totalRubros = ((Collection<?>) rubros).size(); // Convertimos a Collection para obtener el tamaño
+        int mitad = totalRubros / 2;
+        int contador = 0;
+
+        for (Rubro rubro : rubros) {
+            SolicitudRubro.EstadoSolicitud estado;
+
+            if (contador < mitad) {
+                estado = SolicitudRubro.EstadoSolicitud.APROBADA;  // Primera mitad aceptada
+            } else {
+                estado = SolicitudRubro.EstadoSolicitud.PENDIENTE; // Segunda mitad pendiente
+            }
+
+            SolicitudRubro solicitud = SolicitudRubro.builder()
+                    .usuarioOfertante(ofertante)
+                    .rubro(rubro)
+                    .estado(estado)
+                    .fechaCreacion(new Date())
+                    .build();
+
+            SolicitudRubroRepository.save(solicitud);
+
+
+            contador++;
+        }
+
+
+
+
+
 
 
     }

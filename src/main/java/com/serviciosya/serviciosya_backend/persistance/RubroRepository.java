@@ -12,4 +12,6 @@ public interface RubroRepository extends CrudRepository<Rubro, Long> {
     Optional<Rubro> findOneByNombre(String nombre);
 
     boolean existsByNombre(String nombre);
+
+    Iterable<Rubro> findAll();
 }
