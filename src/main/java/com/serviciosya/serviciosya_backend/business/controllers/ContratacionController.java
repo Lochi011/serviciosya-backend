@@ -129,5 +129,20 @@ public class ContratacionController {
         }
     }
 
+    @PostMapping("conctactar/{id}")
+    public ResponseEntity<?> contactarContratacion(@PathVariable Long id, @RequestBody Map<String, Object> payload) {
+        try {
+            String mensaje = (String) payload.get("mensaje");
+            String telefono = (String) payload.get("telefono");
+            String email = (String) payload.get("email");
+            contratacionMgr.contactarContratacion(id, mensaje, telefono, email);
+            return ResponseEntity.ok("Contratación contactada exitosamente.");
+        } catch (EntidadNoExiste e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno al contactar la contratación.");
+        }
+    }
+
 
 }

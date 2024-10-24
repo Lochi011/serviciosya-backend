@@ -42,6 +42,8 @@ public class Contratacion {
     @Column(nullable = true)
     private LocalDate fechaContratacion;
 
+    private RespuestaOfertante respuestaOfertante = null;
+
 
     @Enumerated(EnumType.STRING)
 
@@ -82,6 +84,20 @@ public class Contratacion {
     @Column(name = "isFavorite_demandante", nullable = true)
     private Boolean isFavorite;
 
+    @Builder
+    public static class RespuestaOfertante{
+        private String mensaje;
+        private String telefono;
+
+        private String email;
+
+        public RespuestaOfertante(String mensaje, String telefono, String email) {
+            this.mensaje = mensaje;
+            this.telefono = telefono;
+            this.email = email;
+        }
+
+    }
 
 
 

@@ -185,14 +185,30 @@ public class ContratacionMgr {
         return contratacionRepository.findAllByOfertante(ofertante).orElseThrow(() -> new EntidadNoExiste("No se encontraron contrataciones para el ofertante con email: " + email));
     }
 
-    public void contactarContratacion(Long idContratacion) throws EntidadNoExiste {
-        Contratacion contratacion = contratacionRepository.findById(idContratacion).orElseThrow(() -> new EntidadNoExiste("Contratacion no encontrada con id: " + idContratacion));
-        contratacion.setEstado(Contratacion.EstadoContratacion.CONTACTADA);
-        contratacionRepository.save(contratacion);
-    }
+        public void contactarContratacion(Long idContratacion, String mensaje, String telefono, String email) throws EntidadNoExiste, InvalidInformation {
+
+            if (mensaje == null){
+                throw new InvalidInformation("No hay mensaje en respuesta");
+            }
+            if (telefono == null && email == null){
+                throw new InvalidInformation("No hay telefono ni email en respuesta");
+            }
+
+            Contratacion contratacion = contratacionRepository.findById(idContratacion).orElseThrow(() -> new EntidadNoExiste("Contratacion no encontrada con id: " + idContratacion));
+            contratacion.setEstado(Contratacion.EstadoContratacion.CONTACTADA);
+            Contratacion.RespuestaOfertante respuestaOfertante = Contratacion.RespuestaOfertante.builder().
+                    mensaje(mensaje).
+                    telefono(telefono).
+                    email(email).
+                    build();
+
+            contratacion.setRespuestaOfertante(respuestaOfertante);
+
+            contratacionRepository.save(contratacion);
+        }
 
 
-    public void aceptarContratacion(Long idContratacion) throws EntidadNoExiste {
+    public void aceptarContratacion(Long idContratacion, String mensaje, String ) throws EntidadNoExiste {
         Contratacion contratacion = contratacionRepository.findById(idContratacion).orElseThrow(() -> new EntidadNoExiste("Contratacion no encontrada con id: " + idContratacion));
         contratacion.setEstado(Contratacion.EstadoContratacion.ACEPTADA);
         contratacionRepository.save(contratacion);

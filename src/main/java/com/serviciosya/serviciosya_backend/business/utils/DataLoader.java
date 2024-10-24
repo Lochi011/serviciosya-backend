@@ -112,5 +112,7 @@ public class DataLoader implements CommandLineRunner {
 //                System.out.println("Rubro ya existe: " + nombre);
             }
         });
+
+
     }
 }
