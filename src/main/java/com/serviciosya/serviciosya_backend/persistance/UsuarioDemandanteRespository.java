@@ -11,5 +11,7 @@ public interface UsuarioDemandanteRespository extends CrudRepository<UsuarioDema
 
     Optional<UsuarioDemandante> findOneById(Long id);
 
+    Optional<UsuarioDemandante> findOneByEmail(String email);
+
 }
 

@@ -10,10 +10,12 @@ import com.serviciosya.serviciosya_backend.persistance.RubroRepository;
 import com.serviciosya.serviciosya_backend.persistance.SolicitudRubroRepository;
 import com.serviciosya.serviciosya_backend.persistance.UsuarioOfertanteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +76,8 @@ public class SolicitudRubroMgr {
             }
             else if (solicitudExistente.get().getEstado() == SolicitudRubro.EstadoSolicitud.RECHAZADA) {
                 throw new InvalidInformation("Usted ya ha sido rechazado para publicar servicios en el rubro: " + nombreRubro);
+            } else if (solicitudExistente.get().getEstado() == SolicitudRubro.EstadoSolicitud.RECHAZADA_EXP) {
+                solicitudExistente.get().setEstado(SolicitudRubro.EstadoSolicitud.PENDIENTE);
             }
 
         }
@@ -159,6 +163,23 @@ public class SolicitudRubroMgr {
     public List<SolicitudRubro> obtenerSolicitudesPorOfertante(Long cedula) throws EntidadNoExiste {
         return solicitudRubroRepository.findAllByUsuarioOfertanteCedula(cedula)
                 .orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado."));
+    }
+
+    @Scheduled(cron = "0 0 0 * * ?") // Ejecución diaria a medianoche
+    public void actualizarSolicitudesExpiradas() {
+        List<SolicitudRubro> solicitudesRechazadas = solicitudRubroRepository.findAllByEstado(SolicitudRubro.EstadoSolicitud.RECHAZADA);
+
+
+        solicitudesRechazadas.forEach(solicitud -> {
+            Date fechaResolucion = solicitud.getFechaResolucion();
+            Date fechaRehabilitacion = new Date(fechaResolucion.getTime() + 3 * 24 * 60 * 60 * 1000); // 3 días en milisegundos
+
+            if (fechaRehabilitacion.before(new Date())) {
+                solicitud.setEstado(SolicitudRubro.EstadoSolicitud.RECHAZADA_EXP);
+                solicitudRubroRepository.save(solicitud);
+            }
+
+        });
     }
 
 

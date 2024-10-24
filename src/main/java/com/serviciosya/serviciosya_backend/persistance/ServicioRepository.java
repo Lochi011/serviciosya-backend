@@ -14,7 +14,7 @@ public interface ServicioRepository extends CrudRepository<Servicio, Long> {
 
     Optional<Servicio> findOneById(Long id);
 
-
+    Optional<List<Servicio>> findAllByUsuarioOfertante(UsuarioOfertante usuarioOfertante);
 
     boolean existsByNombreAndDescripcionAndPrecioAndHoraDesdeAndHoraHastaAndUsuarioOfertanteAndRubro(String tituloServicio, String descripcion, int precio, String horaDesde, String horaHasta, UsuarioOfertante ofertante, Rubro rubro);
 

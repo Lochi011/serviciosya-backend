@@ -1,9 +1,11 @@
 package com.serviciosya.serviciosya_backend.business.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -34,6 +36,7 @@ public class Servicio {
 
     private int duracionServicio; // Almacena la duración del servicio en minutos o en la unidad que decidas
 
+    private Date fechaCreacion;
 
     // Persistencia de una lista de etiquetas
     @ElementCollection
@@ -43,9 +46,10 @@ public class Servicio {
 
     @ManyToOne(fetch = FetchType.LAZY) // Usar LAZY para mejorar el rendimiento si es necesario
     @JoinColumn(name = "usuario_ofertante_id")
+    @JsonBackReference
     private UsuarioOfertante usuarioOfertante;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rubro_id") // Cambiado de sub_rubro_id a rubro_id
     private Rubro rubro; // Cambiado de SubRubro a Rubro
 

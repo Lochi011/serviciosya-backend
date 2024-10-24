@@ -1,5 +1,6 @@
 package com.serviciosya.serviciosya_backend.business.managers;
 
+import com.serviciosya.serviciosya_backend.business.entities.NotificacionDemandante;
 import com.serviciosya.serviciosya_backend.business.entities.Rubro;
 import com.serviciosya.serviciosya_backend.business.entities.Servicio;
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioOfertante;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -136,6 +138,54 @@ public class ServicioMgr {
                 .map(ServicioMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+
+    public List<ServicioDto> obtenerServiciosDtoPorOfertante(String email) throws EntidadNoExiste {
+        UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneByEmail(email)
+                .orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado con el email: " + email));
+
+        List<Servicio> servicios = servicioRepository.findAllByUsuarioOfertante(ofertante)
+                .orElseThrow(() -> new EntidadNoExiste("NO_SERVICES", "No se encontraron servicios para el ofertante: " + email));
+
+        return servicios.stream()
+                .map(ServicioMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+
+    public List<ServicioDto> obtenerServiciosDeUnUsuario (Long id) throws EntidadNoExiste {
+
+        UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneById(id).orElseThrow(() -> new EntidadNoExiste("No se encontro usuario con id: " + id)) ;
+        Optional<List<Servicio>> servicios = servicioRepository.findAllByUsuarioOfertante(ofertante);
+        List<ServicioDto> serviciosDto = servicios.get().stream().map(ServicioMapper::toDto).collect(Collectors.toList());
+
+        return serviciosDto;
+    }
+
+    public  Servicio modificarServicio(Long id,String nombre, String descripcion, int precio, String horaDesde, String horaHasta, int duracion, List<String> etiquetas, List<String> diasSeleccionados) throws EntidadNoExiste {
+        Servicio servicio = servicioRepository.findOneById(id).orElseThrow(() -> new EntidadNoExiste("No se encontro servicio con id: " + id));
+        servicio.setNombre(nombre);
+        servicio.setDescripcion(descripcion);
+        servicio.setPrecio(precio);
+        servicio.setHoraDesde(horaDesde);
+        servicio.setHoraHasta(horaHasta);
+        servicio.setDuracionServicio(duracion);
+        servicio.setEtiquetas(etiquetas);
+        servicio.setDiasSeleccionados(diasSeleccionados);
+        servicioRepository.save(servicio);
+
+
+        return servicio;
+
+    }
+    public Servicio eliminarServicio(Long id ) throws EntidadNoExiste{
+        Servicio servicio = servicioRepository.findOneById(id).orElseThrow(() -> new EntidadNoExiste("No se encontro servicio con id:"  + id));
+        servicioRepository.delete(servicio);
+
+        return servicio;
+    }
+
+
 
 
 

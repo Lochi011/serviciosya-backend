@@ -52,6 +52,7 @@ public class SolicitudRubro {
     public enum EstadoSolicitud {
         PENDIENTE,
         APROBADA,
-        RECHAZADA
+        RECHAZADA,
+        RECHAZADA_EXP
     }
 }

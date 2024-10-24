@@ -1,5 +1,6 @@
 package com.serviciosya.serviciosya_backend.business.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -12,7 +13,6 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @SuperBuilder
 @Entity
 @DiscriminatorValue("DEMANDANTE")
@@ -31,11 +31,25 @@ public class UsuarioDemandante extends Usuario {
     private List<Reseña> reseñas;
 
     @OneToMany(mappedBy = "demandante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Contratacion> contrataciones;
+
+    @OneToMany(mappedBy = "usuarioDemandante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<NotificacionDemandante> notificaciones;
+
 
 
     public UsuarioDemandante(Long cedula, String nombre, String apellido, String direccion, String email, String telefono, String contrasena, Date fechaCreacion, String genero, Date fechaNacimiento) {
         super(cedula, nombre, apellido, direccion, email, telefono, contrasena, fechaCreacion, genero, fechaNacimiento);
+        this.contrataciones = new ArrayList<>();
+        this.pagos = new ArrayList<>();
+        this.tarjetas = new ArrayList<>();
+        this.reseñas = new ArrayList<>() {
+
+        };
+
+    }
+    public UsuarioDemandante(){
         this.contrataciones = new ArrayList<>();
         this.pagos = new ArrayList<>();
         this.tarjetas = new ArrayList<>();

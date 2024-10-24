@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Time;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -41,22 +42,32 @@ public class Contratacion {
     @Column(nullable = true)
     private LocalDate fechaContratacion;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "respuesta_ofertante_id")  // Nombre de la columna en la tabla Contratacion
+    private RespuestaOfertante respuestaOfertante;
+
+
 
     @Enumerated(EnumType.STRING)
+
 
     private EstadoContratacion estado;
 
     public enum EstadoContratacion {
         PENDIENTE,
+        CONTACTADA,
         ACEPTADA,
         RECHAZADA,
         PAGADA,
         TERMINADA;
     }
 
+    private String justificacionRechazo;
+    
 
 
-    @Column(name = "direccion_servicio", nullable = false)
+
+    @Column(name = "direccion", nullable = false)
     private String direccion;
 
     @Column(name = "apartamento")
@@ -67,6 +78,20 @@ public class Contratacion {
 
     @Column(name= "comentario", nullable = false)
     private String comentario;
+
+    @OneToMany(mappedBy = "contratacion", cascade = CascadeType.ALL)
+    private List<Notificacion> notifications = new ArrayList<>();
+
+    @Column(name = "puntuacion_demandante", nullable = true)
+    private Float puntuacion;
+
+    @Column(name = "isFavorite_demandante", nullable = true)
+    private Boolean isFavorite;
+
+
+
+
+
 
 
 

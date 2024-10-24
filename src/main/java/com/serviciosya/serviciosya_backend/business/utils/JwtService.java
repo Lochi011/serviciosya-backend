@@ -38,7 +38,7 @@ public class JwtService {
                 .claim("role",usuario.getRole())
                 .subject(usuario.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis()+1000*60*24))
+                .expiration(new Date(System.currentTimeMillis()+86400000 ))
                 .signWith( getKey())
                 .compact();
     }
@@ -47,7 +47,7 @@ public class JwtService {
         return Jwts.builder()
                 .setSubject(email)  // Usamos el email como subject
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1600000))
+                .setExpiration(new Date(System.currentTimeMillis() + 1600000000))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)  // Usamos la misma clave secreta
                 .compact();
     }
@@ -91,5 +91,9 @@ public class JwtService {
     private boolean isTokenExpired(String token){
 
         return getExpiration(token).before(new Date());
+    }
+
+    public Long getUserIdFromToken(String token) {
+        return Long.parseLong(getClaim(token, Claims::getId));
     }
 }

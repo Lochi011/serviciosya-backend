@@ -29,6 +29,7 @@ public class Rubro {
 
 
     @OneToMany(mappedBy = "rubro", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private List<Servicio> servicios; // Lista de servicios relacionados con este rubro
 
 
@@ -43,5 +44,6 @@ public class Rubro {
             inverseJoinColumns = @JoinColumn(name = "usuario_ofertante_id")
     )
     @JsonIgnore // Evitar la serialización en bucle con usuariosOfertantes
+    @JsonBackReference
     private List<UsuarioOfertante> usuariosOfertantes;
 }

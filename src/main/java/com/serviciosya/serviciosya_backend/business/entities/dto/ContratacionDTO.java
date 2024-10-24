@@ -4,19 +4,23 @@ import java.time.LocalDate;
 
 public class ContratacionDTO {
 
+    private Long id_contratacion;
     private String nombreServicio;
     private int precioServicio;
     private String nombreOfertante;
     private String apellidoOfertante;
     private LocalDate fechaContratacion;
-
     private String hora;
-
     private String estado;
+
+    private Boolean isFavorite;
+
+    private Float puntuacion;
 
 
     // Constructor
-    public ContratacionDTO(String nombreServicio, int precioServicio, String nombreOfertante, String apellidoOfertante, LocalDate fechaContratacion, String hora, String estado) {
+    public ContratacionDTO(Long id, String nombreServicio, int precioServicio, String nombreOfertante, String apellidoOfertante, LocalDate fechaContratacion, String hora, String estado, Boolean isFavorite, Float puntuacion) {
+        this.id_contratacion = id;
         this.nombreServicio = nombreServicio;
         this.precioServicio = precioServicio;
         this.nombreOfertante = nombreOfertante;
@@ -24,9 +28,37 @@ public class ContratacionDTO {
         this.fechaContratacion = fechaContratacion;
         this.hora = hora;
         this.estado = estado;
+        this.isFavorite = isFavorite;
+        this.puntuacion = puntuacion;
     }
 
     // Getters y Setters
+
+
+    public Boolean getFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(Boolean favorite) {
+        isFavorite = favorite;
+    }
+
+    public Float getPuntuacion() {
+        return puntuacion;
+    }
+
+    public void setPuntuacion(Float puntuacion) {
+        this.puntuacion = puntuacion;
+    }
+
+    public Long getId_contratacion() {
+        return id_contratacion;
+    }
+
+    public void setId_contratacion(Long id_contratacion) {
+        this.id_contratacion = id_contratacion;
+    }
+
     public String getNombreServicio() {
         return nombreServicio;
     }

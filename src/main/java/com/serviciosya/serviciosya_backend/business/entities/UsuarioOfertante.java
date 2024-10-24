@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import javax.management.Notification;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,6 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @SuperBuilder
 @Entity
 @DiscriminatorValue("OFERTANTE")
@@ -32,7 +32,12 @@ public class UsuarioOfertante extends Usuario {
     private List<SolicitudRubro> solicitudesRubro;
 
     @OneToMany(mappedBy = "ofertante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Contratacion> contrataciones;
+
+    @OneToMany(mappedBy = "usuarioOfertante", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Notificacion> notificaciones;
 
     public void agregarRubro(Rubro rubro) {
         if (this.rubros == null) {
@@ -56,5 +61,16 @@ public class UsuarioOfertante extends Usuario {
         this.servicios = new ArrayList<>();
         this.rubros = new ArrayList<>();
         this.solicitudesRubro = new ArrayList<>();
+        this.contrataciones = new ArrayList<>();
+        this.notificaciones = new ArrayList<>();
+    }
+
+    public UsuarioOfertante(){
+        this.servicios = new ArrayList<>();
+        this.rubros = new ArrayList<>();
+        this.solicitudesRubro = new ArrayList<>();
+        this.contrataciones = new ArrayList<>();
+        this.notificaciones = new ArrayList<>();
+
     }
 }
