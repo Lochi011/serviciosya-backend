@@ -35,7 +35,7 @@ public class NotificacionDemandante {
 
     private  boolean esMensaje;
 
-    private boolean esRechazo;
+    //private boolean esRechazo;
 
     private LocalDateTime fechaCreacion;
 

@@ -1,10 +1,8 @@
 package com.serviciosya.serviciosya_backend.business.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Builder
@@ -14,6 +12,8 @@ import lombok.*;
 @NoArgsConstructor
 public class RespuestaOfertante {
     @Id
+    @GeneratedValue
+    @GenericGenerator(name = "reseña_id", strategy = "increment")
     private Long id;
 
     private String mensaje;
