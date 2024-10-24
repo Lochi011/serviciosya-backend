@@ -2,6 +2,7 @@ package com.serviciosya.serviciosya_backend.business.managers;
 
 
 import com.serviciosya.serviciosya_backend.business.entities.*;
+import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionDetalles2DTO;
 import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionDetallesDTO;
 import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionResumenDTO;
 import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionResumenDemandanteDTO;
@@ -184,6 +185,11 @@ public class ContratacionMgr {
         return contratacionRepository.findAllByOfertante(ofertante).orElseThrow(() -> new EntidadNoExiste("No se encontraron contrataciones para el ofertante con email: " + email));
     }
 
+    public void contactarContratacion(Long idContratacion) throws EntidadNoExiste {
+        Contratacion contratacion = contratacionRepository.findById(idContratacion).orElseThrow(() -> new EntidadNoExiste("Contratacion no encontrada con id: " + idContratacion));
+        contratacion.setEstado(Contratacion.EstadoContratacion.CONTACTADA);
+        contratacionRepository.save(contratacion);
+    }
 
 
     public void aceptarContratacion(Long idContratacion) throws EntidadNoExiste {
@@ -238,6 +244,11 @@ public class ContratacionMgr {
     public ContratacionDetallesDTO obtenerDetallesContratacionDTO(Long id) throws EntidadNoExiste {
         Contratacion contratacion = contratacionRepository.findById(id).orElseThrow(() -> new EntidadNoExiste("Contratacion no encontrada con id: " + id));
         return ContratacionMapper.convertirADetallesDTO(contratacion);
+    }
+
+    public ContratacionDetalles2DTO obtenerDetallesContratacion2DTO(Long id) throws EntidadNoExiste {
+        Contratacion contratacion = contratacionRepository.findById(id).orElseThrow(() -> new EntidadNoExiste("Contratacion no encontrada con id: " + id));
+        return ContratacionMapper.convertirADetalles2DTO(contratacion);
     }
 
     public List<ContratacionResumenDemandanteDTO> obtenerContratacionesResumenPorDemandante(String emailDemandante) throws EntidadNoExiste {

@@ -1,6 +1,7 @@
 package com.serviciosya.serviciosya_backend.business.entities.mapper;
 
 import com.serviciosya.serviciosya_backend.business.entities.Contratacion;
+import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionDetalles2DTO;
 import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionDetallesDTO;
 import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionResumenDTO;
 import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionResumenDemandanteDTO;
@@ -33,6 +34,24 @@ public class ContratacionMapper {
                 .apellidoDemandante(contratacion.getDemandante().getApellido())
                 .emailDemandante(contratacion.getDemandante().getEmail())
                 .direccion(contratacion.getDireccion())
+                .apartamento(contratacion.getApartamento())
+                .fechaContratacion(contratacion.getFechaContratacion())
+                .hora(contratacion.getHora())
+                .comentario(contratacion.getComentario())
+                .nombreServicio(contratacion.getServicio().getNombre())
+                .precioServicio(contratacion.getServicio().getPrecio())
+                .estado(contratacion.getEstado().toString())
+                .nombreRubro(contratacion.getServicio().getRubro().getNombre())
+                .build();
+    }
+
+    public static ContratacionDetalles2DTO convertirADetalles2DTO(Contratacion contratacion) {
+        return ContratacionDetalles2DTO.builder()
+                .id(contratacion.getId())
+                .nombreOfertante(contratacion.getOfertante().getNombre())
+                .apellidoOfertante(contratacion.getOfertante().getApellido())
+                .emailOfertante(contratacion.getOfertante().getEmail())
+                .direccion(contratacion.getOfertante().getDireccion())
                 .apartamento(contratacion.getApartamento())
                 .fechaContratacion(contratacion.getFechaContratacion())
                 .hora(contratacion.getHora())

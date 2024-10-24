@@ -49,6 +49,7 @@ public class Contratacion {
 
     public enum EstadoContratacion {
         PENDIENTE,
+        CONTACTADA,
         ACEPTADA,
         RECHAZADA,
         PAGADA,

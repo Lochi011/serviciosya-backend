@@ -104,6 +104,17 @@ public class ContratacionController {
         }
     }
 
+    @GetMapping("/detalles-contratacion-demandante/{id}")
+    public ResponseEntity<?> obtenerDetallesContratacionDemandante(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(contratacionMgr.obtenerDetallesContratacion2DTO(id));
+        } catch (EntidadNoExiste e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno al obtener los detalles de la contratación.");
+        }
+    }
+
     @PostMapping("/rechazar/{id}")
     public ResponseEntity<?> rechazarContratacion(@PathVariable Long id, @RequestBody Map<String, Object> payload) {
 
