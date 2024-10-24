@@ -20,7 +20,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 import static com.serviciosya.serviciosya_backend.business.entities.Contratacion.EstadoContratacion.PENDIENTE;
+
 
 @Service
 public class ContratacionMgr {
@@ -38,6 +43,10 @@ public class ContratacionMgr {
     private NotificacionRepository notificacionRepository;
     @Autowired
     private NotificacionDemandanteRepository notificacionDemandanteRepository;
+    @Autowired
+    private RespuestaOfertanteRepository respuestaOfertanteRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(ServicioMgr.class);
 
 //    public void crearContratacion(Long idDemandante, Long idOfertante, LocalDate fechaServicio, String direccion, String apartamento, String hora, String comentario, Long idServicio) throws EntidadNoExiste, InvalidInformation {
 //        try {
@@ -185,30 +194,50 @@ public class ContratacionMgr {
         return contratacionRepository.findAllByOfertante(ofertante).orElseThrow(() -> new EntidadNoExiste("No se encontraron contrataciones para el ofertante con email: " + email));
     }
 
-        public void contactarContratacion(Long idContratacion, String mensaje, String telefono, String email) throws EntidadNoExiste, InvalidInformation {
+    public void contactarContratacion(Long idContratacion, String mensaje, String telefono, String email) throws EntidadNoExiste, InvalidInformation {
 
-            if (mensaje == null){
-                throw new InvalidInformation("No hay mensaje en respuesta");
-            }
-            if (telefono == null && email == null){
-                throw new InvalidInformation("No hay telefono ni email en respuesta");
-            }
-
-            Contratacion contratacion = contratacionRepository.findById(idContratacion).orElseThrow(() -> new EntidadNoExiste("Contratacion no encontrada con id: " + idContratacion));
-            contratacion.setEstado(Contratacion.EstadoContratacion.CONTACTADA);
-            Contratacion.RespuestaOfertante respuestaOfertante = Contratacion.RespuestaOfertante.builder().
-                    mensaje(mensaje).
-                    telefono(telefono).
-                    email(email).
-                    build();
-
-            contratacion.setRespuestaOfertante(respuestaOfertante);
-
-            contratacionRepository.save(contratacion);
+        if (mensaje == null){
+            throw new InvalidInformation("No hay mensaje en respuesta");
+        }
+        if (telefono == null && email == null){
+            throw new InvalidInformation("No hay telefono ni email en respuesta");
         }
 
+        System.out.println("Fetching contratacion with id: " + idContratacion);
 
-    public void aceptarContratacion(Long idContratacion, String mensaje, String ) throws EntidadNoExiste {
+        Contratacion contratacion = contratacionRepository.findById(idContratacion).orElseThrow(() -> new EntidadNoExiste("Contratacion no encontrada con id: " + idContratacion));
+        contratacion.setEstado(Contratacion.EstadoContratacion.CONTACTADA);
+        System.out.println("Updating contratacion with id: " + idContratacion);
+
+        RespuestaOfertante respuestaOfertante = RespuestaOfertante.builder()
+                .mensaje(mensaje)
+                .telefono(telefono)
+                .email(email)
+                .contratacion(contratacion)
+                .build();
+
+        logger.info("Respuesta de ofertante: " + respuestaOfertante.toString());
+        try {
+            respuestaOfertanteRepository.save(respuestaOfertante);
+            System.out.println("Respuesta de ofertante guardada con ID: " + respuestaOfertante.getId());
+        } catch (Exception e) {
+            logger.error("Error al guardar la respuesta de ofertante: " + e.getMessage());
+        }
+        contratacion.setRespuestaOfertante(respuestaOfertante);
+
+        logger.info("Contratacion actualizada: " + contratacion.getId());
+
+
+         try {
+            contratacionRepository.save(contratacion);
+            System.out.println("Contratacion actualizada con ID: " + contratacion.getId());
+        } catch (Exception e) {
+             logger.error("Error al guardar la contratacion: " + e.getMessage());
+         }
+    }
+
+
+    public void aceptarContratacion(Long idContratacion) throws EntidadNoExiste {
         Contratacion contratacion = contratacionRepository.findById(idContratacion).orElseThrow(() -> new EntidadNoExiste("Contratacion no encontrada con id: " + idContratacion));
         contratacion.setEstado(Contratacion.EstadoContratacion.ACEPTADA);
         contratacionRepository.save(contratacion);

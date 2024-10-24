@@ -42,10 +42,14 @@ public class Contratacion {
     @Column(nullable = true)
     private LocalDate fechaContratacion;
 
-    private RespuestaOfertante respuestaOfertante = null;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "respuesta_ofertante_id")  // Nombre de la columna en la tabla Contratacion
+    private RespuestaOfertante respuestaOfertante;
+
 
 
     @Enumerated(EnumType.STRING)
+
 
     private EstadoContratacion estado;
 
@@ -84,20 +88,6 @@ public class Contratacion {
     @Column(name = "isFavorite_demandante", nullable = true)
     private Boolean isFavorite;
 
-    @Builder
-    public static class RespuestaOfertante{
-        private String mensaje;
-        private String telefono;
-
-        private String email;
-
-        public RespuestaOfertante(String mensaje, String telefono, String email) {
-            this.mensaje = mensaje;
-            this.telefono = telefono;
-            this.email = email;
-        }
-
-    }
 
 
 

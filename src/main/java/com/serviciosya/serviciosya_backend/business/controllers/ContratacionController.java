@@ -129,7 +129,7 @@ public class ContratacionController {
         }
     }
 
-    @PostMapping("conctactar/{id}")
+    @PostMapping("contactar/{id}")
     public ResponseEntity<?> contactarContratacion(@PathVariable Long id, @RequestBody Map<String, Object> payload) {
         try {
             String mensaje = (String) payload.get("mensaje");
