@@ -1,5 +1,6 @@
 package com.serviciosya.serviciosya_backend.business.entities.dto;
 
+import com.serviciosya.serviciosya_backend.business.entities.Reseña;
 import lombok.*;
 
 import java.util.Date;
@@ -28,7 +29,13 @@ public class PerfilOfertanteDTO {
 
     private List<String> rubros;
 
+    private float puntuacionGLobal;
 
+    private int cantidadServicios;
+
+    private int cantidadContratacionesTerminadas;
+
+    private List<ReseñaDto> resñas;
 
 
 }

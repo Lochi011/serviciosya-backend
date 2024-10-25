@@ -46,6 +46,7 @@ public class ContratacionMgr {
     @Autowired
     private RespuestaOfertanteRepository respuestaOfertanteRepository;
 
+
     private static final Logger logger = LoggerFactory.getLogger(ServicioMgr.class);
 
 //    public void crearContratacion(Long idDemandante, Long idOfertante, LocalDate fechaServicio, String direccion, String apartamento, String hora, String comentario, Long idServicio) throws EntidadNoExiste, InvalidInformation {
@@ -145,7 +146,7 @@ public class ContratacionMgr {
                 System.out.println("Existing contratacion is pending.");
                 throw new InvalidInformation("PENDING_CONTRACT_ALREADY_EXISTS", "Ya existe una solicitud pendiente para una contratacion ese dia");
             } else if (contratacionExistente.get().getEstado() == Contratacion.EstadoContratacion.ACEPTADA) {
-                throw new InvalidInformation("ACCEPTED_CONTRACT_ALREADY_EXISTS","Ya existe una contratacion solicitada para ese dia");
+                throw new InvalidInformation("ACCEPTED_CONTRACT_ALREADY_EXISTS", "Ya existe una contratacion solicitada para ese dia");
             }
         }
 
@@ -196,10 +197,10 @@ public class ContratacionMgr {
 
     public void contactarContratacion(Long idContratacion, String mensaje, String telefono, String email) throws EntidadNoExiste, InvalidInformation {
 
-        if (mensaje == null){
+        if (mensaje == null) {
             throw new InvalidInformation("No hay mensaje en respuesta");
         }
-        if (telefono == null && email == null){
+        if (telefono == null && email == null) {
             throw new InvalidInformation("No hay telefono ni email en respuesta");
         }
 
@@ -228,12 +229,23 @@ public class ContratacionMgr {
         logger.info("Contratacion actualizada: " + contratacion.getId());
 
 
-         try {
+        try {
             contratacionRepository.save(contratacion);
             System.out.println("Contratacion actualizada con ID: " + contratacion.getId());
         } catch (Exception e) {
-             logger.error("Error al guardar la contratacion: " + e.getMessage());
-         }
+            logger.error("Error al guardar la contratacion: " + e.getMessage());
+        }
+
+        NotificacionDemandante notificacionDemandante = NotificacionDemandante.builder()
+                .usuarioDemandante(contratacion.getDemandante())
+                .contratacion(contratacion)
+                .mensaje("El ofertante ha respondido a tu solicitud de contratacion para el servicio " + contratacion.getServicio().getNombre())
+                .leido(false)
+                .esMensaje(false)
+                .fechaCreacion(LocalDateTime.now())
+                .build();
+
+        notificacionDemandanteRepository.save(notificacionDemandante);
     }
 
 
@@ -255,7 +267,7 @@ public class ContratacionMgr {
         NotificacionDemandante notificacionDemandante = NotificacionDemandante.builder().
                 usuarioDemandante(usuarioDemandante).
                 contratacion(contratacion).
-                mensaje("Su solicitud para el servicio "+ nombreServicio + " ha sido rechazada").
+                mensaje("Su solicitud para el servicio " + nombreServicio + " ha sido rechazada").
                 leido(false).
                 esMensaje(false).
                 fechaCreacion(LocalDateTime.now()).
