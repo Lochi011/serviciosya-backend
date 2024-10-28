@@ -11,6 +11,8 @@ import com.serviciosya.serviciosya_backend.business.entities.mapper.Notificacion
 import com.serviciosya.serviciosya_backend.business.exceptions.EntidadNoExiste;
 import com.serviciosya.serviciosya_backend.business.exceptions.InvalidInformation;
 import com.serviciosya.serviciosya_backend.persistance.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +26,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-import static com.serviciosya.serviciosya_backend.business.entities.Contratacion.EstadoContratacion.PENDIENTE;
 
+import static com.serviciosya.serviciosya_backend.business.entities.Contratacion.EstadoContratacion.PENDIENTE;
+@AllArgsConstructor
+@NoArgsConstructor
 
 @Service
 public class ContratacionMgr {
@@ -115,7 +119,7 @@ public class ContratacionMgr {
 //
 //    }
 
-    public void crearContratacion(Long idDemandante, Long idOfertante, LocalDate fechaServicio, String direccion, String apartamento, String hora, String comentario, Long idServicio) throws EntidadNoExiste, InvalidInformation {
+    public  void crearContratacion(Long idDemandante, Long idOfertante, LocalDate fechaServicio, String direccion, String apartamento, String hora, String comentario, Long idServicio) throws EntidadNoExiste, InvalidInformation {
         try {
             if (fechaServicio == null || direccion == null || hora == null || idDemandante == null || idOfertante == null || idServicio == null) {
                 throw new InvalidInformation("Faltan datos obligatorios para la realizacion de la contratacion.");
@@ -241,7 +245,7 @@ public class ContratacionMgr {
                 .contratacion(contratacion)
                 .mensaje("El ofertante ha respondido a tu solicitud de contratacion para el servicio " + contratacion.getServicio().getNombre())
                 .leido(false)
-                .esMensaje(false)
+                .esMensaje(true)
                 .fechaCreacion(LocalDateTime.now())
                 .build();
 
@@ -270,6 +274,7 @@ public class ContratacionMgr {
                 mensaje("Su solicitud para el servicio " + nombreServicio + " ha sido rechazada").
                 leido(false).
                 esMensaje(false).
+                esRechazo(true).
                 fechaCreacion(LocalDateTime.now()).
 
                 build();

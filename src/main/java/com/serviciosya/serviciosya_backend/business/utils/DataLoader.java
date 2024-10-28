@@ -1,6 +1,7 @@
 package com.serviciosya.serviciosya_backend.business.utils;
 
 import com.serviciosya.serviciosya_backend.business.entities.*;
+import com.serviciosya.serviciosya_backend.business.managers.ContratacionMgr;
 import com.serviciosya.serviciosya_backend.persistance.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -13,6 +14,11 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.serviciosya.serviciosya_backend.business.entities.Contratacion.EstadoContratacion.PENDIENTE;
+
+
+
+import java.util.Random;
+
 
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -31,10 +37,13 @@ public class DataLoader implements CommandLineRunner {
 
     @Autowired
     private ContratacionRepository contratacionRepository;
-
+    @Autowired
+    private ContratacionMgr contratacionMgr;
 
     @Override
     public void run(String... args) throws Exception {
+
+
 
         if (usuarioRepository.existsByCedula(12345678L)) {
             System.out.println("Usuario de prueba ya existe. No se ejecuta el DataLoader, borre este usuario o la base de datos completa para ejecutar el data loader");
@@ -267,8 +276,10 @@ public class DataLoader implements CommandLineRunner {
         // Número de servicios a crear: 1 por etiqueta más 2 adicionales (mínimo 13 servicios)
         int numServicios2 = etiquetasAutomovil.size() + 2;
 
+
         // Iterar sobre el número de servicios
         for (int i = 0; i < numServicios2; i++) {
+
             String nombreServicio;
             List<String> etiquetas;
 
@@ -301,24 +312,59 @@ public class DataLoader implements CommandLineRunner {
             // Guardar el servicio en la base de datos
             servicioRepository.save(servicio);
 
-            Contratacion contratacion = Contratacion.builder()
-                    .demandante(demandante)
-                    .ofertante(ofertante)
-                    .servicio(servicio)
-                    .fechaContratacion( generarFechaAleatoria())
-                    .direccion(ofertante.getDireccion())
-                    .hora(String.valueOf(generarHoraAleatoria()))
-                    .comentario("Quiero contratar el servicio llamado " + servicio.getNombre())
-                    .estado(PENDIENTE)
-                    .apartamento(ofertante.getDireccion())
-                    .direccion(ofertante.getDireccion())
-                    .build();
+            Long demandanteId = demandante.getId();
+            Long ofertanteId = ofertante.getId();
+            LocalDate fechaContratacion = generarFechaAleatoria();
+            String direccion = demandante.getDireccion();
+            String apartamento = demandante.getDireccion();
+            String hora = String.valueOf(generarHoraAleatoria());
+            String comentario = "Quiero contratar el servicio llamado " + servicio.getNombre();
+            Long servicioId = servicio.getId();
 
-            contratacionRepository.save(contratacion);
+            contratacionMgr.crearContratacion(demandanteId, ofertanteId, fechaContratacion, direccion, apartamento, hora, comentario, servicioId);
+
+
+
 
         }
 
+        Iterable<Contratacion> contrataciones = contratacionRepository.findAll();
+        Random random = new Random();
+        int contactCount = 0;
+        int rejectCount = 0;
+
+        // First pass: ensure at least one contact and one reject
+        for (Contratacion contratacion : contrataciones) {
+            if (contactCount == 0) {
+                String nombreServicio = contratacion.getServicio().getNombre();
+                String mensaje = String.format("Hola, por favor contactame para que pueda brindarte el servicio %s.", nombreServicio);
+                contratacionMgr.contactarContratacion(contratacion.getId(), mensaje, "12345678", "maria.gomez@example.com");
+                contactCount++;
+            } else if (rejectCount == 0) {
+                contratacionMgr.rechazarContratacion(contratacion.getId(), "No puedo brindar el servicio en la fecha solicitada.");
+                rejectCount++;
+            } else {
+                // Randomly assign the status based on probabilities
+                int chance = random.nextInt(100);
+                if (chance < 25) {
+                    contratacionMgr.rechazarContratacion(contratacion.getId(), "No puedo brindar el servicio en la fecha solicitada.");
+                    rejectCount++;
+                } else if (chance < 50) {
+                    String nombreServicio = contratacion.getServicio().getNombre();
+                    String mensaje = String.format("Hola, por favor contactame para que pueda brindarte el servicio %s.", nombreServicio);
+                    contratacionMgr.contactarContratacion(contratacion.getId(), mensaje, "12345678", "maria.gomez@example.com");
+
+                    contactCount++;
+                } else {
+                   continue;
+                }
+            }
+        }
     }
+
+
+
+
 
     // Función para generar un precio aleatorio entre $30 y $500
     private static double generarPrecioAleatorio2() {

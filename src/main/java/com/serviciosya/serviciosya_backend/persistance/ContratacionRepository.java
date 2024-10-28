@@ -5,11 +5,9 @@ import com.serviciosya.serviciosya_backend.business.entities.Contratacion;
 import com.serviciosya.serviciosya_backend.business.entities.Servicio;
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioDemandante;
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioOfertante;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -29,4 +27,6 @@ public interface ContratacionRepository extends CrudRepository<Contratacion, Lon
     Optional<Contratacion> findById(Long id);
 
     Optional<List<Contratacion>> findAllByDemandante(UsuarioDemandante demandante);
+
+    Iterable<Contratacion> findAll();
 }
