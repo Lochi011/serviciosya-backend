@@ -257,6 +257,16 @@ public class ContratacionMgr {
         Contratacion contratacion = contratacionRepository.findById(idContratacion).orElseThrow(() -> new EntidadNoExiste("Contratacion no encontrada con id: " + idContratacion));
         contratacion.setEstado(Contratacion.EstadoContratacion.ACEPTADA);
         contratacionRepository.save(contratacion);
+
+        NotificacionDemandante notificacionDemandante = NotificacionDemandante.builder()
+                .usuarioDemandante(contratacion.getDemandante())
+                .contratacion(contratacion)
+                .mensaje("Tu solicitud para el servicio " + contratacion.getServicio().getNombre() + " ha sido aceptada")
+                .leido(false)
+                .fechaCreacion(LocalDateTime.now())
+                .build();
+
+        notificacionDemandanteRepository.save(notificacionDemandante);
     }
 
     public void rechazarContratacion(Long idContratacion, String mensaje) throws EntidadNoExiste {

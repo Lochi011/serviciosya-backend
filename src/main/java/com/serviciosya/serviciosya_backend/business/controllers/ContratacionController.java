@@ -144,5 +144,17 @@ public class ContratacionController {
         }
     }
 
+    @PostMapping("/aceptar/{id}")
+    public ResponseEntity<?> aceptarContratacion(@PathVariable Long id) {
+        try {
+            contratacionMgr.aceptarContratacion(id);
+            return ResponseEntity.ok("Contratación aceptada exitosamente.");
+        } catch (EntidadNoExiste e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno al aceptar la contratación.");
+        }
+    }
+
 
 }
