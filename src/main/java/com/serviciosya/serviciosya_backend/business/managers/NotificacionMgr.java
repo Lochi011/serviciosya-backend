@@ -77,4 +77,15 @@ public class NotificacionMgr {
                 map(NotificacionMapper::toDtoDemandante).
                 collect(Collectors.toList());
     }
+
+    public void marcarNotificacionComoLeidaDemandante(Long id) throws EntidadNoExiste {
+        NotificacionDemandante notificacion = notificacionDemandanteRepository.findById(id).orElseThrow(() -> new EntidadNoExiste("Notificación no encontrada con id: " + id));
+        notificacion.setLeido(true);
+        notificacionDemandanteRepository.save(notificacion);
+    }
+
+    public Long contarNotificacionesNoLeidasPorUsuarioDemandanteEmail(String email) throws EntidadNoExiste {
+        UsuarioDemandante usuarioDemandante = usuarioDemandanteRepository.findOneByEmail(email).orElseThrow(() -> new EntidadNoExiste("Usuario demandante no encontrado con email: " + email));
+        return notificacionDemandanteRepository.countByUsuarioDemandanteAndLeidoFalse(usuarioDemandante);
+    }
 }

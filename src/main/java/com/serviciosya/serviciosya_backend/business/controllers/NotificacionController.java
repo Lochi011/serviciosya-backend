@@ -96,6 +96,30 @@ public class NotificacionController {
         }
     }
 
+    @PatchMapping("/marcar-leida-demandante/{id}")
+    public ResponseEntity<?> marcarNotificacionComoLeidaDemandante(@PathVariable Long id) {
+        try {
+            notificacionMgr.marcarNotificacionComoLeidaDemandante(id);
+            return ResponseEntity.ok("Notificación marcada como leída.");
+        } catch (EntidadNoExiste e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @GetMapping("/numero-no-leidas-demandante")
+    public ResponseEntity <?> contarNotificacionesNoLeidasPorUsuarioDemandanteEmail(@RequestHeader("Authorization") String token) {
+        String jwtToken = token.substring(7);
+        String email = jwtService.getUsernameFromToken(jwtToken);
+        try {
+            Long cantidad = notificacionMgr.contarNotificacionesNoLeidasPorUsuarioDemandanteEmail(email);
+            return new ResponseEntity < > (cantidad, HttpStatus.OK);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 }

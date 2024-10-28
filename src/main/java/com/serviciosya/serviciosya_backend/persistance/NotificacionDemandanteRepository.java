@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface NotificacionDemandanteRepository extends CrudRepository<NotificacionDemandante, Long> {
 
     Optional<List<NotificacionDemandante>> findByUsuarioDemandanteAndLeidoFalse(UsuarioDemandante usuarioDemandante);
+
+    Long countByUsuarioDemandanteAndLeidoFalse(UsuarioDemandante usuarioDemandante);
 }
