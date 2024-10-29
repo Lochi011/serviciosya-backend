@@ -23,4 +23,8 @@ public class ContratacionDetalles2DTO {
     private int precioServicio;
     private String estado;
     private String nombreRubro;
+    private String justificacionRechazo;
+    private String respuestaOfertante;
+    private String telefonoOfertanteRespuesta;
+    private String emailOfertanteRespuesta;
 }

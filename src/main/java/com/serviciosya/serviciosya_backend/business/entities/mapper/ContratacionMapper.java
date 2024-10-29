@@ -60,6 +60,10 @@ public class ContratacionMapper {
                 .precioServicio(contratacion.getServicio().getPrecio())
                 .estado(contratacion.getEstado().toString())
                 .nombreRubro(contratacion.getServicio().getRubro().getNombre())
+                .justificacionRechazo(contratacion.getJustificacionRechazo())
+                .respuestaOfertante(contratacion.getRespuestaOfertante().getMensaje())
+                .emailOfertanteRespuesta(contratacion.getRespuestaOfertante().getEmail())
+                .telefonoOfertanteRespuesta(contratacion.getRespuestaOfertante().getTelefono())
                 .build();
     }
 

@@ -24,6 +24,7 @@ public class ContratacionDetallesDTO {
     private int precioServicio;
     private String estado;
     private String nombreRubro;
+    ;
 
 
 
