@@ -15,6 +15,10 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
+@NamedEntityGraph(
+        name = "Rubro.usuariosOfertantes",
+        attributeNodes = @NamedAttributeNode("usuariosOfertantes")
+)
 @Table(name = "rubros")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // Ignorar proxies de Hibernate
 public class Rubro {

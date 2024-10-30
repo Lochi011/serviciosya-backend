@@ -153,7 +153,8 @@ public class DataLoader implements CommandLineRunner {
         int contador = 0;
         UsuarioOfertante usuarioOfertante = usuarioOfertanteRepository.findByIdWithRubros(ofertante.getId()).orElseThrow();
         System.out.println("Usuario ofertante: " + usuarioOfertante.getRubros());
-        for (Rubro rubro : rubros) {
+        for (Rubro rubro1 : rubros) {
+            Rubro rubro = rubroRepository.findByIdWithUsuariosOfertantes(rubro1.getId()).orElseThrow();
             SolicitudRubro solicitud = SolicitudRubro.builder()
                     .usuarioOfertante(usuarioOfertante)
                     .rubro(rubro)

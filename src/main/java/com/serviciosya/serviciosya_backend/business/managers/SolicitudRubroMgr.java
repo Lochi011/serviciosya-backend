@@ -111,9 +111,12 @@ public class SolicitudRubroMgr {
     public void aprobarSolicitud(Long solicitudId) throws EntidadNoExiste {
         SolicitudRubro solicitud = solicitudRubroRepository.findByIdWithUsuarioOfertanteAndRubro(solicitudId).orElseThrow(() -> new EntidadNoExiste("Solicitud no encontrada."));
 
-        UsuarioOfertante usuarioOfertante = solicitud.getUsuarioOfertante();
+        UsuarioOfertante usuarioOfertante = usuarioOfertanteRepository.findByIdWithRubros(solicitud.getUsuarioOfertante().getId())
+                .orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado."));
 
-        Rubro rubro  = solicitud.getRubro();
+
+        Rubro rubro  = rubroRepository.findByIdWithUsuariosOfertantes(solicitud.getRubro().getId())
+                .orElseThrow(() -> new EntidadNoExiste("Rubro no encontrado."));
         usuarioOfertante.agregarRubro(rubro);
         solicitud.setEstado(SolicitudRubro.EstadoSolicitud.APROBADA);
         solicitud.setFechaResolucion(new Date());

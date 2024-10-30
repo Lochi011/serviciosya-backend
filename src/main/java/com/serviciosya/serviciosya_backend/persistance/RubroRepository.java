@@ -23,6 +23,8 @@ public interface RubroRepository extends CrudRepository<Rubro, Long> {
     @Query("SELECT r.nombre FROM Rubro r JOIN r.usuariosOfertantes o WHERE o.id = :ofertanteId")
     List<String> findNombresRubrosByOfertanteId(@Param("ofertanteId") Long ofertanteId);
 
-    // Fetch UsuarioOfertante with associated rubros to prevent LazyInitializationException
+    @EntityGraph(attributePaths = {"usuariosOfertantes"})
+    @Query("SELECT r FROM Rubro r WHERE r.id = :id")
+    Optional<Rubro> findByIdWithUsuariosOfertantes(@Param("id") Long id);
 
 }
