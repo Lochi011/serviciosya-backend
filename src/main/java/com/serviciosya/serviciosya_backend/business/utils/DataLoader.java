@@ -149,7 +149,7 @@ public class DataLoader implements CommandLineRunner {
 
         Iterable<Rubro> rubros = rubroRepository.findAll();
         int totalRubros = ((Collection<?>) rubros).size(); // Convertimos a Collection para obtener el tamaño
-        int mitad = totalRubros / 2;
+        int mitad = 6;
         int contador = 0;
         UsuarioOfertante usuarioOfertante = usuarioOfertanteRepository.findByIdWithRubros(ofertante.getId()).orElseThrow();
         System.out.println("Usuario ofertante: " + usuarioOfertante.getRubros());
@@ -167,12 +167,14 @@ public class DataLoader implements CommandLineRunner {
 //                solicitud.setEstado(SolicitudRubro.EstadoSolicitud.APROBADA);/Primera mitad aceptada
                 solicitudRubroMgr.aprobarSolicitud(solicitud.getId());
             } else {
-                solicitud.setEstado(SolicitudRubro.EstadoSolicitud.PENDIENTE); // Segunda mitad pendiente
+                ; // Segunda mitad pendiente
             }
             System.out.println("Usuario ofertante: " + usuarioOfertante.getRubros());
 
+            usuarioOfertante.agregarRubro(rubro);
 
-            SolicitudRubroRepository.save(solicitud);
+
+
 
 
             contador++;

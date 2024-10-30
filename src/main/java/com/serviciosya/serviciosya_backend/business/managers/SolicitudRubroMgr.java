@@ -125,6 +125,7 @@ public class SolicitudRubroMgr {
 
         solicitudRubroRepository.save(solicitud);
         usuarioOfertanteRepository.save(usuarioOfertante);
+        rubroRepository.save(rubro);
 
         System.out.println("Solicitud aprobada con ID: " + solicitud.getId() +"del ofertante: " + usuarioOfertante.getCedula() + " al rubro: " + solicitud.getRubro().getId());
     }
