@@ -25,4 +25,5 @@ public interface SolicitudRubroRepository extends CrudRepository<SolicitudRubro,
     Optional<SolicitudRubro> findByIdWithUsuarioOfertanteAndRubro(@Param("id") Long id);
 
 
+    Optional<Object> findNombresRubrosByUsuarioOfertanteId(Long id);
 }

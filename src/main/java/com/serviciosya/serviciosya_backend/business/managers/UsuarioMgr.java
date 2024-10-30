@@ -24,6 +24,9 @@ public class UsuarioMgr {
     @Autowired
     private UsuarioOfertanteRepository usuarioOfertanteRepository;
 
+    @Autowired
+    private PerfilOfertanteMapper perfilOfertanteMapper;
+
 
 
 
@@ -147,8 +150,7 @@ public class UsuarioMgr {
         UsuarioOfertante ofertante =usuarioOfertanteRepository.findById(ofertanteId)
                 .orElseThrow(() -> new EntidadNoExiste("Ofertante no encontrado con el id: " + ofertanteId));
 
-        return PerfilOfertanteMapper.toDto(ofertante);
-
+        return perfilOfertanteMapper.toDto(ofertante);
 
     }
 }

@@ -178,12 +178,19 @@ public class ServicioMgr {
         return servicio;
 
     }
-    public Servicio eliminarServicio(Long id ) throws EntidadNoExiste{
-        Servicio servicio = servicioRepository.findOneById(id).orElseThrow(() -> new EntidadNoExiste("No se encontro servicio con id:"  + id));
+    public Servicio eliminarServicio(Long id ) throws EntidadNoExiste {
+        Servicio servicio = servicioRepository.findOneById(id).orElseThrow(() -> new EntidadNoExiste("No se encontro servicio con id:" + id));
         servicioRepository.delete(servicio);
 
         return servicio;
     }
+
+    public int obtenerCantidadServiciosPorOfertante(Long id) throws EntidadNoExiste {
+        UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneById(id).orElseThrow(() -> new EntidadNoExiste("No se encontro usuario con id: " + id));
+        return servicioRepository.countByUsuarioOfertante(ofertante);
+    }
+
+
 
 
 

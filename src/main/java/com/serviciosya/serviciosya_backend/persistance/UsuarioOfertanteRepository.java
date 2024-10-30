@@ -3,8 +3,10 @@ package com.serviciosya.serviciosya_backend.persistance;
 // UsuarioOfertanteRepository.java
 
 import com.serviciosya.serviciosya_backend.business.entities.UsuarioOfertante;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -21,6 +23,11 @@ public interface UsuarioOfertanteRepository extends CrudRepository<UsuarioOferta
     Optional<UsuarioOfertante> findOneById(Long id);
 
     Optional<UsuarioOfertante> findOneByEmail(String email);
+
+
+    @EntityGraph(attributePaths = {"rubros"})
+    @Query("SELECT u FROM UsuarioOfertante u WHERE u.id = :id")
+    Optional<UsuarioOfertante> findByIdWithRubros(@Param("id") Long id);
 
 
 }

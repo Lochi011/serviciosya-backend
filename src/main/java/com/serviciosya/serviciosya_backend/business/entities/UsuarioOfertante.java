@@ -16,6 +16,10 @@ import java.util.List;
 @AllArgsConstructor
 @SuperBuilder
 @Entity
+@NamedEntityGraph(
+        name = "UsuarioOfertante.rubros",
+        attributeNodes = @NamedAttributeNode("rubros")
+)
 @DiscriminatorValue("OFERTANTE")
 public class UsuarioOfertante extends Usuario {
 
@@ -73,4 +77,8 @@ public class UsuarioOfertante extends Usuario {
         this.notificaciones = new ArrayList<>();
 
     }
+
+    @OneToMany(mappedBy = "usuarioOfertante", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Reseña> reseñas;
 }

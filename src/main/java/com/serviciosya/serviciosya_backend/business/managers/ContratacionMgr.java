@@ -330,5 +330,10 @@ public class ContratacionMgr {
                 map(ContratacionMapper::toResumenDemandanteDTO).
                 collect(Collectors.toList());
     }
+
+    public int obtenerCantidadContratacionesTerminadasPorOfertante(Long id) throws EntidadNoExiste {
+        UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneById(id).orElseThrow(() -> new EntidadNoExiste("No se encontro usuario con id: " + id));
+        return contratacionRepository.countByOfertanteAndEstado(ofertante, Contratacion.EstadoContratacion.TERMINADA);
+    }
 }
 

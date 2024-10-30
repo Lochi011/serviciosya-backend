@@ -2,6 +2,7 @@ package com.serviciosya.serviciosya_backend.business.utils;
 
 import com.serviciosya.serviciosya_backend.business.entities.*;
 import com.serviciosya.serviciosya_backend.business.managers.ContratacionMgr;
+import com.serviciosya.serviciosya_backend.business.managers.SolicitudRubroMgr;
 import com.serviciosya.serviciosya_backend.persistance.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -37,8 +38,18 @@ public class DataLoader implements CommandLineRunner {
 
     @Autowired
     private ContratacionRepository contratacionRepository;
+
+    @Autowired
+    private UsuarioOfertanteRepository usuarioOfertanteRepository;
+
     @Autowired
     private ContratacionMgr contratacionMgr;
+
+    @Autowired
+    private SolicitudRubroMgr solicitudRubroMgr;
+
+
+
 
     @Override
     public void run(String... args) throws Exception {
@@ -140,22 +151,25 @@ public class DataLoader implements CommandLineRunner {
         int totalRubros = ((Collection<?>) rubros).size(); // Convertimos a Collection para obtener el tamaño
         int mitad = totalRubros / 2;
         int contador = 0;
-
+        UsuarioOfertante usuarioOfertante = usuarioOfertanteRepository.findByIdWithRubros(ofertante.getId()).orElseThrow();
+        System.out.println("Usuario ofertante: " + usuarioOfertante.getRubros());
         for (Rubro rubro : rubros) {
-            SolicitudRubro.EstadoSolicitud estado;
-
-            if (contador < mitad) {
-                estado = SolicitudRubro.EstadoSolicitud.APROBADA;  // Primera mitad aceptada
-            } else {
-                estado = SolicitudRubro.EstadoSolicitud.PENDIENTE; // Segunda mitad pendiente
-            }
-
             SolicitudRubro solicitud = SolicitudRubro.builder()
-                    .usuarioOfertante(ofertante)
+                    .usuarioOfertante(usuarioOfertante)
                     .rubro(rubro)
-                    .estado(estado)
+                    .estado(SolicitudRubro.EstadoSolicitud.PENDIENTE)
                     .fechaCreacion(new Date())
                     .build();
+            SolicitudRubroRepository.save(solicitud);
+
+            if (contador < mitad) {
+//                solicitud.setEstado(SolicitudRubro.EstadoSolicitud.APROBADA);/Primera mitad aceptada
+                solicitudRubroMgr.aprobarSolicitud(solicitud.getId());
+            } else {
+                solicitud.setEstado(SolicitudRubro.EstadoSolicitud.PENDIENTE); // Segunda mitad pendiente
+            }
+            System.out.println("Usuario ofertante: " + usuarioOfertante.getRubros());
+
 
             SolicitudRubroRepository.save(solicitud);
 

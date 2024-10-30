@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SolicitudRubroMgr {
@@ -111,7 +112,7 @@ public class SolicitudRubroMgr {
         SolicitudRubro solicitud = solicitudRubroRepository.findByIdWithUsuarioOfertanteAndRubro(solicitudId).orElseThrow(() -> new EntidadNoExiste("Solicitud no encontrada."));
 
         UsuarioOfertante usuarioOfertante = solicitud.getUsuarioOfertante();
-        System.out.println(usuarioOfertante.getRubros());
+
         Rubro rubro  = solicitud.getRubro();
         usuarioOfertante.agregarRubro(rubro);
         solicitud.setEstado(SolicitudRubro.EstadoSolicitud.APROBADA);
@@ -181,6 +182,18 @@ public class SolicitudRubroMgr {
 
         });
     }
+
+    public List<String> obtenerNombresRubrosPorOfertante(Long ofertanteId) throws EntidadNoExiste {
+        // Fetch the UsuarioOfertante using the ID
+        UsuarioOfertante ofertante = usuarioOfertanteRepository.findById(ofertanteId)
+                .orElseThrow(() -> new EntidadNoExiste("El ofertante no existe"));
+
+        // Map rubros to their names and collect as a List<String>
+        return ofertante.getRubros().stream()
+                .map(Rubro::getNombre)
+                .collect(Collectors.toList());
+    }
+
 
 
 }

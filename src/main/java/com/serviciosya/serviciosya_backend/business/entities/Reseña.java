@@ -31,6 +31,10 @@ public class Reseña {
     @JoinColumn(name = "usuario_id")
     private UsuarioDemandante usuarioDemandante;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_ofertante_id")
+    private UsuarioOfertante usuarioOfertante;
+
 }
 
 
