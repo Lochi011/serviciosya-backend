@@ -82,8 +82,12 @@ public class ContratacionController {
 
     @GetMapping("/listar-demandante")
     public ResponseEntity<?> listarContratacionesDemandante(@RequestHeader("Authorization") String token) {
+        if (token == null || !token.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Authorization token is missing or invalid");
+        }
         String jwtToken = token.substring(7);
         String emailDemandante = jwtService.getUsernameFromToken(jwtToken);
+        System.out.println(emailDemandante);
         try {
             return ResponseEntity.ok(contratacionMgr.obtenerContratacionesResumenPorDemandante(emailDemandante));
         } catch (EntidadNoExiste e) {
