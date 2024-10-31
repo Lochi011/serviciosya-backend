@@ -61,9 +61,9 @@ public class ContratacionMapper {
                 .estado(contratacion.getEstado().toString())
                 .nombreRubro(contratacion.getServicio().getRubro().getNombre())
                 .justificacionRechazo(contratacion.getJustificacionRechazo())
-                .respuestaOfertante(contratacion.getRespuestaOfertante().getMensaje())
-                .emailOfertanteRespuesta(contratacion.getRespuestaOfertante().getEmail())
-                .telefonoOfertanteRespuesta(contratacion.getRespuestaOfertante().getTelefono())
+                .respuestaOfertante(contratacion.getRespuestaOfertante() != null ? contratacion.getRespuestaOfertante().getMensaje() : null)
+                .emailOfertanteRespuesta(contratacion.getRespuestaOfertante() != null ? contratacion.getRespuestaOfertante().getEmail() : null)
+                .telefonoOfertanteRespuesta(contratacion.getRespuestaOfertante() != null ? contratacion.getRespuestaOfertante().getTelefono() : null)
                 .build();
     }
 

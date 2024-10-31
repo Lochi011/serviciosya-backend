@@ -320,6 +320,7 @@ public class ContratacionMgr {
 
     public ContratacionDetalles2DTO obtenerDetallesContratacion2DTO(Long id) throws EntidadNoExiste {
         Contratacion contratacion = contratacionRepository.findById(id).orElseThrow(() -> new EntidadNoExiste("Contratacion no encontrada con id: " + id));
+        System.out.println(contratacion);
         return ContratacionMapper.convertirADetalles2DTO(contratacion);
     }
 
