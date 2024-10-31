@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.transaction.annotation.Transactional;
 
 
 import static com.serviciosya.serviciosya_backend.business.entities.Contratacion.EstadoContratacion.PENDIENTE;
@@ -199,8 +199,10 @@ public class ContratacionMgr {
         return contratacionRepository.findAllByOfertante(ofertante).orElseThrow(() -> new EntidadNoExiste("No se encontraron contrataciones para el ofertante con email: " + email));
     }
 
-    public void contactarContratacion(Long idContratacion, String mensaje, String telefono, String email) throws EntidadNoExiste, InvalidInformation {
 
+
+    @Transactional
+    public void contactarContratacion(Long idContratacion, String mensaje, String telefono, String email) throws EntidadNoExiste, InvalidInformation {
         if (mensaje == null) {
             throw new InvalidInformation("No hay mensaje en respuesta");
         }
@@ -208,11 +210,10 @@ public class ContratacionMgr {
             throw new InvalidInformation("No hay telefono ni email en respuesta");
         }
 
-        System.out.println("Fetching contratacion with id: " + idContratacion);
+        Contratacion contratacion = contratacionRepository.findById(idContratacion)
+                .orElseThrow(() -> new EntidadNoExiste("Contratacion no encontrada con id: " + idContratacion));
 
-        Contratacion contratacion = contratacionRepository.findById(idContratacion).orElseThrow(() -> new EntidadNoExiste("Contratacion no encontrada con id: " + idContratacion));
         contratacion.setEstado(Contratacion.EstadoContratacion.CONTACTADA);
-        System.out.println("Updating contratacion with id: " + idContratacion);
 
         RespuestaOfertante respuestaOfertante = RespuestaOfertante.builder()
                 .mensaje(mensaje)
@@ -221,36 +222,32 @@ public class ContratacionMgr {
                 .contratacion(contratacion)
                 .build();
 
-        logger.info("Respuesta de ofertante: " + respuestaOfertante.toString());
-        try {
-            respuestaOfertanteRepository.save(respuestaOfertante);
-            System.out.println("Respuesta de ofertante guardada con ID: " + respuestaOfertante.getId());
-        } catch (Exception e) {
-            logger.error("Error al guardar la respuesta de ofertante: " + e.getMessage());
-        }
+        respuestaOfertanteRepository.save(respuestaOfertante);
         contratacion.setRespuestaOfertante(respuestaOfertante);
+        contratacionRepository.save(contratacion);
 
-        logger.info("Contratacion actualizada: " + contratacion.getId());
+        // Re-fetch to verify the update
+        Contratacion updatedContratacion = contratacionRepository.findById(idContratacion)
+                .orElseThrow(() -> new EntidadNoExiste("Error verifying update: Contratacion not found"));
 
+        if (updatedContratacion.getEstado() == Contratacion.EstadoContratacion.CONTACTADA) {
+            NotificacionDemandante notificacionDemandante = NotificacionDemandante.builder()
+                    .usuarioDemandante(contratacion.getDemandante())
+                    .contratacion(contratacion)
+                    .mensaje("El ofertante ha respondido a tu solicitud de contratacion para el servicio " + contratacion.getServicio().getNombre())
+                    .leido(false)
+                    .esMensaje(true)
+                    .fechaCreacion(LocalDateTime.now())
+                    .build();
 
-        try {
-            contratacionRepository.save(contratacion);
-            System.out.println("Contratacion actualizada con ID: " + contratacion.getId());
-        } catch (Exception e) {
-            logger.error("Error al guardar la contratacion: " + e.getMessage());
+            notificacionDemandanteRepository.save(notificacionDemandante);
+            System.out.println("Contratacion actualizada correctamente con estado CONTACTADA y notificación enviada.");
+        } else {
+            throw new RuntimeException("Error al actualizar el estado de la contratacion en la nube.");
         }
-
-        NotificacionDemandante notificacionDemandante = NotificacionDemandante.builder()
-                .usuarioDemandante(contratacion.getDemandante())
-                .contratacion(contratacion)
-                .mensaje("El ofertante ha respondido a tu solicitud de contratacion para el servicio " + contratacion.getServicio().getNombre())
-                .leido(false)
-                .esMensaje(true)
-                .fechaCreacion(LocalDateTime.now())
-                .build();
-
-        notificacionDemandanteRepository.save(notificacionDemandante);
     }
+
+
 
 
     public void aceptarContratacion(Long idContratacion) throws EntidadNoExiste {

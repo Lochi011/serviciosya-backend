@@ -23,6 +23,10 @@ import java.util.List;
 @DiscriminatorValue("OFERTANTE")
 public class UsuarioOfertante extends Usuario {
 
+    private String descripcion;
+
+    private String fotoPerfil;
+
     @ManyToMany(mappedBy = "usuariosOfertantes", fetch = FetchType.LAZY)
     @JsonBackReference // Indica que es la parte inversa de la relación para evitar recursión
     private List<Rubro> rubros;
