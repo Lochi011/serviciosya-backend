@@ -1,0 +1,4 @@
+url = https://539247462026.signin.aws.amazon.com/console
+nombre = servihogar
+password = rX!wk6(q
+confirmPassword = rX!wk6(q
