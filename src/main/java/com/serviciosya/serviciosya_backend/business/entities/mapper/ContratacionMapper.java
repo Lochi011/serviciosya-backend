@@ -1,12 +1,31 @@
 package com.serviciosya.serviciosya_backend.business.entities.mapper;
 
 import com.serviciosya.serviciosya_backend.business.entities.Contratacion;
-import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionDetalles2DTO;
-import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionDetallesDTO;
-import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionResumenDTO;
-import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionResumenDemandanteDTO;
+import com.serviciosya.serviciosya_backend.business.entities.dto.*;
 
 public class ContratacionMapper {
+
+    public static ContratacionTerminadasDTO toDto (Contratacion contratacion){
+        if (contratacion == null){
+            return null;
+        }
+
+        return ContratacionTerminadasDTO.builder().
+                id_contratacion(contratacion.getId()).
+                nombreServicio(contratacion.getServicio().getNombre()).
+                precioServicio(contratacion.getServicio().getPrecio()).
+                nombreOfertante(contratacion.getOfertante().getNombre()).
+                apellidoOfertante(contratacion.getOfertante().getApellido()).
+                fechaContratacion(contratacion.getFechaContratacion()).
+                hora(contratacion.getHora()).
+                estado(String.valueOf(contratacion.getEstado())).
+                isFavorite(contratacion.getIsFavorite()).
+                puntuacion(contratacion.getPuntuacion()).
+                nombreRubro(contratacion.getServicio().getRubro().getNombre()).build();
+
+
+
+    }
     public static ContratacionResumenDTO toResumenDto(Contratacion contratacion) {
         if (contratacion == null) {
             return null;

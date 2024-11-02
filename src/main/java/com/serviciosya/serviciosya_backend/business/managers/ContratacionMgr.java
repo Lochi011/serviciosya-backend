@@ -2,10 +2,7 @@ package com.serviciosya.serviciosya_backend.business.managers;
 
 
 import com.serviciosya.serviciosya_backend.business.entities.*;
-import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionDetalles2DTO;
-import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionDetallesDTO;
-import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionResumenDTO;
-import com.serviciosya.serviciosya_backend.business.entities.dto.ContratacionResumenDemandanteDTO;
+import com.serviciosya.serviciosya_backend.business.entities.dto.*;
 import com.serviciosya.serviciosya_backend.business.entities.mapper.ContratacionMapper;
 import com.serviciosya.serviciosya_backend.business.entities.mapper.NotificacionMapper;
 import com.serviciosya.serviciosya_backend.business.exceptions.EntidadNoExiste;
@@ -332,6 +329,14 @@ public class ContratacionMgr {
     public int obtenerCantidadContratacionesTerminadasPorOfertante(Long id) throws EntidadNoExiste {
         UsuarioOfertante ofertante = usuarioOfertanteRepository.findOneById(id).orElseThrow(() -> new EntidadNoExiste("No se encontro usuario con id: " + id));
         return contratacionRepository.countByOfertanteAndEstado(ofertante, Contratacion.EstadoContratacion.TERMINADA);
+    }
+
+    public List<ContratacionTerminadasDTO> obtenerContratacionesTerminadasPorDemandante(String emailDemandante) throws EntidadNoExiste {
+        UsuarioDemandante demandante = usuarioDemandanteRepository.findOneByEmail(emailDemandante).orElseThrow(() -> new EntidadNoExiste("No se encontro usuario con email: " + emailDemandante));
+        List<Contratacion> contrataciones = contratacionRepository.findAllByDemandanteAndEstado(demandante, Contratacion.EstadoContratacion.TERMINADA).orElseThrow(() -> new EntidadNoExiste("No se encontraron contratacion terminadas para el usuario: " + emailDemandante));
+        return contrataciones.stream().
+                map(ContratacionMapper::toDto).
+                collect(Collectors.toList());
     }
 }
 

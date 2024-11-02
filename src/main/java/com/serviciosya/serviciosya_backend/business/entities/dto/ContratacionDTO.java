@@ -1,7 +1,9 @@
 package com.serviciosya.serviciosya_backend.business.entities.dto;
 
-import java.time.LocalDate;
+import lombok.Builder;
 
+import java.time.LocalDate;
+@Builder
 public class ContratacionDTO {
 
     private Long id_contratacion;
@@ -16,6 +18,8 @@ public class ContratacionDTO {
     private Boolean isFavorite;
 
     private Float puntuacion;
+
+
 
 
     // Constructor

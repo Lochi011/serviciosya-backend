@@ -373,7 +373,8 @@ public class DataLoader implements CommandLineRunner {
 
                     contactCount++;
                 } else {
-                   continue;
+                    contratacion.setEstado(Contratacion.EstadoContratacion.TERMINADA);
+                   contratacionRepository.save(contratacion);
                 }
             }
         }

@@ -31,4 +31,6 @@ public interface ContratacionRepository extends CrudRepository<Contratacion, Lon
     Iterable<Contratacion> findAll();
 
     int countByOfertanteAndEstado(UsuarioOfertante ofertante, Contratacion.EstadoContratacion estadoContratacion);
+
+    Optional<List<Contratacion>> findAllByDemandanteAndEstado (UsuarioDemandante demandante, Contratacion.EstadoContratacion estadoContratacion);
 }
