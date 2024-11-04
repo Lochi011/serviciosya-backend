@@ -24,11 +24,13 @@ public class FotoPerfilController {
             @RequestParam("file") MultipartFile file) {
         String fileName = "ofertante_" + ofertanteId + "_foto.jpg";
         try (InputStream inputStream = file.getInputStream()) {
-            String result = s3Service.uploadFile(fileName, inputStream);
+            String result = s3Service.uploadFile(fileName, inputStream, ofertanteId);
             return ResponseEntity.ok(result);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error al leer el archivo: " + e.getMessage());
         }
     }
+
+
 }

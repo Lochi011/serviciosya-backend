@@ -54,6 +54,7 @@ public class PerfilOfertanteMapper {
                      fechaNacimiento(usuarioOfertante.getFechaNacimiento()).
                      servicios(servicios).
                      rubros(rubros).
+                    fotoPerfil(usuarioOfertante.getFotoPerfil()).
                     cantidadContratacionesTerminadas(contratacionMgr.obtenerCantidadContratacionesTerminadasPorOfertante(usuarioOfertante.getId())).
                     cantidadServicios(servicioMgr.obtenerCantidadServiciosPorOfertante(usuarioOfertante.getId())).
 

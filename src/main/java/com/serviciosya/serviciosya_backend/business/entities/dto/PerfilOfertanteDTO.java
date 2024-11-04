@@ -25,6 +25,8 @@ public class PerfilOfertanteDTO {
 
     private Date fechaNacimiento;
 
+    private String fotoPerfil;
+
     private List<ServicioDto> servicios;
 
     private List<String> rubros;
