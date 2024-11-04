@@ -372,9 +372,12 @@ public class DataLoader implements CommandLineRunner {
                     contratacionMgr.contactarContratacion(contratacion.getId(), mensaje, "12345678", "maria.gomez@example.com");
 
                     contactCount++;
-                } else {
+                } else if (chance < 75) {
                     contratacion.setEstado(Contratacion.EstadoContratacion.TERMINADA);
                    contratacionRepository.save(contratacion);
+                } else {
+                    contratacion.setEstado(Contratacion.EstadoContratacion.ACEPTADA);
+                    contratacionRepository.save(contratacion);
                 }
             }
         }
