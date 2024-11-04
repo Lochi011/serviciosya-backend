@@ -192,6 +192,18 @@ public class ContratacionController {
         }
     }
 
+    @PatchMapping("/terminar/{id}")
+    public ResponseEntity<?> terminarContratacion(@PathVariable Long id) {
+        try {
+            contratacionMgr.terminarContratacion(id);
+            return ResponseEntity.ok("Contratación terminada exitosamente.");
+        } catch (EntidadNoExiste e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno al terminar la contratación.");
+        }
+    }
+
 
 
 }

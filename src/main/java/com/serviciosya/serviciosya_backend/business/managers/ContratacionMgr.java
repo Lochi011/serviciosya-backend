@@ -297,6 +297,16 @@ public class ContratacionMgr {
         contratacion.setEstado(Contratacion.EstadoContratacion.TERMINADA);
         contratacionRepository.save(contratacion);
 
+        NotificacionDemandante notificacionDemandante = NotificacionDemandante.builder()
+                .usuarioDemandante(contratacion.getDemandante())
+                .contratacion(contratacion)
+                .mensaje("La contratacion para el servicio " + contratacion.getServicio().getNombre() + " ha sido terminada")
+                .leido(false)
+                .fechaCreacion(LocalDateTime.now())
+                .build();
+
+        notificacionDemandanteRepository.save(notificacionDemandante);
+
     }
 
     public List<ContratacionResumenDTO> obtenerContratacionesResumenPorOfertante(String email) throws EntidadNoExiste {
