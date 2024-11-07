@@ -75,6 +75,7 @@ public class DataLoader implements CommandLineRunner {
         );
 
         demandante.setRole(Usuario.Role.DEMANDANTE);
+        demandante.setDescripcion("No soy muy hábil en casi nada y suelo necesitar ayuda para prácticamente todo. Desde cambiar una bombilla hasta usar el microondas, siempre encuentro un motivo para contratar a alguien más capacitado que yo.");
         if (!usuarioRepository.existsByCedula(demandante.getCedula())) {
             usuarioRepository.save(demandante);
             System.out.println("Usuario guardado exitosamente: " + demandante.getEmail());
@@ -95,6 +96,7 @@ public class DataLoader implements CommandLineRunner {
                 new SimpleDateFormat("yyyy-MM-dd").parse("1985-05-05") // Fecha de nacimiento
         );
         ofertante.setRole(Usuario.Role.OFERTANTE);
+        ofertante.setDescripcion("Con múltiples títulos y décadas de experiencia en casi todo, hago cada tarea con excelencia.");
 
         if (!usuarioRepository.existsByCedula(ofertante.getCedula())) {
             usuarioRepository.save(ofertante);

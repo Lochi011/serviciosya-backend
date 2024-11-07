@@ -23,7 +23,7 @@ import java.util.List;
 @DiscriminatorValue("OFERTANTE")
 public class UsuarioOfertante extends Usuario {
 
-    private String descripcion;
+
 
     private String fotoPerfil;
 
@@ -85,4 +85,6 @@ public class UsuarioOfertante extends Usuario {
     @OneToMany(mappedBy = "usuarioOfertante", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Reseña> reseñas;
+
+
 }

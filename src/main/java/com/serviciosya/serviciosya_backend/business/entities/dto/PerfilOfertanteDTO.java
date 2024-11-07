@@ -39,5 +39,7 @@ public class PerfilOfertanteDTO {
 
     private List<ReseñaDto> resñas;
 
+    private String descripcion;
+
 
 }

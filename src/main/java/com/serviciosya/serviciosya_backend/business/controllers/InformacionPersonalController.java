@@ -151,9 +151,16 @@ public class InformacionPersonalController {
             usuario.setEmail(updatedInfo.getEmail());
             usuario.setTelefono(updatedInfo.getTelefono());
             usuario.setDireccion(updatedInfo.getDireccion());
+            usuario.setDescripcion(updatedInfo.getDescripcion());
+
+            System.out.println("Descripción recibida: " + updatedInfo.getDescripcion());
+
 
             // Guardar los cambios en la base de datos
             usuarioRepository.save(usuario);
+
+            System.out.println("Usuario guardado con descripción: " + usuario.getDescripcion());
+
 
             // Responder con la información actualizada
             Map<String, Object> response = buildUserResponse(usuario);
@@ -176,6 +183,7 @@ public class InformacionPersonalController {
         userData.put("fechaNacimiento", usuario.getFechaNacimiento());
         userData.put("cedula", usuario.getCedula());
         userData.put("direccion", usuario.getDireccion());
+        userData.put("descripcion", usuario.getDescripcion() != null ?  usuario.getDescripcion() : "");
 
         return userData;
     }

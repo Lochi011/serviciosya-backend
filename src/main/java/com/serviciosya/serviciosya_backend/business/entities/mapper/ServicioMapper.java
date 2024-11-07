@@ -25,7 +25,9 @@ public class ServicioMapper {
                 servicio.getUsuarioOfertante() != null ? servicio.getUsuarioOfertante().getNombre() : null,
                 servicio.getUsuarioOfertante() != null ? servicio.getUsuarioOfertante().getApellido() : null,
                 servicio.getRubro() != null ? servicio.getRubro().getNombre() : null,
-                servicio.getDiasSeleccionados()
+                servicio.getDiasSeleccionados(),
+                servicio.getUsuarioOfertante() != null ? servicio.getUsuarioOfertante().getFotoPerfil() : null
+
         );
     }
 }

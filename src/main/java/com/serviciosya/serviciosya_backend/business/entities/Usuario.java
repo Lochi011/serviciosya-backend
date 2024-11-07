@@ -55,6 +55,11 @@ public class Usuario implements UserDetails {
     @Enumerated(EnumType.STRING)
     Role role;
 
+    @Column(length = 1000)
+    private String descripcion;
+
+
+
     public enum Role{
         ADMINISTRADOR,
         DEMANDANTE,

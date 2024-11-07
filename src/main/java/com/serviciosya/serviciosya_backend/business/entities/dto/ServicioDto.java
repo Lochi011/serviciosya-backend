@@ -49,4 +49,6 @@ public class ServicioDto {
 
     private List<String> diasSeleccionados;
 
+    private String fotoPerfil;
+
 }

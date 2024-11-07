@@ -57,6 +57,7 @@ public class PerfilOfertanteMapper {
                     fotoPerfil(usuarioOfertante.getFotoPerfil()).
                     cantidadContratacionesTerminadas(contratacionMgr.obtenerCantidadContratacionesTerminadasPorOfertante(usuarioOfertante.getId())).
                     cantidadServicios(servicioMgr.obtenerCantidadServiciosPorOfertante(usuarioOfertante.getId())).
+                    descripcion(usuarioOfertante.getDescripcion()).
 
                     build();
         } catch (EntidadNoExiste e) {
