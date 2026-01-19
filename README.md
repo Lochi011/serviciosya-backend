@@ -1,68 +1,76 @@
-# 🛠️ ServiciosYa - Backend API
+# 🛠️ ServiciosYa - Service Marketplace Backend
 
 ![Java](https://img.shields.io/badge/Java-17-orange?style=for-the-badge&logo=openjdk&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3-brightgreen?style=for-the-badge&logo=spring-boot&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Ready-blue?style=for-the-badge&logo=docker&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3-green?style=for-the-badge&logo=spring&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Role](https://img.shields.io/badge/Role-Tech_Lead_%26_PM-red?style=for-the-badge)
 
-**ServiciosYa** is a RESTful API designed to connect service providers (plumbers, electricians, etc.) with customers in real-time. This project handles the core business logic, secure authentication, and data management for the platform.
+**Project Type:** On-Demand Services Platform (Marketplace)
+**Core Tech:** Java, Spring Boot, REST API, JWT, Hibernate.
 
 ---
 
-## 🚀 Key Features
+## 📖 Project Overview
+**ServiciosYa** is a comprehensive platform connecting service providers (plumbers, electricians, tutors) with clients in real-time.
 
-* **🔐 Secure Authentication:** Stateless authentication using **JWT (JSON Web Tokens)** with role-based access control (Admin, Provider, Client).
-* **📅 Booking Engine:** Logic to schedule appointments, manage availability, and prevent double-booking.
-* **⭐ Reputation System:** Algorithm to calculate and update provider ratings based on user feedback.
-* **🐳 Containerized:** Fully dockerized environment for consistent deployment.
+As the **Backend Lead & Project Manager**, I steered the development lifecycle from conception to deployment. My focus was on delivering a scalable, secure RESTful API while coordinating the frontend integration and timeline management.
+
+### 🎯 Key Responsibilities
+* **Technical Leadership:** Designed the monolithic architecture and database schema to support complex transactions and user interactions.
+* **Project Management:** Led the agile team using Scrum methodology, managing sprints, backlog prioritization, and risk mitigation.
+* **Quality Assurance:** Established coding standards and code review protocols to ensure maintainability.
+
+---
+
+## 🏗️ Database Architecture
+
+![Database Schema](database_schema.png)
+
+The system relies on a robust relational database (PostgreSQL) modeled to ensure data integrity across complex transactions:
+* **User Management:** Role-based entities (`Ofertante`, `Demandante`, `Administrador`) inheriting from a central `Usuario` table.
+* **Service Lifecycle:** Detailed tracking of `Contratacion` states, from request to completion and rating.
+* **Financials:** Secure handling of payment records (`Pago`) and invoice addresses.
+
+---
+
+## 🚀 Key Features Implemented
+
+* **Smart Search & Filtering:** Advanced query specifications to find providers by location, category, and rating.
+* **Transaction Management:** ACID-compliant service booking and status updates (Requested -> Accepted -> Completed).
+* **Rating System:** Logic for calculating weighted averages for provider reputation based on `Reseña`.
+* **Security Layer:** Stateless authentication using **JWT (JSON Web Tokens)**.
 
 ---
 
 ## 🛠️ Tech Stack
 
-* **Language:** Java 17
-* **Framework:** Spring Boot 3 (Web, Security, Data JPA)
-* **Database:** PostgreSQL
-* **Tools:** Docker, Docker Compose, Maven, Git
-* **Architecture:** Hexagonal / Layered Architecture
+| Category | Technology | Usage |
+| :--- | :--- | :--- |
+| **Framework** | Spring Boot 3 | Rapid application development and dependency injection. |
+| **Language** | Java 17 | Core logic implementation. |
+| **Database** | PostgreSQL | Relational data storage via Hibernate/JPA. |
+| **Security** | Spring Security + JWT | Authentication and Authorization. |
+| **Docs** | Swagger UI | Interactive API documentation. |
 
 ---
 
-## ⚡ How to Run Locally
+## ⚡ Setup & Run
 
-You can run the entire application (Database + API) with a single command using Docker.
+```bash
+# 1. Clone the repository
+git clone [https://github.com/Lochi011/serviciosya-backend.git](https://github.com/Lochi011/serviciosya-backend.git)
 
-### Prerequisites
-* Docker & Docker Compose installed.
-* Git.
+# 2. Configure Database
+# Update application.properties with your Postgres credentials
 
-### Steps
-1.  **Clone the repository:**
-    ```bash
-    git clone [https://github.com/Lochi011/serviciosya-backend.git](https://github.com/Lochi011/serviciosya-backend.git)
-    cd serviciosya-backend
-    ```
+# 3. Run the application
+./mvnw spring-boot:run
 
-2.  **Run with Docker Compose:**
-    ```bash
-    docker-compose up -d
-    ```
+## 👤 Author
 
-3.  **Access the API:**
-    The server will start at `http://localhost:8080`.
+**Santiago Lozano**
+*Backend Lead | Cloud Architect | Project Manager*
 
-    > **📝 API Documentation:**
-    > If Swagger/OpenAPI is enabled, verify endpoints at: `http://localhost:8080/swagger-ui.html`
-
----
-
-## 📂 Project Structure
-
-```text
-src/main/java/com/serviciosya
-├── config       # Security & App configuration
-├── controllers  # REST Controllers (API Layer)
-├── services     # Business Logic
-├── repositories # Database Access (JPA)
-├── models       # JPA Entities
-└── dtos         # Data Transfer Objects
+* **Role:** Backend Development (Python/Lambda) & Project Management.
+* **Contribution:** Designed the Serverless Architecture, implemented the API/Event Bus, and led the team integration strategies.
+* **Contact:** [Santiago Lozano](https://www.linkedin.com/in/santiago-lozano-81171624b/)
