@@ -65,7 +65,7 @@ git clone [https://github.com/Lochi011/serviciosya-backend.git](https://github.c
 
 # 3. Run the application
 ./mvnw spring-boot:run
-
+```
 ## 👤 Author
 
 **Santiago Lozano**
